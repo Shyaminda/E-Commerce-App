@@ -3,7 +3,9 @@ import Login from '../Components/Login/Login.jsx';
 
 function LoginPage() {
   return (
-    <div><Login /></div>
+    <div>
+      <Login />
+    </div>
   )
 }
 
