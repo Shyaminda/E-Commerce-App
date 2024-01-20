@@ -1,6 +1,7 @@
 import generateToken from '../config/token.js';
 import User from '../models/userModel.js';
 import asyncHandler from 'express-async-handler';
+import validateMdbId from '../utils/validateMdbId.js';
 
 const createUser = asyncHandler (async (req, res) => {        //here we use the asyncHandler middleware to handle asynchronous operations within the route handler. This middleware helps to avoid repetitive try-catch blocks for error handling.
     const email = req.body.email;
@@ -33,6 +34,8 @@ const login = asyncHandler(async (req, res) => {
 
 const updateAUser = asyncHandler(async (req, res) => {     //here we update a single user by id
     const { id } = req.user;    //here we get the id from the url    //here we get the id from the req.user object because we have assigned the user to the req object in the authMiddleware
+    validateMdbId(id);    //here we validate the id
+
     try {
         const updateUser = await User.findByIdAndUpdate(id,{
             firstName: req?.body?.firstName,
@@ -57,6 +60,7 @@ const getAllUsers = asyncHandler(async (req, res) => {   //here we get all users
 
 const getAUser = asyncHandler(async (req, res) => {    //here we get a single user by id
     const { id } = req.params;    //here we get the id from the url
+    validateMdbId(id);    //here we validate the id
     
     try {
         const getAUser = await User.findById(id);
@@ -68,6 +72,7 @@ const getAUser = asyncHandler(async (req, res) => {    //here we get a single us
 
 const deleteAUser = asyncHandler(async (req, res) => {    //here we get a single user by id and delete it
     const { id } = req.params;    //here we get the id from the url
+    validateMdbId(id);    //here we validate the id
     
     try {
         const deleteAUser = await User.findByIdAndDelete(id);
@@ -79,6 +84,8 @@ const deleteAUser = asyncHandler(async (req, res) => {    //here we get a single
 
 const blockUser = asyncHandler(async (req, res) => {        //here we get a single user by id and block it
     const { id } = req.params;    //here we get the id from the url
+    validateMdbId(id);    //here we validate the id
+
     try {
         const blockUser = await User.findByIdAndUpdate(id,{isBlocked: true},{new: true});
         res.json({message: "User blocked successfully"});
@@ -90,6 +97,8 @@ const blockUser = asyncHandler(async (req, res) => {        //here we get a sing
 
 const unBlockUser = asyncHandler(async (req, res) => {        //here we get a single user by id and unblock it
     const { id } = req.params;    //here we get the id from the url
+    validateMdbId(id);    //here we validate the id
+
     try {
         const unBlockUser = await User.findByIdAndUpdate(id,{isBlocked: false},{new: true});
         res.json({message: "User unblocked successfully"});
