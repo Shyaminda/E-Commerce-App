@@ -77,4 +77,26 @@ const deleteAUser = asyncHandler(async (req, res) => {    //here we get a single
     }
 });
 
-export {createUser,login,getAllUsers,getAUser,deleteAUser,updateAUser};
+const blockUser = asyncHandler(async (req, res) => {        //here we get a single user by id and block it
+    const { id } = req.params;    //here we get the id from the url
+    try {
+        const blockUser = await User.findByIdAndUpdate(id,{isBlocked: true},{new: true});
+        res.json({message: "User blocked successfully"});
+    } catch (error) {
+        throw new Error(error,'Error while blocking the user(user.controller.js blockUser)');
+    }
+}); 
+
+
+const unBlockUser = asyncHandler(async (req, res) => {        //here we get a single user by id and unblock it
+    const { id } = req.params;    //here we get the id from the url
+    try {
+        const unBlockUser = await User.findByIdAndUpdate(id,{isBlocked: false},{new: true});
+        res.json({message: "User unblocked successfully"});
+    } catch (error) {
+        throw new Error(error,'Error while unblocking the user(user.controller.js unBlockUser)');
+    }
+}); 
+
+
+export {createUser,login,getAllUsers,getAUser,deleteAUser,updateAUser,blockUser,unBlockUser};
