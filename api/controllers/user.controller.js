@@ -31,7 +31,22 @@ const login = asyncHandler(async (req, res) => {
     }
 });
 
-const getAllUsers = asyncHandler(async (req, res) => {
+const updateAUser = asyncHandler(async (req, res) => {     //here we update a single user by id
+    const { id } = req.user;    //here we get the id from the url    //here we get the id from the req.user object because we have assigned the user to the req object in the authMiddleware
+    try {
+        const updateUser = await User.findByIdAndUpdate(id,{
+            firstName: req?.body?.firstName,
+            lastName: req?.body?.lastName,
+            email: req?.body?.email,
+            mobile: req?.body?.mobile,    
+        },{new: true});
+        res.json(updateUser);
+    } catch (error) {
+        throw new Error(error,'Error while updating a user(user.controller.js updateAUser)');
+    }
+});   
+
+const getAllUsers = asyncHandler(async (req, res) => {   //here we get all users
     try {
         const getUsers = await User.find();
         res.json(getUsers);
@@ -51,15 +66,15 @@ const getAUser = asyncHandler(async (req, res) => {    //here we get a single us
     }
 });
 
-const deleteAUser = asyncHandler(async (req, res) => {    //here we get a single user by id
+const deleteAUser = asyncHandler(async (req, res) => {    //here we get a single user by id and delete it
     const { id } = req.params;    //here we get the id from the url
     
     try {
         const deleteAUser = await User.findByIdAndDelete(id);
         res.json(getAUser);
     } catch (error) {
-        throw new Error(error,'Error while fetching a user(user.controller.js getAUser)');
+        throw new Error(error,'Error while deleting a user(user.controller.js deleteAUser)');
     }
 });
 
-export {createUser,login,getAllUsers,getAUser,deleteAUser};
+export {createUser,login,getAllUsers,getAUser,deleteAUser,updateAUser};
