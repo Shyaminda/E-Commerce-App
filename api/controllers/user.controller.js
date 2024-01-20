@@ -27,8 +27,39 @@ const login = asyncHandler(async (req, res) => {
             token: generateToken(findUser?._id),
         });
     } else {
-        throw new Error('Invalid email or password');
+        throw new Error('Invalid credentials');
     }
 });
 
-export {createUser,login};
+const getAllUsers = asyncHandler(async (req, res) => {
+    try {
+        const getUsers = await User.find();
+        res.json(getUsers);
+    } catch (error) {
+        throw new Error(error,'Error while fetching users(user.controller.js getAllUsers)');
+    }
+});
+
+const getAUser = asyncHandler(async (req, res) => {    //here we get a single user by id
+    const { id } = req.params;    //here we get the id from the url
+    
+    try {
+        const getAUser = await User.findById(id);
+        res.json(getAUser);
+    } catch (error) {
+        throw new Error(error,'Error while fetching a user(user.controller.js getAUser)');
+    }
+});
+
+const deleteAUser = asyncHandler(async (req, res) => {    //here we get a single user by id
+    const { id } = req.params;    //here we get the id from the url
+    
+    try {
+        const deleteAUser = await User.findByIdAndDelete(id);
+        res.json(getAUser);
+    } catch (error) {
+        throw new Error(error,'Error while fetching a user(user.controller.js getAUser)');
+    }
+});
+
+export {createUser,login,getAllUsers,getAUser,deleteAUser};
