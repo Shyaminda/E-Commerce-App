@@ -4,6 +4,7 @@ import "dotenv/config";
 import authRouter from './routes/authRouter.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
 import cookieParser from 'cookie-parser';
+import productRouter from './routes/productRouter.js';
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,7 @@ mongoose.connect(process.env.MONGO)
 
 
 app.use("/api/user",authRouter);
+app.use("/api/product",productRouter);
 
 app.use(notFound);
 app.use(errorHandler);
