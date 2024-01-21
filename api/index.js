@@ -5,11 +5,13 @@ import authRouter from './routes/authRouter.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
 import cookieParser from 'cookie-parser';
 import productRouter from './routes/productRouter.js';
+import morgan from 'morgan';
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(morgan("dev"));
 
 mongoose.connect(process.env.MONGO)
 .then(() => console.log('Connected to Database successfully'))
