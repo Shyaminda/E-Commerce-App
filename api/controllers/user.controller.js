@@ -4,6 +4,8 @@ import asyncHandler from 'express-async-handler';
 import validateMdbId from '../utils/validateMdbId.js';
 import generateRefreshToken from '../config/refreshToken.js';
 import jwt from 'jsonwebtoken';
+import {sendEmail} from '../controllers/email.controller.js';
+import crypto from 'crypto';
 
 const createUser = asyncHandler (async (req, res) => {        //here we use the asyncHandler middleware to handle asynchronous operations within the route handler. This middleware helps to avoid repetitive try-catch blocks for error handling.
     const email = req.body.email;
@@ -245,5 +247,44 @@ const updatePassword = asyncHandler(async (req, res) => {
     }
 });
 
+const forgotPasswordToken = asyncHandler(async (req, res) => {     //http://localhost:3000/api/user/forgot-password-token in postman
+    const { email } = req.body;    //here we get the email from the req.body object
+    const user = await User.findOne({email});    //here we get the user from the database
+    if(!user)throw new Error('No user found');    //here we check if the user exists
+    try {
+        const token = await user.createPasswordResetToken();    //here we create the password reset token
+        await user.save();
+        const resetURL = `Follow the link to reset the password. Only valid for 10min <a href='http://localhost:3000/api/user/reset-password/${token}'>Click Here</>`;    //here we create the reset url
+        const data = {
+            to: email,
+            subject: "Password Reset",
+            text: "Forget Password Link",
+            htm: resetURL,
+        };
+        sendEmail(data);    //here we send the email
+        res.json(token);
+    } catch (error) {
+        throw new Error(error,'Error while sending the email(user.controller.js forgotPasswordToken)');
+    }
+});
 
-export {createUser,login,getAllUsers,getAUser,deleteAUser,updateAUser,blockUser,unBlockUser,handleRefreshToken,logOut,updatePassword};
+const resetPassword = asyncHandler(async (req, res) => {     //http://localhost:3000/api/user/reset-password/4928841b0ae5268c5b8abbf33aa254333cc8dfbae44d13ea6aa69f8d1c41501b in postman
+    const { password } = req.body;    //here we get the password from the req.body object
+    const { token } = req.params;    //here we get the token from the url from http://localhost:3000/api/user/reset-password/${token}
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");    //here we hash the token
+    const user = await User.findOne({
+        passwordResetToken: hashedToken,    //here we check if the hashed token is equal to the passwordResetToken in the database
+        passwordResetExpires: {    //here we check if the passwordResetExpires is greater than the current time
+            $gt: Date.now(),   //this time can be change from user.model.js
+        },
+    });
+    if(!user)throw new Error('Token is invalid or has expired');    //here we check if the user exists
+    user.password = password;    //here we update the password
+    user.passwordResetToken = undefined;    //here we update the passwordResetToken
+    user.passwordResetExpires = undefined;    //here we update the passwordResetExpires
+    await user.save();    //here we save the user
+    res.json(user);
+});
+
+
+export {createUser,login,getAllUsers,getAUser,deleteAUser,updateAUser,blockUser,unBlockUser,handleRefreshToken,logOut,updatePassword,forgotPasswordToken,resetPassword};

@@ -69,7 +69,7 @@ userSchema.methods.createPasswordResetToken = async function () {
         .update(resetToken)
         .digest("hex");
 
-    this.passwordResetExpires = Date.now() + 30 * 60 * 1000;  //10 minutes
+    this.passwordResetExpires = Date.now() + 30 * 60 * 1000;  //10 minutes   //linked to user.controller.js resetPassword function
     return resetToken;
 }
 

@@ -1,10 +1,12 @@
 import express from 'express';
-import {blockUser, createUser,deleteAUser,getAUser,getAllUsers,handleRefreshToken,logOut,login, unBlockUser, updateAUser, updatePassword} from '../controllers/user.controller.js';
+import {blockUser, createUser,deleteAUser,forgotPasswordToken,getAUser,getAllUsers,handleRefreshToken,logOut,login, resetPassword, unBlockUser, updateAUser, updatePassword} from '../controllers/user.controller.js';
 import {authMiddleware,isAdmin} from '../middleware/authMiddleware.js';
 
 const authRouter = express.Router();
 
 authRouter.post('/register',createUser);
+authRouter.post("/forgot-password-token",forgotPasswordToken);
+authRouter.put("/reset-password/:token",resetPassword);
 authRouter.put("/update-password",authMiddleware,updatePassword);
 authRouter.post('/login',login);
 authRouter.get('/all-users',getAllUsers);
