@@ -230,5 +230,20 @@ const unBlockUser = asyncHandler(async (req, res) => {        //here we get a si
     }
 }); 
 
+const updatePassword = asyncHandler(async (req, res) => {
+    const { _id } = req.user;    //here we get the id from the url    //here we get the id from the req.user object because we have assigned the user to the req object in the authMiddleware
+    const password = req.body.password;
+    validateMdbId(_id);    //here we validate the id
 
-export {createUser,login,getAllUsers,getAUser,deleteAUser,updateAUser,blockUser,unBlockUser,handleRefreshToken,logOut};
+    const user = await User.findById(_id);    //here we get the user from the database
+    if(password){
+        user.password = password;    //here we update the password
+        const updatedPassword = await user.save();    //here we save the updated password
+        res.json(updatedPassword);
+    } else {
+        res.json(user);     //here we send the user
+    }
+});
+
+
+export {createUser,login,getAllUsers,getAUser,deleteAUser,updateAUser,blockUser,unBlockUser,handleRefreshToken,logOut,updatePassword};

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt"; 
+import crypto from "crypto";
 
 const userSchema=new mongoose.Schema({
     firstName:{
@@ -43,16 +44,34 @@ const userSchema=new mongoose.Schema({
     refreshToken:{
         type:String,
     },
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
 }, {timestamps:true});
 
 userSchema.pre("save",async function(next){
-    const salt=await bcrypt.genSaltSync(10);
+    if(!this.isModified("password")){
+        return next();
+    }
+    const salt= bcrypt.genSaltSync(10);
     this.password=await bcrypt.hash(this.password,salt);
 });
 
 userSchema.methods.matchPassword=async function(password){    //this method is used to compare the password entered by the user with the hashed password stored in the database.
     return await bcrypt.compare(password,this.password);
 };
+
+userSchema.methods.createPasswordResetToken = async function () {
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    this.passwordResetToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+
+    this.passwordResetExpires = Date.now() + 30 * 60 * 1000;  //10 minutes
+    return resetToken;
+}
 
 const User=mongoose.model('User',userSchema);   
 export default User;
