@@ -33,10 +33,7 @@ const blogSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
     },
-    images:{
-        type:String,
-        default:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiRt9eM1I9W9DgNzOPI2DdGIhqbq5Nb6KNIQ&usqp=CAU",
-    },
+    image:[],
     author:{
         type:String,
         default:"Admin",

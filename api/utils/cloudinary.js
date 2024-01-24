@@ -11,9 +11,9 @@ const cloudinaryUploadImg = async (fileToUploads) => {
         cloudinary.uploader.upload(fileToUploads, (result) => {
         resolve(
             {
-            url: result.secure_url,
-            asset_id: result.asset_id,
-            public_id: result.public_id,
+            url: result.secure_url,    // url of the uploaded image
+            asset_id: result.asset_id,   // public id of the uploaded image
+            public_id: result.public_id,   // public id of the uploaded image
             },
             {
             resource_type: "auto",

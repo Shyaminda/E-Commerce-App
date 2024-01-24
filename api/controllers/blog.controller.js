@@ -1,6 +1,8 @@
 import asyncHandler from 'express-async-handler';
 import Blog from '../models/blogModel.js';
 import validateMdbId from '../utils/validateMdbId.js';
+import cloudinaryUploadImg from '../utils/cloudinary.js';
+import fs from 'fs';
 
 const createBlog = asyncHandler(async (req,res)=>{
     try {
@@ -137,4 +139,29 @@ const disLikeTheBlog = asyncHandler(async (req, res) => {     //http://localhost
     }
 });
 
-export {createBlog,updateBlog,getBlog,getAllBlogs,deleteBlog,likeTheBlog,disLikeTheBlog};
+const uploadImages = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    validateMdbId(id);
+    try {
+        const uploader = (path) => cloudinaryUploadImg(path, 'images');    // 'images' is the folder name in cloudinary and path is the path of the image
+        const urls = [];    // array to store the image urls
+        const files = req.files;    // get the files from the req.files object through the middleware  //through the middleware we can get the files from the client side
+
+        for(const file of files){   // loop through the files
+            const { path } = file;   // get the path of the file
+            const newPath = await uploader(path);   // upload the file to cloudinary
+            //console.log(newPath);
+            urls.push(newPath);   // push the new path to the urls array
+            //fs.unlinkSync(path);    // delete the file from the local storage   //commented because the windows doesn't allow vscode to delete files through code
+        }
+        const findBlog = await Blog.findByIdAndUpdate(id,{       // find the product by id
+            image: urls.map((file) => {return file}),   // update the images array with the new urls //here image field name should be as same as in the product model
+        },{ new: true });
+        res.json(findBlog);  
+
+    } catch (error) {
+        throw new Error(error, 'Product image uploading failed(uploadImages product.controller.js)');
+    }
+});    //rather than referring this uploadImages function refer the uploadImages function in product.controller.js where the same code is copy pasted 
+
+export {createBlog,updateBlog,getBlog,getAllBlogs,deleteBlog,likeTheBlog,disLikeTheBlog,uploadImages};
