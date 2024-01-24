@@ -10,6 +10,7 @@ import blogRouter from './routes/blogRouter.js';
 import productCategoryRouter from './routes/productCategoryRoute.js';
 import blogCategoryRouter from './routes/blogCategoryRouter.js';
 import brandRouter from './routes/brandRouter.js';
+import couponRouter from './routes/couponRoute.js';
 
 const app = express();
 app.use(express.json());
@@ -28,6 +29,7 @@ app.use("/api/blog",blogRouter);
 app.use("/api/product-category",productCategoryRouter);
 app.use("/api/blog-category",blogCategoryRouter);
 app.use("/api/brand",brandRouter);
+app.use("/api/coupon",couponRouter);
 
 app.use(notFound);
 app.use(errorHandler);
