@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
 import slugify from 'slugify';
+import User from '../models/userModel.js';
 
 const createProduct = asyncHandler(async (req, res) => {
     try {
@@ -96,8 +97,6 @@ const getAllProducts = asyncHandler(async (req, res) => {
             if(skip >= productsCount) throw new Error(error,'This page does not exist(product.controller.js getAllProducts)');   // if the skip is greater than the total number of products, throw an error
         }   //http://localhost:3000/api/product?page=1&limit=3 in postman    
 
-
-
         const products = await query;   // await the query  //query which will return from above filtration and sorting
         res.json(products);
         
@@ -106,7 +105,29 @@ const getAllProducts = asyncHandler(async (req, res) => {
     }
 });
 
-export { createProduct, getProduct, getAllProducts, updateProduct, deleteProduct };
+const addToWishList = asyncHandler(async (req, res) => {
+    const { _id } = req.user;   // get the user id from the req.user object
+    const { productId } = req.body;   // get the productId from the req.body   //if your client sends requests with the key id instead of productId, you should make sure to use the correct key in your server-side logic. Adjust the line to match the key used in your client requests
+    try {
+        const user = await User.findById(_id);    // find the user by id
+        const alreadyAdded = user.wishList.find((id) => id.toString() === productId);   // check if the product is already added to the wishlist by comparing the productId with the wishlist array
+        if(alreadyAdded){
+            let user = await User.findByIdAndUpdate(_id,{
+                $pull: { wishList: productId },   // if the product is already added, remove it from the wishlist
+            },{ new: true });
+            res.json(user);
+        } else {
+            let user = await User.findByIdAndUpdate(_id,{
+                $push: { wishList: productId },   // if the product is already added, remove it from the wishlist
+            },{ new: true });
+            res.json(user);
+        }
+    } catch (error) {
+        throw new Error(error, 'Product adding to wishlist failed(addToWishList product.controller.js)');
+    }
+});
+
+export { createProduct, getProduct, getAllProducts, updateProduct, deleteProduct, addToWishList};
 
 
 //for better query understanding watch the tutorial https://www.youtube.com/watch?v=S6Yd5cPtXr4&list=PL0g02APOH8okXhOQLOLcB_nifs1U41im5&index=6&t=513s at 3.05.22
