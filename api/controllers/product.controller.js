@@ -129,7 +129,7 @@ const addToWishList = asyncHandler(async (req, res) => {   //http://localhost:30
 
 const rating = asyncHandler(async (req, res) => {       //http://localhost:3000/api/product/ratings in postman
     const { _id } = req.user;   // get the user id from the req.user object
-    const { productId, star } = req.body;   // get the productId and star from the req.body  which is passed from the client side
+    const { productId, star, comments } = req.body;   // get the productId and star from the req.body  which is passed from the client side
     try {
         const product = await Product.findById(productId);   // find the product by id
 
@@ -139,14 +139,15 @@ const rating = asyncHandler(async (req, res) => {       //http://localhost:3000/
                 {
                     rating: { $elemMatch: alreadyRated },
                 },
-                { $set: { "rating.$.star": star } },
+                { $set: { "rating.$.star": star,"rating.$.comment": comments } },
                 { new: true }
             );
             // res.json(updatedRating);
         } else {
             const rateProduct = await Product.findByIdAndUpdate(productId,{
                 $push:{ rating:{ 
-                    star,     // if the user has not rated the product, add the rating to the product req.body which is passed from the client side
+                    star: star,     // if the user has not rated the product, add the rating to the product req.body which is passed from the client side
+                    comment: comments,   // this comment is from productModel.js which links with the user model which is passed from the client side
                     postedBy: _id     // this postedBy is from productModel.js which links with the user model
                 }},
             },{ new: true });
