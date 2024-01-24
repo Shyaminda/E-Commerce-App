@@ -1,13 +1,13 @@
 import asyncHandler from 'express-async-handler';
-import productCategory from '../models/productCategoryModel.js';
+import blogCategory from '../models/blogCategoryModel.js';
 import validateMongoDbId  from '../utils/validateMdbId.js';
 
 const createCategory = asyncHandler(async (req, res) => {
     try {
-        const newCategory = await productCategory.create(req.body);
+        const newCategory = await blogCategory.create(req.body);
         res.json({newCategory});
     } catch (error) {
-        throw new Error(error,"Error creating category (category.controller.js createCategory)");
+        throw new Error(error,"Error creating category (blogCategory.controller.js createCategory)");
     }
 });
 
@@ -15,12 +15,12 @@ const updateCategory = asyncHandler(async (req, res) => {   //http://localhost:3
     const { id } = req.params;
     validateMongoDbId(id);
     try {
-        const updatedCategory = await productCategory.findByIdAndUpdate(id, req.body, {
+        const updatedCategory = await blogCategory.findByIdAndUpdate(id, req.body, {
         new: true,
         });
         res.json(updatedCategory);
     } catch (error) {
-        throw new Error(error,"Error updating category (category.controller.js updateCategory)");
+        throw new Error(error,"Error updating category (blogCategory.controller.js updateCategory)");
     }
 });
 
@@ -28,10 +28,10 @@ const deleteCategory = asyncHandler(async (req, res) => {      //http://localhos
     const { id } = req.params;
     validateMongoDbId(id);
     try {
-        const deletedCategory = await productCategory.findByIdAndDelete(id);
+        const deletedCategory = await blogCategory.findByIdAndDelete(id);
         res.json(deletedCategory);
     } catch (error) {
-        throw new Error(error);
+        throw new Error(error,"Error deleting category (blogCategory.controller.js deleteCategory");
     }
 });
 
@@ -39,19 +39,19 @@ const getCategory = asyncHandler(async (req, res) => {
     const { id } = req.params;
     validateMongoDbId(id);
     try {
-        const getCategory = await productCategory.findById(id);
+        const getCategory = await blogCategory.findById(id);
         res.json(getCategory);
     } catch (error) {
-        throw new Error(error);
+        throw new Error(error,"Error getting category (blogCategory.controller.js getCategory");
     }
 });
 
 const getallCategory = asyncHandler(async (req, res) => {
     try {
-        const getallCategory = await productCategory.find();
+        const getallCategory = await blogCategory.find();
         res.json(getallCategory);
     } catch (error) {
-        throw new Error(error);
+        throw new Error(error,"Error getting all category (blogCategory.controller.js getallCategory");
     }
 });
 

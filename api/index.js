@@ -8,6 +8,8 @@ import productRouter from './routes/productRouter.js';
 import morgan from 'morgan';
 import blogRouter from './routes/blogRouter.js';
 import productCategoryRouter from './routes/productCategoryRoute.js';
+import blogCategoryRouter from './routes/blogCategoryRouter.js';
+import brandRouter from './routes/brandRouter.js';
 
 const app = express();
 app.use(express.json());
@@ -24,6 +26,8 @@ app.use("/api/user",authRouter);
 app.use("/api/product",productRouter);
 app.use("/api/blog",blogRouter);
 app.use("/api/product-category",productCategoryRouter);
+app.use("/api/blog-category",blogCategoryRouter);
+app.use("/api/brand",brandRouter);
 
 app.use(notFound);
 app.use(errorHandler);
