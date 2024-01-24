@@ -51,6 +51,10 @@ const productSchema = new mongoose.Schema({
             ref: "User",
         },
     }],
+    totalRatings:{
+        type: Number,
+        default: 0,
+    },
     color: {
         type: String,
         //enum: ["white", "black", "blue", "red", "green", "yellow", "grey", "orange", "purple", "pink", "brown", "silver", "gold", "multi-color"],

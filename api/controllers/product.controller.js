@@ -105,7 +105,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
     }
 });
 
-const addToWishList = asyncHandler(async (req, res) => {
+const addToWishList = asyncHandler(async (req, res) => {   //http://localhost:3000/api/product/wishList in postman
     const { _id } = req.user;   // get the user id from the req.user object
     const { productId } = req.body;   // get the productId from the req.body   //if your client sends requests with the key id instead of productId, you should make sure to use the correct key in your server-side logic. Adjust the line to match the key used in your client requests
     try {
@@ -127,7 +127,48 @@ const addToWishList = asyncHandler(async (req, res) => {
     }
 });
 
-export { createProduct, getProduct, getAllProducts, updateProduct, deleteProduct, addToWishList};
+const rating = asyncHandler(async (req, res) => {       //http://localhost:3000/api/product/ratings in postman
+    const { _id } = req.user;   // get the user id from the req.user object
+    const { productId, star } = req.body;   // get the productId and star from the req.body  which is passed from the client side
+    try {
+        const product = await Product.findById(productId);   // find the product by id
+
+        let alreadyRated = product.rating.find((userId) => userId.postedBy.toString() === _id.toString());   // check if the user has already rated the product
+        if(alreadyRated){
+            const updatedRating = await Product.findOneAndUpdate(
+                {
+                    rating: { $elemMatch: alreadyRated },
+                },
+                { $set: { "rating.$.star": star } },
+                { new: true }
+            );
+            // res.json(updatedRating);
+        } else {
+            const rateProduct = await Product.findByIdAndUpdate(productId,{
+                $push:{ rating:{ 
+                    star,     // if the user has not rated the product, add the rating to the product req.body which is passed from the client side
+                    postedBy: _id     // this postedBy is from productModel.js which links with the user model
+                }},
+            },{ new: true });
+            // res.json(rateProduct);
+        }
+    } catch (error) {
+        throw new Error(error, 'Product rating failed(rating product.controller.js)');
+    }
+
+    const getAllRatings = await Product.findById(productId);
+    let totalRatings = getAllRatings.rating.length;
+    let ratingSum = getAllRatings.rating.map((item)=> item.star).reduce((prev, next) => prev + next, 0);    // calculate the total rating sum here reduce is used to add all the star values
+
+    let actualRating = Math.round(ratingSum / totalRatings);    // calculate the actual rating   //basically calculate the average(n ratings addition/n)   //Math.round() function returns the value of a number rounded to the nearest integer.
+    let finalProductRating = await Product.findByIdAndUpdate(productId,
+    {
+        totalRatings: actualRating,
+    },{ new: true });
+    res.json(finalProductRating);
+});
+
+export { createProduct, getProduct, getAllProducts, updateProduct, deleteProduct, addToWishList, rating};
 
 
 //for better query understanding watch the tutorial https://www.youtube.com/watch?v=S6Yd5cPtXr4&list=PL0g02APOH8okXhOQLOLcB_nifs1U41im5&index=6&t=513s at 3.05.22
