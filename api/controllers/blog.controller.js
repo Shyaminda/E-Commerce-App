@@ -28,7 +28,7 @@ const getBlog = asyncHandler(async (req, res) => {
     const { id } = req.params;
     validateMdbId(id);  //validating mongodb id
     try {
-        const getBlog = await Blog.findById(id);
+        const getBlog = await Blog.findById(id).populate("likes").populate("disLikes");
         await Blog.findByIdAndUpdate(id,{
             $inc: {numViews: 1},   //incrementing numViews by 1
         },{new: true});   //new:true returns the updated document

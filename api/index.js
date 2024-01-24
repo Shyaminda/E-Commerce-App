@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import productRouter from './routes/productRouter.js';
 import morgan from 'morgan';
 import blogRouter from './routes/blogRouter.js';
+import productCategoryRouter from './routes/productCategoryRoute.js';
 
 const app = express();
 app.use(express.json());
@@ -22,6 +23,7 @@ mongoose.connect(process.env.MONGO)
 app.use("/api/user",authRouter);
 app.use("/api/product",productRouter);
 app.use("/api/blog",blogRouter);
+app.use("/api/product-category",productCategoryRouter);
 
 app.use(notFound);
 app.use(errorHandler);
