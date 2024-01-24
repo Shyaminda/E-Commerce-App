@@ -6,6 +6,7 @@ import { errorHandler, notFound } from './middleware/errorHandler.js';
 import cookieParser from 'cookie-parser';
 import productRouter from './routes/productRouter.js';
 import morgan from 'morgan';
+import blogRouter from './routes/blogRouter.js';
 
 const app = express();
 app.use(express.json());
@@ -20,6 +21,7 @@ mongoose.connect(process.env.MONGO)
 
 app.use("/api/user",authRouter);
 app.use("/api/product",productRouter);
+app.use("/api/blog",blogRouter);
 
 app.use(notFound);
 app.use(errorHandler);
