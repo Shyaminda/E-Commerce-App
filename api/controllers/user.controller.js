@@ -44,6 +44,34 @@ const login = asyncHandler(async (req, res) => {
     }
 });
 
+const adminLogin = asyncHandler(async (req, res) => {
+    const {email,password} = req.body;
+    const findAdmin = await User.findOne({email: email});     //here check if user exist or not
+
+    if(findAdmin.role !== "admin")throw new Error('not Authorized (user.controller.js adminLogin)');    //here we check if the user is admin or not
+
+    if(findAdmin && (await findAdmin.matchPassword(password))){     //here check if password is correct or not
+        
+        const refreshToken = await generateRefreshToken(findAdmin?._id);    //here we generate the refresh token
+        const updateUser = await User.findByIdAndUpdate(findAdmin?._id,{refreshToken: refreshToken},{new: true});    //here we update the refresh token in the database
+        res.cookie("refreshToken",refreshToken,{     //here we set the refresh token in the cookie
+            httpOnly: true,
+            maxAge:72*60*60*1000
+        });
+
+        res.json({
+            _id: findAdmin?._id,
+            firstName: findAdmin?.firstName,
+            lastName: findAdmin?.lastName,
+            email: findAdmin?.email,
+            mobile: findAdmin?.mobile,
+            token: generateToken(findAdmin?._id),
+        });
+    } else {
+        throw new Error('Invalid credentials');
+    }
+});
+
 // const handleRefreshToken = asyncHandler(async (req, res) => {    //here we handle the refresh token
 //     const cookie = req.cookies;    //here we get the cookie from the req object
 //     if(!cookie?.refreshToken){throw new Error('No refresh token');}    //here we check if the cookie exists
@@ -173,6 +201,20 @@ const logOut = asyncHandler(async (req, res) => {
     res.status(204).send();
 });
 
+const saveAddress = asyncHandler(async (req, res) => {
+    const { _id } = req.user;    //here we get the id from the url    //here we get the id from the req.user object because we have assigned the user to the req object in the authMiddleware
+    validateMdbId(_id);    //here we validate the id
+
+    try {
+        const updateAddress = await User.findByIdAndUpdate(_id,{
+            address: req?.body?.address,    //here we update the address
+        },{new: true});
+        res.json(updateAddress);
+    } catch (error) {
+        throw new Error(error,'Error while updating a address(user.controller.js saveAddress)');
+    }
+});
+
 
 const getAllUsers = asyncHandler(async (req, res) => {   //here we get all users
     try {
@@ -286,5 +328,32 @@ const resetPassword = asyncHandler(async (req, res) => {     //http://localhost:
     res.json(user);
 });
 
+const getWishList = asyncHandler(async (req, res) => {       //here we get the wishlist of a user
+    const { _id } = req.user;   // get the user id from the req.user object
+    try {
+        const findUser = await User.findById(_id).populate("wishList")    //here we get the user from the database
+        res.json(findUser);
+    } catch (error) {
+        throw new Error(error,'Error while getting the wishlist(user.controller.js getWishList)');
+    }
+});
 
-export {createUser,login,getAllUsers,getAUser,deleteAUser,updateAUser,blockUser,unBlockUser,handleRefreshToken,logOut,updatePassword,forgotPasswordToken,resetPassword};
+
+export {
+    createUser,
+    login,
+    getAllUsers,
+    getAUser,
+    deleteAUser,
+    updateAUser,
+    blockUser,
+    unBlockUser,
+    handleRefreshToken,
+    logOut,
+    updatePassword,
+    forgotPasswordToken,
+    resetPassword,
+    adminLogin,
+    getWishList,
+    saveAddress,
+};

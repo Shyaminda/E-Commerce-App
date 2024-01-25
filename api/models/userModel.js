@@ -39,7 +39,10 @@ const userSchema=new mongoose.Schema({
         type:Array,
         default:[],
     },
-    address:[{type: mongoose.Schema.Types.ObjectId,ref:"Address"}],
+    //address:[{type: mongoose.Schema.Types.ObjectId,ref:"Address"}],      //multiple addresses feature is not added
+    address:{
+        type:String,
+    },
     wishList:[{type: mongoose.Schema.Types.ObjectId,ref:"Product"}],
     refreshToken:{
         type:String,
