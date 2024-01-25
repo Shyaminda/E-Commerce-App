@@ -6,6 +6,9 @@ import generateRefreshToken from '../config/refreshToken.js';
 import jwt from 'jsonwebtoken';
 import {sendEmail} from '../controllers/email.controller.js';
 import crypto from 'crypto';
+import Cart from '../models/cartModel.js';
+import Order from '../models/orderModel.js';
+import Product from '../models/productModel.js';
 
 const createUser = asyncHandler (async (req, res) => {        //here we use the asyncHandler middleware to handle asynchronous operations within the route handler. This middleware helps to avoid repetitive try-catch blocks for error handling.
     const email = req.body.email;
@@ -201,7 +204,7 @@ const logOut = asyncHandler(async (req, res) => {
     res.status(204).send();
 });
 
-const saveAddress = asyncHandler(async (req, res) => {
+const saveAddress = asyncHandler(async (req, res,next) => {
     const { _id } = req.user;    //here we get the id from the url    //here we get the id from the req.user object because we have assigned the user to the req object in the authMiddleware
     validateMdbId(_id);    //here we validate the id
 
@@ -338,6 +341,73 @@ const getWishList = asyncHandler(async (req, res) => {       //here we get the w
     }
 });
 
+const userCart = asyncHandler(async (req, res) => {
+    const { cart } = req.body;    //here we get the cart from the req.body object
+    const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
+    validateMdbId(_id);    //here we validate the id
+    try {
+        let products = [];    //here we create an empty array
+        const user = await User.findById(_id);    //here we get the user from the database
+        
+        const alreadyExistCart = await Cart.findOne({orderBy: user._id});    //here we check if the cart already exists   //the login user id will be taken from here
+        if(alreadyExistCart){    //here we check if the cart already exists
+            alreadyExistCart.remove();    //here we remove the cart because we are going to update the cart
+        }
+        for(let i=0;i<cart.length;i++){    //here we loop through the cart
+            const product = {};    //here we create an empty object
+            product.product = cart[i]._id;    //here we get the product id from the cart   //here cart[i] means the first item in the array
+            product.quantity = cart[i].quantity;    //here we get the quantity from the cart
+            product.color = cart[i].color;    //here we get the color from the cart
+            
+            const getPrice = await Product.findById(cart[i]._id).select("price").exec();   //here we get the price from the database and we use exec() to execute the query
+            product.price = getPrice.price;    //here we need to store the price in the product object because we need the price in the order model
+            products.push(product);    //here we push the product object to the products array because we need to store the products in the order model
+        }
+        //console.log(products);   //to get this console log a product items must have a price given (ex-2000) then only this will execute anyway update the price of the product in the database
+        let cartTotal = 0;    //here we create a variable and assign 0 to it
+        for(let i=0;i<products.length;i++){    //here we loop through the products
+            cartTotal = cartTotal + products[i].price * products[i].quantity;    //here we calculate the cartTotal   //here products[i] means the first item in the array
+        }
+        //console.log(cartTotal,products);    //to get this console log a product items must have a price given (ex-2000) then only this will execute
+
+        const newCart = await new Cart({   //here we create a new cart
+            orderBy: user._id,
+            products: products,
+            cartTotal: cartTotal,
+        }).save();
+        res.json(newCart);    
+
+        // {
+        //     "orderBy": "65ac2c02f98f661518a0962a",
+        //     "products": [
+        //       {
+        //         "product": "65ae3552f8182da30f81a87f",
+        //         "quantity": 5,
+        //         "color": "black",
+        //         "price": 2000,
+        //         "_id": "65b2d8b4a8d8dbfe9bf1af87"     //this is the id of the cart 
+        //       },
+        //       {
+        //         "product": "65ae3546f8182da30f81a87b",
+        //         "quantity": 6,
+        //         "color": "red",
+        //         "price": 3000,
+        //         "_id": "65b2d8b4a8d8dbfe9bf1af88"   //this is the id of the cart 
+        //       }
+        //     ],
+        //     "cartTotal": 28000,
+        //     "_id": "65b2d8b4a8d8dbfe9bf1af86",
+        //     "createdAt": "2024-01-25T21:55:00.988Z",
+        //     "updatedAt": "2024-01-25T21:55:00.988Z",
+        //     "__v": 0
+        //   }  this is the output from the above code here 
+        
+    } catch (error) {
+        throw new Error(error,'Error while getting the cart(user.controller.js userCart)');
+    }
+
+});      
+
 
 export {
     createUser,
@@ -356,4 +426,5 @@ export {
     adminLogin,
     getWishList,
     saveAddress,
+    userCart,
 };

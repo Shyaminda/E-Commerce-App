@@ -1,5 +1,5 @@
 import express from 'express';
-import {adminLogin, blockUser, createUser,deleteAUser,forgotPasswordToken,getAUser,getAllUsers,getWishList,handleRefreshToken,logOut,login, resetPassword, saveAddress, unBlockUser, updateAUser, updatePassword} from '../controllers/user.controller.js';
+import {adminLogin, blockUser, createUser,deleteAUser,forgotPasswordToken,getAUser,getAllUsers,getWishList,handleRefreshToken,logOut,login, resetPassword, saveAddress, unBlockUser, updateAUser, updatePassword, userCart} from '../controllers/user.controller.js';
 import {authMiddleware,isAdmin} from '../middleware/authMiddleware.js';
 
 const authRouter = express.Router();
@@ -11,6 +11,7 @@ authRouter.put("/reset-password/:token",resetPassword);
 authRouter.put("/update-password",authMiddleware,updatePassword);
 authRouter.post('/login',login);
 authRouter.post('/admin-login',adminLogin);
+authRouter.post('/cart',authMiddleware,userCart);
 authRouter.get('/all-users',getAllUsers);
 authRouter.get('/refresh',handleRefreshToken);  //here we get the refresh token,the place where the handleRefreshToken placed is important
 authRouter.get('/logout',logOut);
