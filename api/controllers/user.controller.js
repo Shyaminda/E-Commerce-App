@@ -414,7 +414,7 @@ const getUserCart = asyncHandler(async (req, res) => {     //here we get the car
     validateMdbId(_id);    //here we validate the id
 
     try {
-        const cart = await Cart.findOne({orderBy: _id}).populate("products.product");   //here we get the cart from the database  a cart will created to a user id   //here we populate the products field which is in the cartModel with the product model
+        const cart = await Cart.findOne({orderBy: _id}).populate("products.product");      //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection    //here we get the cart from the database  //a cart will created to a user id   //here we populate the products field which is in the cartModel with the product model
         res.json(cart);
     } catch (error) {
         throw new Error(error,'Error while getting the cart(user.controller.js getUserCart)');
@@ -434,7 +434,20 @@ const emptyCart = asyncHandler(async (req, res) => {
     }
 });
 
+const applyCoupon = asyncHandler(async (req, res) => {    //http://localhost:3000/api/user/cart/apply-coupon in postman
+    const { coupon } = req.body;    //here we get the coupon from the req.body object
+    const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
+    validateMdbId(_id);    //here we validate the id
 
+    const validCoupon = await Coupon.findOne({name: coupon});    //here we get the coupon from the database
+    if(!validCoupon)throw new Error('Invalid coupon');    //here we check if the coupon exists
+
+    const user = await User.findById({_id});    //here we get the user from the database
+    let {cartTotal} = await Cart.findOne({orderBy: user._id}).populate("products.product");      //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection    //here we get the cart from the database   //here we populate the products field which is in the cartModel with the product model
+    let totalAfterDiscount = (cartTotal - (cartTotal * validCoupon.discount) / 100).toFixed(2);    //here we calculate the totalAfterDiscount   
+    await Cart.findOneAndUpdate({orderBy: user._id},{totalAfterDiscount: totalAfterDiscount},{new: true});    //here we update the totalAfterDiscount in the database
+    res.json(totalAfterDiscount);
+});
 
 export {
     createUser,
@@ -456,4 +469,5 @@ export {
     userCart,
     getUserCart,
     emptyCart,
+    applyCoupon,
 };

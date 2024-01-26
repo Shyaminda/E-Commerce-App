@@ -1,5 +1,5 @@
 import express from 'express';
-import {adminLogin, blockUser, createUser,deleteAUser,emptyCart,forgotPasswordToken,getAUser,getAllUsers,getUserCart,getWishList,handleRefreshToken,logOut,login, resetPassword, saveAddress, unBlockUser, updateAUser, updatePassword, userCart} from '../controllers/user.controller.js';
+import {adminLogin, applyCoupon, blockUser, createUser,deleteAUser,emptyCart,forgotPasswordToken,getAUser,getAllUsers,getUserCart,getWishList,handleRefreshToken,logOut,login, resetPassword, saveAddress, unBlockUser, updateAUser, updatePassword, userCart} from '../controllers/user.controller.js';
 import {authMiddleware,isAdmin} from '../middleware/authMiddleware.js';
 
 const authRouter = express.Router();
@@ -12,6 +12,7 @@ authRouter.put("/update-password",authMiddleware,updatePassword);
 authRouter.post('/login',login);
 authRouter.post('/admin-login',adminLogin);
 authRouter.post('/cart',authMiddleware,userCart);
+authRouter.post('/cart/apply-coupon',authMiddleware,applyCoupon);
 authRouter.get('/all-users',getAllUsers);
 authRouter.get('/refresh',handleRefreshToken);  //here we get the refresh token,the place where the handleRefreshToken placed is important
 authRouter.get('/logout',logOut);
@@ -30,3 +31,5 @@ authRouter.put('/unBlock-user/:id',authMiddleware,isAdmin,unBlockUser);      //u
 
 
 export default authRouter;
+
+//without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
