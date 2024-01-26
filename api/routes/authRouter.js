@@ -1,5 +1,5 @@
 import express from 'express';
-import {adminLogin, blockUser, createUser,deleteAUser,forgotPasswordToken,getAUser,getAllUsers,getWishList,handleRefreshToken,logOut,login, resetPassword, saveAddress, unBlockUser, updateAUser, updatePassword, userCart} from '../controllers/user.controller.js';
+import {adminLogin, blockUser, createUser,deleteAUser,emptyCart,forgotPasswordToken,getAUser,getAllUsers,getUserCart,getWishList,handleRefreshToken,logOut,login, resetPassword, saveAddress, unBlockUser, updateAUser, updatePassword, userCart} from '../controllers/user.controller.js';
 import {authMiddleware,isAdmin} from '../middleware/authMiddleware.js';
 
 const authRouter = express.Router();
@@ -16,8 +16,10 @@ authRouter.get('/all-users',getAllUsers);
 authRouter.get('/refresh',handleRefreshToken);  //here we get the refresh token,the place where the handleRefreshToken placed is important
 authRouter.get('/logout',logOut);
 authRouter.get('/wishlist',authMiddleware,getWishList);
+authRouter.get('/cart',authMiddleware,getUserCart);
 
 authRouter.get('/:id',authMiddleware,isAdmin,getAUser);
+authRouter.delete('/empty-cart',authMiddleware,emptyCart);
 authRouter.delete('/:id',deleteAUser);
 
 authRouter.put('/edit-user',authMiddleware,updateAUser);

@@ -9,6 +9,7 @@ import crypto from 'crypto';
 import Cart from '../models/cartModel.js';
 import Order from '../models/orderModel.js';
 import Product from '../models/productModel.js';
+import Coupon from '../models/couponModel.js';
 
 const createUser = asyncHandler (async (req, res) => {        //here we use the asyncHandler middleware to handle asynchronous operations within the route handler. This middleware helps to avoid repetitive try-catch blocks for error handling.
     const email = req.body.email;
@@ -355,7 +356,7 @@ const userCart = asyncHandler(async (req, res) => {
         }
         for(let i=0;i<cart.length;i++){    //here we loop through the cart
             const product = {};    //here we create an empty object
-            product.product = cart[i]._id;    //here we get the product id from the cart   //here cart[i] means the first item in the array
+            product.product = cart[i]._id;    //here we get the product id from the cart   //here cart[i] means the first item in the array   //_id is passed from cartModel in product field which has the link to product db
             product.quantity = cart[i].quantity;    //here we get the quantity from the cart
             product.color = cart[i].color;    //here we get the color from the cart
             
@@ -406,7 +407,33 @@ const userCart = asyncHandler(async (req, res) => {
         throw new Error(error,'Error while getting the cart(user.controller.js userCart)');
     }
 
+});
+
+const getUserCart = asyncHandler(async (req, res) => {     //here we get the cart of a user
+    const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
+    validateMdbId(_id);    //here we validate the id
+
+    try {
+        const cart = await Cart.findOne({orderBy: _id}).populate("products.product");   //here we get the cart from the database  a cart will created to a user id   //here we populate the products field which is in the cartModel with the product model
+        res.json(cart);
+    } catch (error) {
+        throw new Error(error,'Error while getting the cart(user.controller.js getUserCart)');
+    }
 });      
+
+const emptyCart = asyncHandler(async (req, res) => {
+    const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
+    validateMdbId(_id);    //here we validate the id
+
+    try {
+        const user = await User.findById({_id});    //here we get the user from the database
+        const cart = await Cart.findOneAndDelete({orderBy: user._id});    //here we delete the cart from the database
+        res.json(cart);
+    } catch (error) {
+        throw new Error(error,'Error while deleting the cart(user.controller.js emptyCart)');
+    }
+});
+
 
 
 export {
@@ -427,4 +454,6 @@ export {
     getWishList,
     saveAddress,
     userCart,
+    getUserCart,
+    emptyCart,
 };
