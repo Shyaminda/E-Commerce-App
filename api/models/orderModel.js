@@ -35,8 +35,14 @@ const orderSchema = new mongoose.Schema({
     // },
     orderStatus:{
         type: String,
-        enum: ["ordered", "packed", "shipped", "delivered"],
-        default: "ordered",
+        enum: [
+        "Not Processed",
+        "Cash on Delivery",
+        "Processing",
+        "Dispatched",
+        "Cancelled",
+        "Delivered",],
+        default: "Not Processed",
     },
 
     // orderAmount: {
