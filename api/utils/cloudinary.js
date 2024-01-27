@@ -23,4 +23,21 @@ const cloudinaryUploadImg = async (fileToUploads) => {
     });
 };
 
-export default cloudinaryUploadImg;
+const cloudinaryDeleteImg = async (fileToDelete) => {
+    return new Promise((resolve) => {
+        cloudinary.uploader.destroy(fileToDelete, (result) => {
+        resolve(
+            {
+            url: result.secure_url,    // url of the uploaded image
+            asset_id: result.asset_id,   // public id of the uploaded image
+            public_id: result.public_id,   // public id of the uploaded image
+            },
+            {
+            resource_type: "auto",
+            }
+        );
+        });
+    });
+};
+
+export {cloudinaryUploadImg, cloudinaryDeleteImg};

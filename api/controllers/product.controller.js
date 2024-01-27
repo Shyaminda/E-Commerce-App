@@ -2,8 +2,7 @@ import asyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
 import slugify from 'slugify';
 import User from '../models/userModel.js';
-import validateMdbId from '../utils/validateMdbId.js';
-import cloudinaryUploadImg from '../utils/cloudinary.js';
+import { cloudinaryUploadImg,cloudinaryDeleteImg } from '../utils/cloudinary.js ';
 import fs from 'fs';
 
 const createProduct = asyncHandler(async (req, res) => {
@@ -173,8 +172,8 @@ const rating = asyncHandler(async (req, res) => {       //http://localhost:3000/
 });
 
 const uploadImages = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    validateMdbId(id);
+    // const { id } = req.params;        //changes made in second tutorial
+    // validateMdbId(id);
     try {
         const uploader = (path) => cloudinaryUploadImg(path, 'images');    // 'images' is the folder name in cloudinary and path is the path of the image
         const urls = [];    // array to store the image urls
@@ -187,17 +186,32 @@ const uploadImages = asyncHandler(async (req, res) => {
             urls.push(newPath);   // push the new path to the urls array
             //fs.unlinkSync(path);    // delete the file from the local storage  //commented because the windows doesn't allow vscode to delete files through code
         }
-        const findProduct = await Product.findByIdAndUpdate(id,{       // find the product by id
-            image: urls.map((file) => {return file}),   // update the images array with the new urls //here image field name should be as same as in the product model
-        },{ new: true });
-        res.json(findProduct);  
+        // const findProduct = await Product.findByIdAndUpdate(id,{       // find the product by id
+        //     image: urls.map((file) => {return file}),   // update the images array with the new urls //here image field name should be as same as in the product model
+        // },{ new: true });
+        // res.json(findProduct);   //changes made in second tutorial
+
+        const images = urls.map((file) => {
+            return file
+        });
+        res.json(images);      //changes made in second tutorial
 
     } catch (error) {
         throw new Error(error, 'Product image uploading failed(uploadImages product.controller.js)');
     }
 });
 
-export { createProduct, getProduct, getAllProducts, updateProduct, deleteProduct, addToWishList, rating, uploadImages};
+const deleteImages = asyncHandler(async (req, res) => {    //http://localhost:3000/api/product/delete-image/puedw5yobsv3ykmx8p82 in postman
+    const { id } = req.params;   // get the product id from the req.params
+    try {
+        const deleted = await cloudinaryDeleteImg(id,"images");   // 'images' is the folder name in cloudinary and path is the path of the image  // delete the image from cloudinary
+        res.json({message:"Image deleted successfully"});
+    } catch (error) {
+        throw new Error(error, 'Product image deleting failed(deleteImages product.controller.js)');
+    }
+});
+
+export { createProduct, getProduct, getAllProducts, updateProduct, deleteProduct, addToWishList, rating, uploadImages, deleteImages};
 
 
 //for better query understanding watch the tutorial https://www.youtube.com/watch?v=S6Yd5cPtXr4&list=PL0g02APOH8okXhOQLOLcB_nifs1U41im5&index=6&t=513s at 3.05.22

@@ -11,6 +11,9 @@ import productCategoryRouter from './routes/productCategoryRoute.js';
 import blogCategoryRouter from './routes/blogCategoryRouter.js';
 import brandRouter from './routes/brandRouter.js';
 import couponRouter from './routes/couponRoute.js';
+import ColorRouter from './routes/colorRoute.js';
+import Inquiry from './models/inquiryModel.js';
+import InquiryRouter from './routes/inquiryRoute.js';
 
 const app = express();
 app.use(express.json());
@@ -30,6 +33,8 @@ app.use("/api/product-category",productCategoryRouter);
 app.use("/api/blog-category",blogCategoryRouter);
 app.use("/api/brand",brandRouter);
 app.use("/api/coupon",couponRouter);
+app.use("/api/color",ColorRouter);
+app.use("/api/inquiry",InquiryRouter);
 
 app.use(notFound);
 app.use(errorHandler);

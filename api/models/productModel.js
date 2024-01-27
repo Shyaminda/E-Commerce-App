@@ -26,12 +26,6 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    color: {
-        // type: String,
-        // enum: ["Apple", "Samsung", "Acer", "Razer",],
-        type: String,
-        required: true,
-    },
     price: {
         type: Number,
         //required: true,
@@ -56,11 +50,8 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    color: {
-        type: String,
-        //enum: ["white", "black", "blue", "red", "green", "yellow", "grey", "orange", "purple", "pink", "brown", "silver", "gold", "multi-color"],
-        required: true,
-    },
+    color: [],
+    tags: [],
     image: {
         type: Array,
     },
