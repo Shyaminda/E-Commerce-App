@@ -42,6 +42,10 @@ a {
   gap: 20px;
 }
 
+.gap-25{
+  gap: 25px;
+}
+
 /* header */
 .header-top-stripe {
   background-color: var(--color-131921);
@@ -90,4 +94,19 @@ a {
 .header-bottom .dropdown-item:hover{
   background-color: transparent;
   color: var(--color-febd69)!important;
+}
+
+/* footer */
+footer {
+  background-color: var(--color-232f3e);
+}
+
+footer:not(:first-child){
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+footer .input-group-text{
+  background-color: var(--color-232f3e);
+  color: white;
+  padding: 8px 17px;
 }
