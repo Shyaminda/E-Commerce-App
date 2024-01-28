@@ -9,3 +9,5 @@ root.render(
   <App />
 );
 
+
+//"start": "react-scripts start", in json script
