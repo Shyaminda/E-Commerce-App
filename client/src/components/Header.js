@@ -56,19 +56,19 @@ const Header = () => {
                   <Link className="d-flex align-items-center gap-5 text-white">
                     <img src="images/compare.svg" alt="compare" />
                   </Link>
-                  <p className="mb-0">Compare <br />Products</p>
+                  <p className="mb-0 text-white">Compare <br />Products</p>
                 </div>
                 <div>
                 <Link className="d-flex align-items-center gap-5 text-white">
                     <img src="images/wishlist.svg" alt="wishlist" />
                 </Link>
-                <p className="mb-0">Wishlist</p>
+                <p className="mb-0 text-white">Wishlist</p>
                 </div>
                 <div>
                 <Link className="d-flex align-items-center gap-5 text-white">
                     <img src="images/user.svg" alt="login" />
                 </Link>
-                <p className="mb-0">Login <br />My Account</p>
+                <p className="mb-0 text-white">Login <br />My Account</p>
                 </div>
                 <div>
                 <Link className="d-flex align-items-center gap-5 text-white">
@@ -106,7 +106,7 @@ const Header = () => {
                 <div className="menu-links">
                   <div className="d-flex align-items-center gap-15">
                     <NavLink to="/">Home</NavLink>
-                    <NavLink to="/">Our Store</NavLink>
+                    <NavLink to="/store">Our Store</NavLink>
                     <NavLink to="/">Blogs</NavLink>
                     <NavLink to="/contact">Contact</NavLink>
                   </div>
