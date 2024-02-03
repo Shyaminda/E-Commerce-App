@@ -630,6 +630,13 @@ footer .input-group-text{
   color: var(--color-777777);
 }
 
+.auth-card p{
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-777777);
+  margin-bottom: 20px;
+}
+
 .auth-card .form-control{
   height: 50px;
   background-color: var(--color-f5f5f7);
