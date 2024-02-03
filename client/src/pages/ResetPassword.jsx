@@ -1,31 +1,28 @@
 import React from 'react';
 import Meta from '../components/Meta';
 import BreadCrumbs from '../components/BreadCrumbs';
-import { Link } from 'react-router-dom';
 
-const SignIn = () => {
+const ResetPassword = () => {
     return (
     <>
-        <Meta title="signIn" />
-        <BreadCrumbs title="signIn" />
-        <div className="login-wrapper py-5 home-wrapper-2">
+        <Meta title="Reset Password" />
+        <BreadCrumbs title="Reset Password" />
+        <div className="signIn-wrapper py-5 home-wrapper-2">
             <div className="container-lg">
                 <div className="row">
                     <div className="col-12">
                         <div className="auth-card">
-                            <h3 className='text-center mb-3'>Sign In</h3>
+                            <h3 className='text-center mb-3'>Reset Password</h3>
                             <form className='d-flex flex-column gap-20'>
                                 <div>
-                                    <input type="email" name='email' placeholder="Email" className='form-control' />
+                                    <input type="password" name='password' placeholder="Password" className='form-control' />
                                 </div>
                                 <div>
-                                    <input type="password" name='password' placeholder="Password" className='form-control mt-1' />
+                                    <input type="password" name='confirm password' placeholder="Confirm Password" className='form-control' />
                                 </div>
                                 <div>
-                                    <Link to="/forgot-password">Forgot Password?</Link>
                                     <div className='d-flex justify-content-center mt-3 gap-15 align-items-center'>
-                                        <button type='submit' className='button signIn'>Sign In</button>
-                                        <Link to="/sign-up" className='button signup'>Sign Up</Link>
+                                        <button type='submit' className='button signIn'>Change Password</button>
                                     </div>
                                 </div>
                             </form>
@@ -38,4 +35,4 @@ const SignIn = () => {
     )
 }
 
-export default SignIn;
+export default ResetPassword;
