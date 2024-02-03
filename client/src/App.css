@@ -534,3 +534,37 @@ footer .input-group-text{
   top: 20%;
 } */
 
+/* contact page */
+.contact-inner-wrapper{
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: white;
+  gap: 15px;
+}
+
+.contact-inner-wrapper>div{
+  width: 48%;
+}
+
+.contact-title{
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--color-1c1c1b);
+  text-align: left;
+  line-height: 35px;
+}
+
+.contact-inner-wrapper form .form-control{
+  background-color: var(--color-f5f5f7);
+  border-radius: 10px;
+  border-color: transparent; 
+}
+
+.contact-inner-wrapper ul{
+  list-style: none;
+
+}
+
+.contact-inner-wrapper address,.contact-inner-wrapper a,.contact-inner-wrapper p{
+  color: var(--color-777777);
+}
