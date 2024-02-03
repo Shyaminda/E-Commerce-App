@@ -53,25 +53,25 @@ const Header = () => {
             <div className="col-5">
               <div className="header-upper-links d-flex align-items justify-content-between">
                 <div>
-                  <Link className="d-flex align-items-center gap-5 text-white">
+                  <Link to="/compare-products" className="d-flex align-items-center gap-5 text-white">
                     <img src="images/compare.svg" alt="compare" />
                   </Link>
                   <p className="mb-0 text-white">Compare <br />Products</p>
                 </div>
                 <div>
-                <Link className="d-flex align-items-center gap-5 text-white">
+                <Link to="/wishlist" className="d-flex align-items-center gap-5 text-white">
                     <img src="images/wishlist.svg" alt="wishlist" />
                 </Link>
                 <p className="mb-0 text-white">Wishlist</p>
                 </div>
                 <div>
-                <Link className="d-flex align-items-center gap-5 text-white">
+                <Link to="/login" className="d-flex align-items-center gap-5 text-white">
                     <img src="images/user.svg" alt="login" />
                 </Link>
                 <p className="mb-0 text-white">Login <br />My Account</p>
                 </div>
                 <div>
-                <Link className="d-flex align-items-center gap-5 text-white">
+                <Link to="/cart" className="d-flex align-items-center gap-5 text-white">
                     <img src="images/cart.svg" alt="cart" />
                 </Link>
                 <div className="d-flex flex-column">
