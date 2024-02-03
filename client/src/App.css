@@ -682,3 +682,10 @@ footer .input-group-text{
 .signIn{
   font-size: 14px;
 }
+
+/* policy */
+.policy{
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+}
