@@ -65,7 +65,7 @@ const Header = () => {
                 <p className="mb-0 text-white">Wishlist</p>
                 </div>
                 <div>
-                <Link to="/login" className="d-flex align-items-center gap-5 text-white">
+                <Link to="/signIn" className="d-flex align-items-center gap-5 text-white">
                     <img src="images/user.svg" alt="login" />
                 </Link>
                 <p className="mb-0 text-white">Login <br />My Account</p>
