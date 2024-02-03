@@ -40,7 +40,7 @@ const Header = () => {
               <div className="input-group">
                 <input
                   type="text"
-                  class="form-control py-2"
+                  className="form-control py-2"
                   placeholder="Search products"
                   aria-label="Search products"
                   aria-describedby="basic-addon2"
