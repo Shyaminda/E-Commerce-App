@@ -8,7 +8,7 @@ const SignUp = () => {
         <Meta title="Sign Up" />
         <BreadCrumbs title="Sign Up" />
         <div className="signIn-wrapper py-5 home-wrapper-2">
-            <div className="container-lg">
+            <div className="container-xxl">
                 <div className="row">
                     <div className="col-12">
                         <div className="auth-card">

@@ -9,7 +9,7 @@ function Home() {
     return (
         <div>
             <div className='home-wrapper-1 py-5'>
-                <div className='container-lg'>
+                <div className='container-xxl'>
                     <div className='row'>
                         <div className='col-6'>
                             <div className='main-banner position-relative p-1'>
@@ -63,7 +63,7 @@ function Home() {
             </div>
 
             <div className='home-wrapper-2 py-5'>
-                <div className='container-lg'>
+                <div className='container-xxl'>
                     <div className='row'>
                         <div className='col-12'>
                             <div className='services d-flex align-items-center justify-content-between'>
@@ -109,7 +109,7 @@ function Home() {
             </div>
 
             <div className='home-wrapper-2 py-5'>
-                <div className='container-lg'>
+                <div className='container-xxl'>
                     <div className='row'>
                         <div className="col-12">
                             <div className="categories d-flex justify-content align-items-center flex-wrap">
@@ -176,7 +176,7 @@ function Home() {
             </div>
 
             <div className="featured-wrapper py-5 home-wrapper-2">
-                <div className="container-lg">
+                <div className="container-xxl">
                     <div className="row">
                         <div className="col-12">
                             <h3 className="section-heading">Feature Collections</h3>
@@ -190,7 +190,7 @@ function Home() {
             </div>
 
             <div className='special-wrapper py-5 home-wrapper-2'>   
-                <div className="container-lg">
+                <div className="container-xxl">
                     <div className='row'>
                         <div className="col-12">
                             <h4 className="section-heading">Special Products</h4>
@@ -206,7 +206,7 @@ function Home() {
             </div>
 
             <div className='famous-wrapper py-5 home-wrapper-2'>
-                <div className="container-lg">
+                <div className="container-xxl">
                     <div className="row">
                         <div className="col-3">
                             <div className="famous-card position-relative" >
@@ -253,7 +253,7 @@ function Home() {
             </div>
 
             <div className="popular-wrapper py-5 home-wrapper-2">
-                <div className="container-lg">
+                <div className="container-xxl">
                     <div className="row">
                         <div className="col-12">
                             <h3 className="section-heading">Our Popular Products</h3>
@@ -269,7 +269,7 @@ function Home() {
             </div>
 
             <div className="marquee-wrapper py-5">
-                <div className="container-lg">
+                <div className="container-xxl">
                     <div className="row">
                         <div className="col-12">
                             <div className="marquee-inner-wrapper card-wrapper">
@@ -306,7 +306,7 @@ function Home() {
             </div>
 
             <div className="blog-wrapper py-5 home-wrapper-2">
-                <div className="container-lg">
+                <div className="container-xxl">
                     <div className="row">
                         <div className="col-12">
                             <h3 className="section-heading">

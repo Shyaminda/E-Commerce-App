@@ -10,7 +10,7 @@ const BlogPage = () => {
         <Meta title="Blog Page" />
         <BreadCrumbs title="Blog Page" />
         <div className="blog-wrapper home-wrapper-2 py-5">
-            <div className="container-lg">
+            <div className="container-xxl">
                 <div className="row">
                     <div className="col-12">
                         <div className="blogPage-card">

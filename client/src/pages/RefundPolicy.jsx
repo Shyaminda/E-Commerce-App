@@ -8,7 +8,7 @@ const RefundPolicy = () => {
         <Meta title="Refund policy" />
         <BreadCrumbs title="Refund policy" />
         <section className="policy-wrapper py-5 home-wrapper-2">
-            <div className="container-lg">
+            <div className="container-xxl">
                 <div className="row">
                     <div className="col-12">
                         <div className="policy">

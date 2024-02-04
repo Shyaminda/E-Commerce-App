@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <div>
       <header className="header-top-stripe pt-2">
-        <div className="container-lg">    {/*can change the screen size*/}
+        <div className="container-xxl">    {/*can change the screen size*/}
           <div className="row">
             <div className="col-6 mb-0">
               <p className="text-white">
@@ -27,7 +27,7 @@ const Header = () => {
       </header>
 
       <header className="header-upper py-3">
-        <div className="container-lg">
+        <div className="container-xxl">
           <div className="row items-center">
             <div className="col-2">
               <h2>
@@ -46,7 +46,7 @@ const Header = () => {
                   aria-describedby="basic-addon2"
                 />
                 <span className="input-group-text p-3" id="basic-addon2">
-                  <BsSearch className="fs-7" />    {/*fs means font size */}
+                  <BsSearch className="fs-6" />    {/*fs means font size */}
                 </span>
               </div>
             </div>
@@ -86,7 +86,7 @@ const Header = () => {
       </header>
 
       <header className="header-bottom py-3">
-        <div className="container-lg">
+        <div className="container-xxl">
           <div className="row">
             <div className="col-12">
               <div className="menu-bottom d-flex align-items-center gap-20">

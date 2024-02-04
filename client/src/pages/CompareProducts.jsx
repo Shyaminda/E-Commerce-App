@@ -9,7 +9,7 @@ const CompareProducts = () => {
         <Meta title="Compare Products" />
         <BreadCrumbs title="Compare Products" />
         <div className="compare-products-wrapper py-5 home-wrapper-2">
-            <div className="container-lg">
+            <div className="container-xxl">
                 <div className="row">
                     <div className="col-3">
                         <div className="compare-product-card position-relative">

@@ -8,7 +8,7 @@ const ResetPassword = () => {
         <Meta title="Reset Password" />
         <BreadCrumbs title="Reset Password" />
         <div className="signIn-wrapper py-5 home-wrapper-2">
-            <div className="container-lg">
+            <div className="container-xxl">
                 <div className="row">
                     <div className="col-12">
                         <div className="auth-card">
