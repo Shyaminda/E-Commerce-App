@@ -833,3 +833,39 @@ footer .input-group-text{
   font-size: 13px;
   color: var(--color-777777);
 }
+
+/* cart */
+.cart-header, .cart-data{
+  border-color: 1px solid #eaeaea;
+}
+
+.cart-header h4{
+  font-size: 13px;
+  color: var(--color-777777);
+}
+
+.cart-col-1{
+  width: 40%;
+}
+
+.cart-col-1 p{
+  color: var(--color-777777);
+  font-size: 14px;
+}
+
+.cart-col-2{
+  width: 10%;
+}
+
+.cart-col-3{
+  width: 15%;
+}
+
+.cart-col-4{
+  width: 15%;
+}
+
+.cart-data h6.price{
+  font-size: 14px;
+  color: var(--color-1c1c1b);
+}
