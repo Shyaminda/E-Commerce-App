@@ -2,6 +2,7 @@ import React from 'react';
 import Meta from '../components/Meta';
 import BreadCrumbs from '../components/BreadCrumbs';
 import Container from '../components/Container';
+import CustomInput from '../components/CustomInput';
 
 const SignUp = () => {
     return (
@@ -14,21 +15,11 @@ const SignUp = () => {
                     <div className="auth-card">
                         <h3 className='text-center mb-3'>Sign Up</h3>
                         <form className='d-flex flex-column gap-20'>
-                            <div>
-                                <input type="text" name='name' placeholder="Name" className='form-control' />
-                            </div>
-                            <div>
-                                <input type="text" name='lname' placeholder="Last Name" className='form-control' />
-                            </div>
-                            <div>
-                                <input type="email" name='email' placeholder="Email" className='form-control' />
-                            </div>
-                            <div>
-                                <input type="tel" name='Telephone' placeholder="Mobile" className='form-control' />
-                            </div>
-                            <div>
-                                <input type="password" name='password' placeholder="Password" className='form-control mt-1' />
-                            </div>
+                            <CustomInput type="text" name='name' placeholder="Name" className='form-control' />
+                            <CustomInput type="text" name='lname' placeholder="Last Name" className='form-control' />
+                            <CustomInput type="email" name='email' placeholder="Email" className='form-control' />
+                            <CustomInput type="tel" name='Telephone' placeholder="Mobile" className='form-control' />
+                            <CustomInput type="password" name='password' placeholder="Password" className='form-control mt-1' />
                             <div>
                                 <div className='d-flex justify-content-center mt-3 gap-15 align-items-center'>
                                     <button type='submit' className='button signIn'>Sign Up</button>
