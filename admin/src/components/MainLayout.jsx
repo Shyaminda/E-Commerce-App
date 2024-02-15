@@ -1,41 +1,148 @@
 import React, { useState } from 'react';
 import { MenuFoldOutlined,MenuUnfoldOutlined,UploadOutlined,UserOutlined,VideoCameraOutlined,
 } from '@ant-design/icons';
+import { MdDashboard } from "react-icons/md";
+import { IoIosCart } from "react-icons/io";
+import { CiUser } from "react-icons/ci";
+import { TbBrandHeadlessui } from "react-icons/tb";
+import { MdOutlineCategory } from "react-icons/md";
+import { BiSolidColorFill } from "react-icons/bi";
+import { MdOutlineBorderColor } from "react-icons/md";
+import { TbPhoneCall } from "react-icons/tb";
+import { FaBlogger } from "react-icons/fa";
+import { GrBlog } from "react-icons/gr";
+import { ImBlog } from "react-icons/im";
+import { IoMdNotifications } from "react-icons/io";
 import { Layout, Menu, Button, theme } from 'antd';
+import { Outlet, useNavigate } from 'react-router-dom';
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
+    const navigate = useNavigate();
     return (
     <div>
         <Layout>
             <Sider trigger={null} collapsible collapsed={collapsed}>
+                <div className='logo'>
+                    <h3 className='text-white text-center py-3 mb-0'>
+                        <span className='sm-logo'>P.</span>
+                        <span className='lg-logo'>Prime</span>
+                    </h3>
+                </div>
                 <div className="demo-logo-vertical" />
                     <Menu
                         theme="dark"
                         mode="inline"
-                        defaultSelectedKeys={['1']}
+                        defaultSelectedKeys={['']}
+                        onClick={({key})=>{
+                        if(key === "signout"){
+
+                        } else {
+                            navigate(key);
+                        }
+                        }}
                         items={[
                         {
-                            key: '1',
-                            icon: <UserOutlined />,
-                            label: 'nav 1',
+                            key: '',
+                            icon: <MdDashboard />,
+                            label: 'Dashboard',
                         },
                         {
-                            key: '2',
-                            icon: <VideoCameraOutlined />,
-                            label: 'nav 2',
+                            key: 'customers',
+                            icon: <CiUser />,
+                            label: 'Customers',
                         },
                         {
-                            key: '3',
-                            icon: <UploadOutlined />,
-                            label: 'nav 3',
+                            key: 'catalog',
+                            icon: <MdDashboard />,
+                            label: 'Catalog',
+                            children: [
+                                {
+                                    key: 'product',
+                                    icon: <IoIosCart />,
+                                    label: 'Add products',
+                                },
+                                {
+                                    key: 'product-list',
+                                    icon: <IoIosCart />,
+                                    label: 'Product Lists',
+                                },
+                                {
+                                    key: 'brand',
+                                    icon: <TbBrandHeadlessui />,
+                                    label: 'Brand',
+                                },
+                                {
+                                    key: 'brand-list',
+                                    icon: <TbBrandHeadlessui />,
+                                    label: 'Brand-List',
+                                },
+                                {
+                                    key: 'category',
+                                    icon: <MdOutlineCategory />,
+                                    label: 'Category',
+                                },
+                                {
+                                    key: 'category-list',
+                                    icon: <MdOutlineCategory />,
+                                    label: 'Category-List',
+                                },
+                                {
+                                    key: 'color',
+                                    icon: <BiSolidColorFill />,
+                                    label: 'Color',
+                                },
+                                {
+                                    key: 'color-list',
+                                    icon: <BiSolidColorFill />,
+                                    label: 'Color-List',
+                                }
+                            ],
+                        },
+                        {
+                            key: 'orders',
+                            icon: <MdOutlineBorderColor />,
+                            label: 'Orders',
+                        },
+                        {
+                            key: 'blog',
+                            icon: <FaBlogger />,
+                            label: 'Blogs',
+                            children: [
+                                {
+                                    key: 'add-blog',
+                                    icon: <GrBlog />,
+                                    label: 'Add Blog',
+                                },
+                                {
+                                    key: 'blog-list',
+                                    icon: <ImBlog />,
+                                    label: 'Blog List',
+                                },
+                                {
+                                    key: 'blog-category',
+                                    icon: <GrBlog />,
+                                    label: 'Add Blog Category',
+                                },
+                                {
+                                    key: 'blog-category-list',
+                                    icon: <ImBlog />,
+                                    label: 'Blog Category List',
+                                }
+                            ]
+                        },
+                        {
+                            key: 'inquiries',
+                            icon: <TbPhoneCall />,
+                            label: 'Inquiries',
                         },
                     ]}
                     />
             </Sider>
         <Layout>
             <Header
+                className="d-flex justify-content-between ps-1 pe-4"
                 style={{
                     padding: 0,
                 }}
@@ -51,6 +158,21 @@ const MainLayout = () => {
                 color: 'white',
                 }}
             />
+            <div className='d-flex gap-3 align-items-center'>
+                <div className='position-relative'>
+                    <IoMdNotifications className='fs-4 text-white' />
+                    <span className='badge bg-warning rounded-circle position-absolute px-1 text-secondary'>1</span>
+                </div>
+                <div className='d-flex gap-3 align-items-center'>
+                    <div>
+                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="profile" className="rounded-circle" style={{width: '32px', height: '32px'}} />
+                    </div>
+                    <div className=''>
+                        <h5 className='text-light mb-0'>chamika</h5>
+                        <p className='text-light mb-0'>chamika@gmail.com</p>
+                    </div>
+                </div>
+            </div>
             </Header>
             <Content
             style={{
@@ -59,7 +181,7 @@ const MainLayout = () => {
                 minHeight: 280,
             }}
             >
-            Content
+            <Outlet />  
             </Content>
         </Layout>
         </Layout>
