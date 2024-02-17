@@ -1,5 +1,7 @@
 import React from 'react';
 import { Table } from 'antd';
+// import { MdEditNote } from "react-icons/md";
+// import { MdOutlineDeleteOutline } from "react-icons/md";
 
 const columns = [
     {
@@ -32,7 +34,7 @@ for (let i = 0; i < 46; i++) {
 const ProductList = () => {
     return (
         <div>
-            <h3 className="mb-4">Products</h3>
+            <h3 className="mb-4 title">Products</h3>
             <div>
                 <Table
                     columns={columns} 
@@ -42,6 +44,8 @@ const ProductList = () => {
         </div>
     )
 }
+//<MdEditNote />
+//<MdOutlineDeleteOutline />
 
 export default ProductList;
 

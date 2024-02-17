@@ -14,6 +14,7 @@ import { ImBlog } from "react-icons/im";
 import { IoMdNotifications } from "react-icons/io";
 import { Layout, Menu, Button, theme } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
@@ -162,13 +163,37 @@ const MainLayout = () => {
                     <IoMdNotifications className='fs-4 text-white' />
                     <span className='badge bg-warning rounded-circle position-absolute px-1 text-secondary'>1</span>
                 </div>
-                <div className='d-flex gap-3 align-items-center'>
+                <div className='d-flex gap-3 align-items-center dropdown'>
                     <div>
                         <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="profile" className="rounded-circle" style={{width: '32px', height: '32px'}} />
                     </div>
-                    <div className=''>
+                    <div role="button"
+                        id="dropdownMenuLink"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
                         <h5 className='text-light mb-0'>chamika</h5>
                         <p className='text-light mb-0'>chamika@gmail.com</p>
+                    </div>
+                    <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li>
+                            <Link
+                                className="dropdown-item"
+                                style={{ height: "auto", lineHeight: "15px" }}
+                                to="/"
+                            >
+                            View Profile
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                className="dropdown-item"
+                                style={{ height: "auto", lineHeight: "15px" }}
+                                to="/"
+                            >
+                                SignOut
+                            </Link>
+                        </li>
                     </div>
                 </div>
             </div>
