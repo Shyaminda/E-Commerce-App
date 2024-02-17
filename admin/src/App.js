@@ -14,6 +14,12 @@ import ColorList from './pages/ColorList.jsx';
 import CategoryList from './pages/CategoryList.jsx';
 import BrandList from './pages/BrandList.jsx';
 import ProductList from './pages/ProductList.jsx';
+import AddBlog from './pages/AddBlog.jsx';
+import AddBlogCat from './pages/AddBlogCat.jsx';
+import AddColor from './pages/AddColor.jsx';
+import AddCategory from './pages/AddCategory.jsx';
+import AddBrand from './pages/AddBrand.jsx';
+import AddProduct from './pages/AddProduct.jsx';
 
 function App() {
   return (
@@ -26,13 +32,19 @@ function App() {
           <Route index element={<DashBoard />} />
           <Route path='inquiries' element={<Inquiries />} />              {/* the path should be same as the MainLayout key values */}
           <Route path='blog-list' element={<BlogList />} />               {/* the path should be same as the MainLayout key values */}
+          <Route path='add-blog' element={<AddBlog />} />                 {/* the path should be same as the MainLayout key values */}
           <Route path='blog-category-list' element={<BlogCatList />} />   {/* the path should be same as the MainLayout key values */}
+          <Route path='blog-category' element={<AddBlogCat />} />   {/* the path should be same as the MainLayout key values */}
           <Route path='orders' element={<Orders />} />                    {/* the path should be same as the MainLayout key values */}
           <Route path='customers' element={<Customers />} />              {/* the path should be same as the MainLayout key values */}
           <Route path='color-list' element={<ColorList />} />             {/* the path should be same as the MainLayout key values */}
+          <Route path='color' element={<AddColor />} />             {/* the path should be same as the MainLayout key values */}
           <Route path='category-list' element={<CategoryList />} />       {/* the path should be same as the MainLayout key values */}
+          <Route path='category' element={<AddCategory />} />       {/* the path should be same as the MainLayout key values */}
           <Route path='brand-list' element={<BrandList />} />             {/* the path should be same as the MainLayout key values */}
+          <Route path='brand' element={<AddBrand />} />             {/* the path should be same as the MainLayout key values */}
           <Route path='product-list' element={<ProductList />} />         {/* the path should be same as the MainLayout key values */}
+          <Route path='product' element={<AddProduct />} />         {/* the path should be same as the MainLayout key values */}
         </Route>
       </Routes>
     </BrowserRouter>
