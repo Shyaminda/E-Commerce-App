@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { MenuFoldOutlined,MenuUnfoldOutlined,UploadOutlined,UserOutlined,VideoCameraOutlined,
-} from '@ant-design/icons';
+import { MenuFoldOutlined,MenuUnfoldOutlined } from '@ant-design/icons';
 import { MdDashboard } from "react-icons/md";
 import { IoIosCart } from "react-icons/io";
 import { CiUser } from "react-icons/ci";
@@ -39,7 +38,7 @@ const MainLayout = () => {
                         if(key === "signout"){
 
                         } else {
-                            navigate(key);
+                            navigate(key);   // This is how we navigate to different pages with in the dashboard, in link with same address as BlogList, Inquiries, etc.
                         }
                         }}
                         items={[
@@ -76,7 +75,7 @@ const MainLayout = () => {
                                 {
                                     key: 'brand-list',
                                     icon: <TbBrandHeadlessui />,
-                                    label: 'Brand-List',
+                                    label: 'Brand List',
                                 },
                                 {
                                     key: 'category',
@@ -86,7 +85,7 @@ const MainLayout = () => {
                                 {
                                     key: 'category-list',
                                     icon: <MdOutlineCategory />,
-                                    label: 'Category-List',
+                                    label: 'Category List',
                                 },
                                 {
                                     key: 'color',
@@ -96,7 +95,7 @@ const MainLayout = () => {
                                 {
                                     key: 'color-list',
                                     icon: <BiSolidColorFill />,
-                                    label: 'Color-List',
+                                    label: 'Color List',
                                 }
                             ],
                         },

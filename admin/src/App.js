@@ -5,6 +5,15 @@ import ResetPassword from "./pages/ResetPassword.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import MainLayout from "./components/MainLayout.jsx";
 import DashBoard from "./pages/Dashboard.jsx";
+import Inquiries from './pages/Inquiries.jsx';
+import BlogList from './pages/BlogList.jsx';
+import BlogCatList from './pages/BlogCatList.jsx';
+import Orders from './pages/Orders.jsx';
+import Customers from './Customer.jsx';
+import ColorList from './ColorList.jsx';
+import CategoryList from './CategoryList.jsx';
+import BrandList from './BrandList.jsx';
+import ProductList from './ProductList.jsx';
 
 function App() {
   return (
@@ -15,6 +24,15 @@ function App() {
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/admin' element={<MainLayout />}>
           <Route index element={<DashBoard />} />
+          <Route path='inquiries' element={<Inquiries />} />              {/* the path should be same as the MainLayout key values */}
+          <Route path='blog-list' element={<BlogList />} />               {/* the path should be same as the MainLayout key values */}
+          <Route path='blog-category-list' element={<BlogCatList />} />   {/* the path should be same as the MainLayout key values */}
+          <Route path='orders' element={<Orders />} />                    {/* the path should be same as the MainLayout key values */}
+          <Route path='customers' element={<Customers />} />              {/* the path should be same as the MainLayout key values */}
+          <Route path='color-list' element={<ColorList />} />             {/* the path should be same as the MainLayout key values */}
+          <Route path='category-list' element={<CategoryList />} />       {/* the path should be same as the MainLayout key values */}
+          <Route path='brand-list' element={<BrandList />} />             {/* the path should be same as the MainLayout key values */}
+          <Route path='product-list' element={<ProductList />} />         {/* the path should be same as the MainLayout key values */}
         </Route>
       </Routes>
     </BrowserRouter>
