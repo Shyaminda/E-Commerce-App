@@ -9,11 +9,11 @@ import Inquiries from './pages/Inquiries.jsx';
 import BlogList from './pages/BlogList.jsx';
 import BlogCatList from './pages/BlogCatList.jsx';
 import Orders from './pages/Orders.jsx';
-import Customers from './Customer.jsx';
-import ColorList from './ColorList.jsx';
-import CategoryList from './CategoryList.jsx';
-import BrandList from './BrandList.jsx';
-import ProductList from './ProductList.jsx';
+import Customers from './pages/Customer.jsx';
+import ColorList from './pages/ColorList.jsx';
+import CategoryList from './pages/CategoryList.jsx';
+import BrandList from './pages/BrandList.jsx';
+import ProductList from './pages/ProductList.jsx';
 
 function App() {
   return (
