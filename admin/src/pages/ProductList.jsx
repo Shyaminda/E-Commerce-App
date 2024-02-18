@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table } from 'antd';
-// import { MdEditNote } from "react-icons/md";
-// import { MdOutlineDeleteOutline } from "react-icons/md";
+import { useDispatch, useSelector } from 'react-redux';
+import { getProducts } from '../feature/product/productSlice';
+import { Link } from 'react-router-dom';
+import { MdEditNote } from "react-icons/md";
+import { MdOutlineDeleteOutline } from "react-icons/md";
 
 const columns = [
     {
@@ -9,29 +12,60 @@ const columns = [
         dataIndex: 'key',
     },
     {
-        title: 'Name',
-        dataIndex: 'name',
+        title: 'Title',
+        dataIndex: 'title',
+        sorter: (a, b) => a.title.length - b.title.length,    //sorting the name took from ant design
     },
     {
-        title: 'Product',
-        dataIndex: 'product',
+        title: 'Brand',
+        dataIndex: 'brand',
+        sorter: (a, b) => a.brand.length - b.brand.length,    //sorting the name took from ant design
     },
     {
-        title: 'Status',
-        dataIndex: 'status',
+        title: 'Category',
+        dataIndex: 'category',
+        sorter: (a, b) => a.category.length - b.category.length,    //sorting the name took from ant design
     },
+    {
+        title: 'Color',
+        dataIndex: 'color',
+    },
+    {
+        title: 'Price',
+        dataIndex: 'price',
+        sorter: (a, b) => a.price - b.price,    //sorting the name took from ant design
+    },
+    {
+        title: 'Action',
+        dataIndex: 'action',
+    },
+    
 ];
-const data1 = [];
-for (let i = 0; i < 46; i++) {
-    data1.push({
-        key: i,
-        name: `Edward King ${i}`,
-        product: 32,
-        status: `London, Park Lane no. ${i}`,
-    });
-}
 
 const ProductList = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getProducts());
+    }, [dispatch]);
+
+    const productState = useSelector((state) => state.product.products);    //"products" is the array in the productSlice.js
+    const data1 = [];
+    for (let i = 0; i < productState.length; i++) {
+        data1.push({
+            key: i+1,
+            title: productState[i].title,
+            brand: productState[i].brand,
+            category: productState[i].category,
+            color: productState[i].color,
+            price: `${productState[i].price}`,
+            action:(<>
+                <Link to="" className='fs-5 text-danger'><MdEditNote /></Link> 
+                <Link to="" className='fs-5 ms-3 text-danger'><MdOutlineDeleteOutline /></Link>   { /* ms stands for "margin start" */ }
+            </>),
+        });
+    }
+
     return (
         <div>
             <h3 className="mb-4 title">Products</h3>
@@ -44,8 +78,7 @@ const ProductList = () => {
         </div>
     )
 }
-//<MdEditNote />
-//<MdOutlineDeleteOutline />
+
 
 export default ProductList;
 
