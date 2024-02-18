@@ -20,7 +20,7 @@ const initialState = {
 
 export const login = createAsyncThunk("auth/admin-login", async (user,thunkAPI) => {
     try{
-        return await authService.login(user);
+        return await authService.login(user);      //"user" same as the authService login function. not certain 100% 
     } catch (error) {
         return thunkAPI.rejectWithValue(error);
     }
@@ -44,7 +44,17 @@ export const authSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;
-                state.user = null;
+                state.user = action.payload;
             })
     },
 });
+
+
+// createAsyncThunk is used to define an asynchronous action creator named login. 
+//This action creator dispatches an asynchronous operation, which, in this case, is the login process.
+//Inside the createAsyncThunk, the asynchronous function (user, thunkAPI) => { ... } is called 
+//when the login action is dispatched. This function calls authService.login(user) to perform the actual login operation.
+
+// In summary, the first code snippet provides the implementation for the login logic, 
+//while the second code snippet integrates this logic into the Redux store using Redux 
+//Toolkit's createAsyncThunk function, allowing for easier management of asynchronous actions and their state within a Redux application.

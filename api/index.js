@@ -14,8 +14,10 @@ import couponRouter from './routes/couponRoute.js';
 import ColorRouter from './routes/colorRoute.js';
 import Inquiry from './models/inquiryModel.js';
 import InquiryRouter from './routes/inquiryRoute.js';
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
