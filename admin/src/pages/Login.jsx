@@ -9,8 +9,13 @@ const Login = () => {
             <h3 className='text-center title'>Login</h3>
             <p className='text-center'>Login to your account to continue.</p>
                 <form>
+<<<<<<< HEAD
                     <CustomInput type="text" name="email" value="" label="email" id="email" />
                     <CustomInput type="password" name="password" value="" label="password" id="pass" />
+=======
+                    <CustomInput type="text" label="email" id="email" />
+                    <CustomInput type="password" label="password" id="pass" />
+>>>>>>> ad988b7bcb74db410a0ca1d147bb3a10dfe4d16c
                     <div className='mb-3 text-end'>
                         <Link to="forgot-password" className=''>Forgot Password?</Link>
                     </div>
