@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch,useSelector } from 'react-redux';
-import { login } from '../feature/auth/authSlice';
+import { login,resetLoginStatus  } from '../feature/auth/authSlice';
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -27,25 +27,30 @@ const Login = () => {
 
         onSubmit: values => {
             dispatch(login(values));   //dispatching the action
-            alert(JSON.stringify(values, null, 2));   //the alert is just for testing
+            //alert(JSON.stringify(values, null, 2));   //the alert is just for testing
         },
     });
 
-    const { user, isLoading, isError, isSuccess, message } = useSelector(state => state.auth) || {};   //user property is not yet available in the Redux state when the component first renders. To fix this issue, you need to add a check to ensure that the user property exists before destructuring it
+    // const authState = useSelector(state => state.auth);
+    // const { user, isError, isSuccess, isLoading, message } = authState.auth  || {};
+    const { user, isError, isSuccess, isLoading, message } = useSelector(state => state.auth) || {};
     
     useEffect(() => {
-        if(!user == null || isSuccess){
-            navigate("admin");
-        } else {
-            alert("not an admin");
+        if (isSuccess) {
+            navigate("/admin");
+            // Reset login status when navigating away from the login page
+            dispatch(resetLoginStatus());
         }
-    },[user, isLoading, isError, isSuccess, message, navigate]);
+    }, [isSuccess, navigate, dispatch]);
 
     return (
     <div className='py-5' style={{"background":"#ffd333","minHeight":"100vh"}}>
         <div className="my-5 w-25 bg-white rounded-3 mx-auto p-4">
             <h3 className='text-center title'>Login</h3>
             <p className='text-center'>Login to your account to continue.</p>
+            <div className='error text-center'>
+                {message && message.message === "Rejected" ? "Your not an admin" : ""}
+            </div>
                 <form onSubmit={formik.handleSubmit}>
                     <CustomInput 
                         type="text" 

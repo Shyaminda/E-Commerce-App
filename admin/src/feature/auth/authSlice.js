@@ -1,17 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
 
-const userDefaultState = {
-    _id: null,
-    firstName: null,
-    lastName: null,
-    email: null,
-    mobile: null,
-    token: null,
-};
+const getUserFromLocalStorage = localStorage.getItem("user")
+? JSON.parse(localStorage.getItem("user"))
+: null;
 
 const initialState = {
-    user: userDefaultState,
+    user: getUserFromLocalStorage,
     isLoading: false,
     isError: false,
     isSuccess: false,
@@ -26,16 +21,28 @@ export const login = createAsyncThunk("auth/admin-login", async (user,thunkAPI) 
     }
 });
 
+export const resetLoginStatus = () => ({
+    type: 'auth/resetLoginStatus',
+});
+
 export const authSlice = createSlice({
     name: "auth",
-    initialState,
-    reducers:{},
+    initialState: initialState,
+    reducers:{
+        resetLoginStatus: (state) => {
+            state.isSuccess = false;
+            state.isError = false;
+            state.isLoading = false;
+            state.message = "";
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(login.pending, (state) => {
                 state.isLoading = true;
             })
             .addCase(login.fulfilled, (state, action) => {
+                state.isError = false;
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.user = action.payload;
@@ -44,10 +51,13 @@ export const authSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;
-                state.user = action.payload;
+                state.message = action.error;
+
             })
     },
 });
+
+export default authSlice.reducer;
 
 
 // createAsyncThunk is used to define an asynchronous action creator named login. 
