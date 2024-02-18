@@ -33,7 +33,7 @@ const Login = () => {
 
     // const authState = useSelector(state => state.auth);
     // const { user, isError, isSuccess, isLoading, message } = authState.auth  || {};
-    const { user, isError, isSuccess, isLoading, message } = useSelector(state => state.auth) || {};
+    const { user, isError, isSuccess, isLoading, message } = useSelector(state => state.auth) || {};      //using useSelector to get the state from the store
     
     useEffect(() => {
         if (isSuccess) {
