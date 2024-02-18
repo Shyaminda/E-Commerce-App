@@ -1,21 +1,18 @@
 {
-  "name": "client",
+  "name": "admin",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@reduxjs/toolkit": "^1.9.7",
+    "@ant-design/charts": "^2.0.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^14.5.2",
+    "@testing-library/user-event": "^13.5.0",
+    "antd": "^5.14.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-fast-marquee": "^1.6.3",
-    "react-helmet": "^6.1.0",
     "react-icons": "^5.0.1",
-    "react-image-zoom": "^1.3.1",
-    "react-rating-stars-component": "^2.2.0",
-    "react-redux": "^8.1.3",
-    "react-router-dom": "^6.21.3",
+    "react-quill": "^2.0.0",
+    "react-router-dom": "^6.22.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -42,15 +39,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@babel/plugin-bugfix-v8-static-class-fields-redefine-readonly": "^7.23.7",
-    "@babel/plugin-proposal-class-properties": "^7.18.6",
-    "@babel/plugin-syntax-class-properties": "^7.12.13",
-    "@babel/plugin-transform-class-properties": "^7.23.3",
-    "@babel/plugin-transform-class-static-block": "^7.23.4",
-    "@babel/plugin-transform-classes": "^7.23.8",
-    "postcss": "^8.4.35",
-    "postcss-preset-env": "^9.3.0"
   }
 }
