@@ -15,6 +15,7 @@ const columns = [
     {
         title: 'Title',
         dataIndex: 'title',
+        sorter: (a, b) => a.title.length - b.title.length,    //sorting the name took from ant design
     },
     {
         title: 'Action',
