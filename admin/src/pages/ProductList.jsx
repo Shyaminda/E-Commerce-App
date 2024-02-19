@@ -49,7 +49,7 @@ const ProductList = () => {
         dispatch(getProducts());
     }, [dispatch]);
 
-    const productState = useSelector((state) => state.product.products);    //"products" is the array in the productSlice.js
+    const productState = useSelector((state) => state.product.products);    //"products" is the array in the productSlice.js    //state.product is same as the product in the store.js
     const data1 = [];
     for (let i = 0; i < productState.length; i++) {
         data1.push({

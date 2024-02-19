@@ -1,5 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table } from 'antd';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { MdEditNote } from "react-icons/md";
+import { MdOutlineDeleteOutline } from "react-icons/md";
+import { getColors } from '../feature/color/colorSlice';
 
 const columns = [
     {
@@ -9,27 +15,34 @@ const columns = [
     {
         title: 'Name',
         dataIndex: 'name',
+        sorter: (a, b) => a.name.length - b.name.length,    //sorting the name took from ant design
     },
     {
-        title: 'Product',
-        dataIndex: 'product',
-    },
-    {
-        title: 'Status',
-        dataIndex: 'status',
+        title: 'Action',
+        dataIndex: 'action',
     },
 ];
-const data1 = [];
-for (let i = 0; i < 46; i++) {
-    data1.push({
-        key: i,
-        name: `Edward King ${i}`,
-        product: 32,
-        status: `London, Park Lane no. ${i}`,
-    });
-}
 
 const ColorList = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getColors());
+    },[dispatch]);
+
+    const colorState = useSelector((state) => state.color.colors);  //state.color is same as the color in the store.js   and the "colors" is same as the "colors" in the initialState name array in the colorSlice.js
+    const data1 = [];
+    for (let i = 0; i < colorState.length; i++) {
+        data1.push({
+            key: i+1,
+            name: colorState[i].name,
+            action:(<>
+                <Link to="" className='fs-5 text-danger'><MdEditNote /></Link> 
+                <Link to="" className='fs-5 ms-3 text-danger'><MdOutlineDeleteOutline /></Link>   { /* ms stands for "margin start" */ }
+            </>),
+        });
+    }
+
     return (
         <div>
             <h3 className="mb-4 title">Colors</h3>

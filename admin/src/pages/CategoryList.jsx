@@ -29,7 +29,7 @@ const CategoryList = () => {
     useEffect(() => {
         dispatch(getProductCategories());
     },[dispatch]);
-    const productCat = useSelector((state) => state.productCat.productCat);
+    const productCat = useSelector((state) => state.productCat.productCat);   //state.productCat is same as the productCat in the store.js   and the "productCat" is same as the "productCat" in the initialState name array in the productCatSlice.js
     const data1 = [];
     for (let i = 0; i < productCat.length; i++) {
         data1.push({
