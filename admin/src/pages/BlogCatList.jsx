@@ -1,5 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table } from 'antd';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { MdEditNote } from "react-icons/md";
+import { MdOutlineDeleteOutline } from "react-icons/md";
+import { getBlogCategories } from '../feature/blogCategory/blogCatSlice';
 
 const columns = [
     {
@@ -7,29 +13,35 @@ const columns = [
         dataIndex: 'key',
     },
     {
-        title: 'Name',
-        dataIndex: 'name',
+        title: 'Title',
+        dataIndex: 'title',
+        sorter: (a, b) => a.title.length - b.title.length,    //sorting the name took from ant design
     },
     {
-        title: 'Product',
-        dataIndex: 'product',
-    },
-    {
-        title: 'Status',
-        dataIndex: 'status',
+        title: 'Action',
+        dataIndex: 'action',
     },
 ];
-const data1 = [];
-for (let i = 0; i < 46; i++) {
-    data1.push({
-        key: i,
-        name: `Edward King ${i}`,
-        product: 32,
-        status: `London, Park Lane no. ${i}`,
-    });
-}
 
 const BlogCatList = () => {
+    const dispatch = useDispatch();
+    
+    useEffect(() => {
+        dispatch(getBlogCategories());
+    },[dispatch]);
+
+    const blogCatState = useSelector((state) => state.blogCat.blogCat);   //state.blogCat is same as the blogCat in the store.js   and the "productCat" is same as the "blogCat" in the initialState name array in the blogCatSlice.js
+    const data1 = [];
+    for (let i = 0; i < blogCatState.length; i++) {
+        data1.push({
+            key: i+1,
+            title: blogCatState[i].title,
+            action:(<>
+                <Link to="" className='fs-5 text-danger'><MdEditNote /></Link> 
+                <Link to="" className='fs-5 ms-3 text-danger'><MdOutlineDeleteOutline /></Link>   { /* ms stands for "margin start" */ }
+            </>),
+        });
+    }
     return (
         <div>
             <h3 className="mb-4 title">Blog Categories</h3>
