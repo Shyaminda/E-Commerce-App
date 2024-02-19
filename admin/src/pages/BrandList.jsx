@@ -1,5 +1,11 @@
-import React from 'react';
+import React, { useEffect, useId } from 'react';
 import { Table } from 'antd';
+import { useDispatch } from 'react-redux';
+import { getBrands } from '../feature/brand/brandSlice';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { MdEditNote } from "react-icons/md";
+import { MdOutlineDeleteOutline } from "react-icons/md";
 
 const columns = [
     {
@@ -7,29 +13,35 @@ const columns = [
         dataIndex: 'key',
     },
     {
-        title: 'Name',
-        dataIndex: 'name',
+        title: 'Title',
+        dataIndex: 'title',
     },
     {
-        title: 'Product',
-        dataIndex: 'product',
-    },
-    {
-        title: 'Status',
-        dataIndex: 'status',
+        title: 'Action',
+        dataIndex: 'action',
     },
 ];
-const data1 = [];
-for (let i = 0; i < 46; i++) {
-    data1.push({
-        key: i,
-        name: `Edward King ${i}`,
-        product: 32,
-        status: `London, Park Lane no. ${i}`,
-    });
-}
 
 const BrandList = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getBrands());
+    },[]);
+
+    const brandState = useSelector((state) => state.brand.brands);
+    const data1 = [];
+    for (let i = 0; i < brandState.length; i++) {
+        data1.push({
+            key: i+1,
+            title: brandState[i].title,
+            action:(<>
+                <Link to="" className='fs-5 text-danger'><MdEditNote /></Link> 
+                <Link to="" className='fs-5 ms-3 text-danger'><MdOutlineDeleteOutline /></Link>   { /* ms stands for "margin start" */ }
+            </>),
+        });
+    }
+
     return (
         <div>
             <h3 className="mb-4 title">Brands</h3>
