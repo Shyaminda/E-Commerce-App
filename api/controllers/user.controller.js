@@ -509,6 +509,15 @@ const getOrders = asyncHandler(async (req, res) => {
     }
 });
 
+const getAllOrders = asyncHandler(async (req, res) => {
+    try {
+        const allUserOrders = await Order.find().populate("products.product").populate("orderBy").exec();    //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection   //here we get the orders from the database   //here we populate the products field which is in the orderModel with the product model 
+        res.json(allUserOrders);
+    } catch (error) {
+        throw new Error(error,'Error while getting all orders(user.controller.js getAllOrders)');
+    }
+});
+
 const updateOrderStatus = asyncHandler(async (req, res) => {
     const {status} = req.body;    //here we get the status from the req.body object
     const { id } = req.params;    //here we get the id from the url
@@ -551,4 +560,5 @@ export {
     createOrder,
     getOrders,
     updateOrderStatus,
+    getAllOrders,
 };

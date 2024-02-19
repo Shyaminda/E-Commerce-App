@@ -22,7 +22,12 @@ const orderSchema = new mongoose.Schema({
             },
         },
     ],
-    paymentIntent: {},
+    paymentIntent: {
+        amount: {
+            type: Number,
+            required: true,
+        },
+    },
     // paymentStatus: {
     //     type: String,
     //     enum: ["pending", "completed", "cancelled", "refund"],
