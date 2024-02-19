@@ -1,5 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table } from 'antd';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { MdEditNote } from "react-icons/md";
+import { MdOutlineDeleteOutline } from "react-icons/md";
+import { getBlogs } from '../feature/blog/blogSlice';
 
 const columns = [
     {
@@ -7,29 +13,39 @@ const columns = [
         dataIndex: 'key',
     },
     {
-        title: 'Name',
-        dataIndex: 'name',
+        title: 'Title',
+        dataIndex: 'title',
     },
     {
-        title: 'Product',
-        dataIndex: 'product',
+        title: 'Category',
+        dataIndex: 'category',
     },
     {
-        title: 'Status',
-        dataIndex: 'status',
+        title: 'Action',
+        dataIndex: 'action',
     },
 ];
-const data1 = [];
-for (let i = 0; i < 46; i++) {
-    data1.push({
-        key: i,
-        name: `Edward King ${i}`,
-        product: 32,
-        status: `London, Park Lane no. ${i}`,
-    });
-}
 
 const BlogList = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getBlogs());
+    }, [dispatch]);
+    
+    const blogState = useSelector((state) => state.blog.blogs);
+    const data1 = [];
+    for (let i = 0; i < blogState.length; i++) {
+        data1.push({
+            key: i+1,
+            title: blogState[i].title,
+            category: blogState[i].category,
+            action:(<>
+                <Link to="" className='fs-5 text-danger'><MdEditNote /></Link> 
+                <Link to="" className='fs-5 ms-3 text-danger'><MdOutlineDeleteOutline /></Link>   { /* ms stands for "margin start" */ }
+            </>),
+        });
+    }
     return (
         <div>
             <h3 className="mb-4 title">Blog Lists</h3>
