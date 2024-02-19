@@ -44,3 +44,8 @@
     font-family: Roboto !important;
     color: var(--color-828599);
 }
+
+.ant-select-selector {
+    border: none !important;
+    box-shadow: none !important;
+}
