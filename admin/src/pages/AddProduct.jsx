@@ -103,7 +103,7 @@ const AddProduct = () => {
         setColor(null);
         setTimeout(() => {
             navigate("/admin/product-list");   //navigating to the products page after the product is added
-        },2000);
+        },1000);
         },
     });
 

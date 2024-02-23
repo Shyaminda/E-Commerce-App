@@ -40,7 +40,7 @@ const AddBlogCat = () => {
         formik.resetForm();
         setTimeout(() => {
             navigate("/admin/blog-category-list");   //navigating to the products page after the product is added
-        },2000);
+        },1000);
         },
 });
     return (

@@ -40,7 +40,7 @@ const AddBrand = () => {
         formik.resetForm();
         setTimeout(() => {
             navigate("/admin/brand-list");   //navigating to the products page after the product is added
-        },2000);
+        },1000);
         },
 });
     return (
