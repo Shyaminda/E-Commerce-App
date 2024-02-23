@@ -56,7 +56,7 @@ export const colorSlice = createSlice({
             state.isLoading = false;
             state.isError = false;
             state.isSuccess = true;
-            state.createdColor = action.payload;        //"colors" is same as the "colors" in the initialState name
+            state.createdColor = action.payload;              //used in AddColor.jsx
         })
         .addCase(createColor.rejected, (state, action) => {
             state.isLoading = false;

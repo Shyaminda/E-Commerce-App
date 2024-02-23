@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import { getBrands } from "../feature/brand/brandSlice";
 import { getProductCategories } from '../feature/productCategory/productCatSlice';
 import { getColors } from "../feature/color/colorSlice.js";
-import Dropzone from 'react-dropzone'
+import Dropzone from 'react-dropzone';
 import { deleteImg, uploadImg } from "../feature/upload/uploadSlice.js";
 import { createProducts } from "../feature/product/productSlice.js";
 import { useNavigate } from "react-router-dom";
@@ -41,12 +41,12 @@ const AddProduct = () => {
         dispatch(getColors());   //dispatching from colorSlice
     }, [dispatch]);
 
-    const brandState = useSelector((state) => state.brand.brands);   //getting the state from brandSlice
-    const productCatState = useSelector((state) => state.productCat.productCat);   //getting the state from productCatSlice
-    const colorState = useSelector((state) => state.color.colors);   //getting the state from colorSlice
-    const imgState = useSelector((state) => state.upload.images);   //getting the state from uploadSlice
-    const newProduct = useSelector((state) => state.product);   //getting the state from productSlice the whole product state is taken here because we need to check the success and error of the product
+    const brandState = useSelector((state) => state.brand.brands);  
+    const productCatState = useSelector((state) => state.productCat.productCat);   
+    const colorState = useSelector((state) => state.color.colors);   //here "color" is same as the store.js and "colors" is same as the initialState name in the colorSlice all the other scenarios are same 
+    const imgState = useSelector((state) => state.upload.images);    //here "upload" is same as the store.js and "images" is same as the initialState name in the colorSlice all the other scenarios are same 
 
+    const newProduct = useSelector((state) => state.product);   //getting the state from productSlice the whole product state is taken here because we need to check the success and error of the product
     const { isSuccess, isError, createdProduct } = newProduct;
     useEffect(() => {
         if (isSuccess && createdProduct) {
@@ -143,7 +143,7 @@ return (
                     value={formik.values.description}
                     name="description"
                     onChange={formik.handleChange("description")}
-                    onBlur={() => formik.handleBlur("description")} // Ensure the onBlur event handler is properly defined  //The onBlur event is triggered when the ReactQuill component loses focus, but it seems there's an issue with the way it's being handled.
+                    onBlur={() => formik.handleBlur("description")} 
                 />
             </div>
             <div className="error">
