@@ -3,14 +3,14 @@ import brandService from "./brandService";
 
 export const getBrands = createAsyncThunk("brand/get-brands",async (thunkAPI) => {
     try {
-        return await brandService.getBrands();     //the getProducts is same as the .addCase(getProducts.fulfilled, (state, action) => { in the customerSlice.js
+        return await brandService.getBrands();   //getBrands: This thunk is responsible for fetching brand data asynchronously from the server. It calls the getBrands function from the brandService module.  //the getProducts is same as the .addCase(getProducts.fulfilled, (state, action) => { in the customerSlice.js
     } catch (error) {
         return thunkAPI.rejectWithValue(error);
     }
 }
 );
 
-export const createBrand = createAsyncThunk(
+export const createBrand = createAsyncThunk(    //This thunk is responsible for creating a new brand asynchronously. It calls the createBrand function from the brandService module, passing brandData as an argument.
     "brand/create-brand",
     async (brandData, thunkAPI) => {
     try {
