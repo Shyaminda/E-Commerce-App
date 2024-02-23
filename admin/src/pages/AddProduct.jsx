@@ -105,7 +105,7 @@ const AddProduct = () => {
             navigate("/admin/product-list");   //navigating to the products page after the product is added
         },2000);
         },
-});
+    });
 
 useEffect(() => {
     formik.values.color = color ? color : "";   //setting the color value to the formik values   
