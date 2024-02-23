@@ -12,6 +12,9 @@ import { getColors } from "../feature/color/colorSlice.js";
 import Dropzone from 'react-dropzone'
 import { deleteImg, uploadImg } from "../feature/upload/uploadSlice.js";
 import { createProducts } from "../feature/product/productSlice.js";
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 let schema = Yup.object().shape({
   //the validation schema
@@ -30,32 +33,37 @@ const AddProduct = () => {
     //const [img, setImg] = useState([]);   //for the images
     // console.log(color);
     const dispatch = useDispatch();   //dispatching the action 
+    const navigate = useNavigate();   //for the navigation
 
     useEffect(() => {          //this is used to get all the brands to show in the select option dropdown   
         dispatch(getBrands());     //dispatching from brandSlice
         dispatch(getProductCategories());   //dispatching from productCatSlice
         dispatch(getColors());   //dispatching from colorSlice
-        //formik.values.color = color;   //setting the color value to the formik values
     }, [dispatch]);
 
     const brandState = useSelector((state) => state.brand.brands);   //getting the state from brandSlice
     const productCatState = useSelector((state) => state.productCat.productCat);   //getting the state from productCatSlice
     const colorState = useSelector((state) => state.color.colors);   //getting the state from colorSlice
     const imgState = useSelector((state) => state.upload.images);   //getting the state from uploadSlice
+    const newProduct = useSelector((state) => state.product.createdProduct);   //getting the state from productSlice 
+
+    const { isSuccess, isError, createdProduct } = newProduct || {};
+    useEffect(() => {
+        if (isSuccess && createdProduct) {
+            toast.success("Product Added Successfully!");
+        }
+        if (isError) {
+            toast.error("Something Went Wrong!");
+        }
+    }, [isSuccess, isError, createdProduct]);
 
     const colorOpt = [];
     colorState.forEach((i) => {          //mapping the colors and pushing into the colors array
         colorOpt.push({                   //mapping the colors and pushing into the colors array
             label: i.name,       //The reason for using label and value instead of name and _id in the colorOpt array for the Select component is because the Select component from the Ant Design library expects objects with label and value properties to be passed as options.
-            
             value: i._id,
         });
-    });
-
-    // const colorOpt = colorState.map((color) => ({
-    //     _id: color._id, // Assuming '_id' is the unique identifier
-    //     color: color.name,
-    // }));
+    }, []);
 
     // const images = [];     //the error:he 'images' array makes the dependencies of useEffect Hook (at line 98) change on every render. To fix this, wrap the initialization of 'images' in its own useMemo() Hook.
     // imgState.forEach((i) => {
@@ -91,15 +99,20 @@ const AddProduct = () => {
         onSubmit: (values) => {
         // alert(JSON.stringify(values, null, 2));   //the alert is just for testing
         dispatch(createProducts(values));
+        formik.resetForm();
+        setColor(null);
+        setTimeout(() => {
+            navigate("/admin/product-list");   //navigating to the products page after the product is added
+        },3000);
         },
 });
 
 useEffect(() => {
     formik.values.color = color ? color : "";   //setting the color value to the formik values   
     formik.values.images = images;   //setting the images value to the formik values 
-},[color, images, formik.values]);
+},[color,images,formik.values]);
 
-const handleColor = (e) => {
+const handleColors = (e) => {
     setColor(e);
     //console.log(color)
 }
@@ -210,7 +223,7 @@ return (
                 className="w-100"
                 placeholder="Select Color"
                 defaultValue={color}       //this is the useState taken 
-                onChange={(i) => handleColor(i)}    //"i" is used because the color is an array 
+                onChange={(i) => handleColors(i)}    //"i" is used because the color is an array 
                 options={colorOpt}
             />    
 

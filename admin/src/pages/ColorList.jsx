@@ -36,10 +36,10 @@ const ColorList = () => {
         data1.push({
             key: i+1,
             name: colorState[i].name,
-            action:(<>
+            action:(<div>
                 <Link to="" className='fs-5 text-danger'><MdEditNote /></Link> 
                 <Link to="" className='fs-5 ms-3 text-danger'><MdOutlineDeleteOutline /></Link>   { /* ms stands for "margin start" */ }
-            </>),
+            </div>),
         });
     }
 

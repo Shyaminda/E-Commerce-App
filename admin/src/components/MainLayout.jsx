@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { MenuFoldOutlined,MenuUnfoldOutlined } from '@ant-design/icons';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { MdDashboard } from "react-icons/md";
 import { IoIosCart } from "react-icons/io";
 import { CiUser } from "react-icons/ci";
@@ -205,6 +207,17 @@ const MainLayout = () => {
                 minHeight: 280,
             }}
             >
+            <ToastContainer
+                position="top-right"
+                autoClose={250}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                theme="light"
+            />
             <Outlet />  
             </Content>
         </Layout>

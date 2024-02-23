@@ -52,13 +52,14 @@ const ProductList = () => {
     const productState = useSelector((state) => state.product.products);    //"products" is the array in the productSlice.js    //state.product is same as the product in the store.js
     const data1 = [];
     for (let i = 0; i < productState.length; i++) {
+        //const color = Array.isArray(productState[i].color) ? productState[i].color.map(c => c.color).join(', ') : productState[i].color.color;    //this is done because of the error:Objects are not valid as a React child (found: object with keys {_id, color}). If you meant to render a collection of children, use an array instead.
         data1.push({
             key: i+1,
             title: productState[i].title,
             brand: productState[i].brand,
             category: productState[i].category,
             color: productState[i].color,
-            price: `${productState[i].price}`,
+            price: productState[i].price,
             action:(<>
                 <Link to="" className='fs-5 text-danger'><MdEditNote /></Link> 
                 <Link to="" className='fs-5 ms-3 text-danger'><MdOutlineDeleteOutline /></Link>   { /* ms stands for "margin start" */ }
