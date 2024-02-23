@@ -9,9 +9,7 @@ import * as Yup from "yup";
 import { getBrands } from "../feature/brand/brandSlice";
 import { getProductCategories } from '../feature/productCategory/productCatSlice';
 import { getColors } from "../feature/color/colorSlice.js";
-import Multiselect from "react-widgets/Multiselect";
 import Dropzone from 'react-dropzone'
-import "react-widgets/styles.css";
 import { deleteImg, uploadImg } from "../feature/upload/uploadSlice.js";
 import { createProducts } from "../feature/product/productSlice.js";
 
@@ -22,7 +20,7 @@ let schema = Yup.object().shape({
     price: Yup.number().required("Price is Required"),
     brand: Yup.string().required("Brand is Required"),
     category: Yup.string().required("Category is Required"),
-    color: Yup.array().required("Color is Required"),      
+    color: Yup.array().min(1,"Select atleast one color").required("Color is Required"),      
     quantity: Yup.number().required("Quantity is Required"),    //all by considering the names
 });
 
@@ -44,28 +42,36 @@ const AddProduct = () => {
     const colorState = useSelector((state) => state.color.colors);   //getting the state from colorSlice
     const imgState = useSelector((state) => state.upload.images);   //getting the state from uploadSlice
 
-    const colors = [];
+    const colorOpt = [];
     colorState.forEach((i) => {          //mapping the colors and pushing into the colors array
-        colors.push({                   //mapping the colors and pushing into the colors array
-            _id: i._id, 
-            color: i.name,
-        });   
-    });
-
-    const images = [];
-    imgState.forEach((i) => {
-        images.push({
-            public_id: i.public_id,
-            url: i.url,
+        colorOpt.push({                   //mapping the colors and pushing into the colors array
+            label: i.name,       //The reason for using label and value instead of name and _id in the colorOpt array for the Select component is because the Select component from the Ant Design library expects objects with label and value properties to be passed as options.
+            
+            value: i._id,
         });
     });
+
+    // const colorOpt = colorState.map((color) => ({
+    //     _id: color._id, // Assuming '_id' is the unique identifier
+    //     color: color.name,
+    // }));
+
+    // const images = [];     //the error:he 'images' array makes the dependencies of useEffect Hook (at line 98) change on every render. To fix this, wrap the initialization of 'images' in its own useMemo() Hook.
+    // imgState.forEach((i) => {
+    //     images.push({
+    //         public_id: i.public_id,
+    //         url: i.url,
+    //     });
+    // });
+    const images = useMemo(() => {
+        const updatedImages = imgState.map((i) => ({
+            public_id: i.public_id,
+            url: i.url,
+        }));
+        return updatedImages;
+    }, [imgState]);
     
     //console.log(images);
-
-    useEffect(() => {
-        formik.values.color = color;   //setting the color value to the formik values 
-        formik.values.images = images;   //setting the images value to the formik values 
-    });
 
     const formik = useFormik({
         initialValues: {
@@ -74,6 +80,7 @@ const AddProduct = () => {
         price: "",
         brand: "",
         category: "",
+        tags: "",
         color: "",
         quantity: "",
         images: "",
@@ -85,6 +92,16 @@ const AddProduct = () => {
         dispatch(createProducts(values))
         },
 });
+
+useEffect(() => {
+    formik.values.color = color ? color : "";   //setting the color value to the formik values   
+    formik.values.images = images;   //setting the images value to the formik values 
+},[color, images, formik.values]);
+
+const handleColor = (e) => {
+    setColor(e);
+    //console.log(color)
+}
 
 return (
     <div>
@@ -169,14 +186,16 @@ return (
                 {formik.touched.category && formik.errors.category}
             </div>
             
-            <Multiselect
-                name="color"
-                dataKey="id"
-                textField="color"
-                // defaultValue={["color"]}
-                data={colors}
-                onChange={(e) => setColor(e)}
-            />
+            <Select
+                mode="multiple"
+                allowClear
+                className="w-100"
+                placeholder="Select Color"
+                defaultValue={color}       //this is the useState taken 
+                onChange={(i) => handleColor(i)}    //"i" is used because the color is an array 
+                options={colorOpt}
+            />    
+
             <div className="error">
                 {formik.touched.color && formik.errors.color}
             </div>
