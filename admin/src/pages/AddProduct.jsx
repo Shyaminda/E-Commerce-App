@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import CustomInput from "../components/CustomInput";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -10,7 +10,10 @@ import { getBrands } from "../feature/brand/brandSlice";
 import { getProductCategories } from '../feature/productCategory/productCatSlice';
 import { getColors } from "../feature/color/colorSlice.js";
 import Multiselect from "react-widgets/Multiselect";
+import Dropzone from 'react-dropzone'
 import "react-widgets/styles.css";
+import { deleteImg, uploadImg } from "../feature/upload/uploadSlice.js";
+import { createProducts } from "../feature/product/productSlice.js";
 
 let schema = Yup.object().shape({
   //the validation schema
@@ -25,6 +28,7 @@ let schema = Yup.object().shape({
 
 const AddProduct = () => {
     const [color, setColor] = useState([]);
+    //const [img, setImg] = useState([]);   //for the images
     // console.log(color);
     const dispatch = useDispatch();   //dispatching the action 
 
@@ -32,12 +36,13 @@ const AddProduct = () => {
         dispatch(getBrands());     //dispatching from brandSlice
         dispatch(getProductCategories());   //dispatching from productCatSlice
         dispatch(getColors());   //dispatching from colorSlice
-        formik.values.color = color;   //setting the color value to the formik values
+        //formik.values.color = color;   //setting the color value to the formik values
     }, [dispatch]);
 
     const brandState = useSelector((state) => state.brand.brands);   //getting the state from brandSlice
     const productCatState = useSelector((state) => state.productCat.productCat);   //getting the state from productCatSlice
     const colorState = useSelector((state) => state.color.colors);   //getting the state from colorSlice
+    const imgState = useSelector((state) => state.upload.images);   //getting the state from uploadSlice
 
     const colors = [];
     colorState.forEach((i) => {          //mapping the colors and pushing into the colors array
@@ -45,7 +50,22 @@ const AddProduct = () => {
             _id: i._id, 
             color: i.name,
         });   
-    });     
+    });
+
+    const images = [];
+    imgState.forEach((i) => {
+        images.push({
+            public_id: i.public_id,
+            url: i.url,
+        });
+    });
+    
+    //console.log(images);
+
+    useEffect(() => {
+        formik.values.color = color;   //setting the color value to the formik values 
+        formik.values.images = images;   //setting the images value to the formik values 
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -56,14 +76,15 @@ const AddProduct = () => {
         category: "",
         color: "",
         quantity: "",
+        images: "",
         },
         validationSchema: schema,
 
         onSubmit: (values) => {
-        //alert(JSON.stringify(values, null, 2));   //the alert is just for testing
+        // alert(JSON.stringify(values, null, 2));   //the alert is just for testing
+        dispatch(createProducts(values))
         },
 });
-
 
 return (
     <div>
@@ -88,10 +109,10 @@ return (
             <div className="">
                 <ReactQuill
                     theme="snow"
-                    val={formik.values.description}
+                    value={formik.values.description}
                     name="description"
-                    onCh={formik.handleChange("description")}
-                    onBl={formik.handleBlur("description")}
+                    onChange={formik.handleChange("description")}
+                    onBlur={() => formik.handleBlur("description")} // Ensure the onBlur event handler is properly defined  //The onBlur event is triggered when the ReactQuill component loses focus, but it seems there's an issue with the way it's being handled.
                 />
             </div>
             <div className="error">
@@ -176,6 +197,36 @@ return (
                 {formik.touched.quantity && formik.errors.quantity}
             </div>
 
+            <div className="bg-white border-1 p-5 text-center">
+                <Dropzone
+                    onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}>
+                    {({ getRootProps, getInputProps }) => (
+                        <section>
+                        <div {...getRootProps()}>
+                            <input {...getInputProps()} />
+                            <p>
+                            Drag 'n' drop some files here, or click to select files
+                            </p>
+                        </div>
+                        </section>
+                    )}      
+                </Dropzone>
+            </div>     {/* dropzone => uploadSlice => uploadService => backend */}
+
+            <div className="showImages d-flex flex-wrap gap-3">
+                {
+                    imgState.map((i,j) => {
+                        return(
+                            <div className="position-relative" key={j}>
+                                <button type="button" className="btn-close position-absolute" style={{top:"5px",right: "5px"}} onClick={()=> dispatch(deleteImg(i.public_id))} >
+                                </button>
+                                <img src={i.url} alt="product" width={120} height={120} className=""/>   {/* "url" cloudinary */}
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            
             <button
                 type="submit"
                 className="btn btn-success border-0 rounded-3 my-4"

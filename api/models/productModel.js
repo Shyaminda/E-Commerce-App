@@ -52,9 +52,10 @@ const productSchema = new mongoose.Schema({
     },
     color: [],
     tags: [],
-    image: {
-        type: Array,
-    },
+    images: [{
+        public_id: String,
+        url: String,
+    }],
 }, { timestamps: true });
 
 const Product = mongoose.model("Product", productSchema);

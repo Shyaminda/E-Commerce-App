@@ -12,9 +12,9 @@ import blogCategoryRouter from './routes/blogCategoryRouter.js';
 import brandRouter from './routes/brandRouter.js';
 import couponRouter from './routes/couponRoute.js';
 import ColorRouter from './routes/colorRoute.js';
-import Inquiry from './models/inquiryModel.js';
 import InquiryRouter from './routes/inquiryRoute.js';
 import cors from 'cors';
+import uploadRouter from './routes/uploadRouter.js';
 
 const app = express();
 app.use(cors());
@@ -37,6 +37,7 @@ app.use("/api/brand",brandRouter);
 app.use("/api/coupon",couponRouter);
 app.use("/api/color",ColorRouter);
 app.use("/api/inquiry",InquiryRouter);
+app.use("/api/upload",uploadRouter);
 
 app.use(notFound);
 app.use(errorHandler);

@@ -211,7 +211,7 @@ const deleteImages = asyncHandler(async (req, res) => {    //http://localhost:30
     }
 });
 
-export { createProduct, getProduct, getAllProducts, updateProduct, deleteProduct, addToWishList, rating, uploadImages, deleteImages};
+export { createProduct, getProduct, getAllProducts, updateProduct, deleteProduct, addToWishList, rating};
 
 
 //for better query understanding watch the tutorial https://www.youtube.com/watch?v=S6Yd5cPtXr4&list=PL0g02APOH8okXhOQLOLcB_nifs1U41im5&index=6&t=513s at 3.05.22
