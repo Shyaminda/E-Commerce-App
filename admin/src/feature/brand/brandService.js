@@ -7,7 +7,7 @@ const getBrands = async () =>{
     return response.data;      //this is the response from the backend
 };
 
-const createBrand = async (brand) => {
+const createBrand = async (brand) => {        //The parameter "brand" in the createBrand function represents the data or payload that you want to send as the request body
     const response = await axios.post(`${base_url}brand/`, brand, config);
     return response.data;
 };

@@ -9,6 +9,18 @@ export const getProductCategories = createAsyncThunk("productCategory/get-produc
     }
 }
 );
+
+export const createProductCategory = createAsyncThunk(
+    "brand/create-productCat",
+    async (categoryData, thunkAPI) => {
+    try {
+        return await productCatService.createProductCategory(categoryData);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+    }
+);
+
 const initialState = {
     productCat: [],
     isError: false,
@@ -32,6 +44,21 @@ export const productCatSlice = createSlice({
             state.productCat = action.payload;        //"productCat" is same as the "productCat" in the initialState name
         })
         .addCase(getProductCategories.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error;
+        })
+        .addCase(createProductCategory.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(createProductCategory.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.createdProductCat = action.payload;        //"productCat" is same as the "productCat" in the initialState name
+        })
+        .addCase(createProductCategory.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;
