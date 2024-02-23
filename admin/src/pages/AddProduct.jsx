@@ -45,9 +45,9 @@ const AddProduct = () => {
     const productCatState = useSelector((state) => state.productCat.productCat);   //getting the state from productCatSlice
     const colorState = useSelector((state) => state.color.colors);   //getting the state from colorSlice
     const imgState = useSelector((state) => state.upload.images);   //getting the state from uploadSlice
-    const newProduct = useSelector((state) => state.product.createdProduct);   //getting the state from productSlice 
+    const newProduct = useSelector((state) => state.product);   //getting the state from productSlice the whole product state is taken here because we need to check the success and error of the product
 
-    const { isSuccess, isError, createdProduct } = newProduct || {};
+    const { isSuccess, isError, createdProduct } = newProduct;
     useEffect(() => {
         if (isSuccess && createdProduct) {
             toast.success("Product Added Successfully!");
@@ -103,7 +103,7 @@ const AddProduct = () => {
         setColor(null);
         setTimeout(() => {
             navigate("/admin/product-list");   //navigating to the products page after the product is added
-        },3000);
+        },2000);
         },
 });
 
