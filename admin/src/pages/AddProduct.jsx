@@ -20,6 +20,7 @@ let schema = Yup.object().shape({
     price: Yup.number().required("Price is Required"),
     brand: Yup.string().required("Brand is Required"),
     category: Yup.string().required("Category is Required"),
+    tags: Yup.string().required("tags are Required"),
     color: Yup.array().min(1,"Select atleast one color").required("Color is Required"),      
     quantity: Yup.number().required("Quantity is Required"),    //all by considering the names
 });
@@ -89,7 +90,7 @@ const AddProduct = () => {
 
         onSubmit: (values) => {
         // alert(JSON.stringify(values, null, 2));   //the alert is just for testing
-        dispatch(createProducts(values))
+        dispatch(createProducts(values));
         },
 });
 
@@ -184,6 +185,23 @@ return (
             </Select>
             <div className="error">
                 {formik.touched.category && formik.errors.category}
+            </div>
+
+            <Select 
+                name="tags"
+                value={formik.values.tags}
+                onChange={formik.handleChange("tags")}
+                onBlur={formik.handleBlur("tags")} 
+                defaultValue=""             //is used to set the default value of the select option dropdown as the category
+                className="form-control py-3 mb-3" 
+                id="">
+                <option value="" disabled>Select Tag</option>
+                <option value="featured">Featured</option>
+                <option value="popular">Popular</option>
+                <option value="special">Special</option>
+            </Select>
+            <div className="error">
+                {formik.touched.tags && formik.errors.tags}
             </div>
             
             <Select
