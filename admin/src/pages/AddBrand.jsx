@@ -38,8 +38,8 @@ const AddBrand = () => {
     const newBrand = useSelector((state) => state.brand);   //getting the state from brandSlice the whole brand state is taken here because we need to check the success and error of the brand
     const { isSuccess, isError, createdBrand, brandName, updatedBrand } = newBrand;
 
-    useEffect(() => {
-        if(getBrandId !== undefined) {       //if the id is not undefined then the getABrand action is dispatched
+    useEffect(() => {              //with this function the data is shown in the form field when the form is opened for the second time to edit the data
+        if(getBrandId !== undefined) {     //from this function "brandName" is taken from the brandSlice.js which is pass below to "const formik = useFormik({"    =>    "title: brandName || ""," //which is shown in the input field of formik
             dispatch(getABrand(getBrandId));
         } else {
             dispatch(resetState());
@@ -57,11 +57,11 @@ const AddBrand = () => {
         if (isError) {
             toast.error("Something Went Wrong!");
         }
-    }, [isSuccess, isError, createdBrand, updatedBrand]);
+    }, [isSuccess, isError, createdBrand, updatedBrand, dispatch, navigate]);
 
 
     const formik = useFormik({
-        enableReinitialize: true,
+        enableReinitialize: true,    //this is done to show the data in the form field when the form is opened for the second time to edit
         initialValues: {
         title: brandName || "", //you should provide a default value for brandName in case it's null. You can use optional chaining (?.) to safely access nested properties without throwing an error   
         },    //the value of the brandName is set to the formik values where the selected brand name is shown in the input field
@@ -70,8 +70,9 @@ const AddBrand = () => {
         onSubmit: (values) => {
         // alert(JSON.stringify(values, null, 2));   //the alert is just for testing
             if(getBrandId !== undefined) {
-                const data = {id: getBrandId, brandData: values};    //the brandData is the parameter from createBrand function in brandSlice.js
-                dispatch(updateABrand(data));
+                const data = {id: getBrandId, brandData: values};    //this brandData is passed to the updateBrand action in the brandSlice.js
+                dispatch(updateABrand(data));    //the "data" is passed to the updateBrand action in the brandSlice.js
+                dispatch(resetState());   //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
             } else {
                 dispatch(createBrand(values));
                 formik.resetForm();

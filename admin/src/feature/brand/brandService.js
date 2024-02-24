@@ -13,7 +13,7 @@ const createBrand = async (brand) => {        //The parameter "brand" in the cre
 };
 
 const updateBrand = async (brand) => {        //The parameter "brand" in the createBrand function represents the data or payload that you want to send as the request body
-    const response = await axios.put(`${base_url}brand/${brand.id}`, {title: brand.brandData.title}, config);    //todo: figure out from where the brandData is coming when I remove brandData the update is not working anyway there is a brandData is used in brandSlice.js
+    const response = await axios.put(`${base_url}brand/${brand.id}`, {title: brand.brandData.title}, config);    //"brandData" is passed from AddBrand.jsx where under the "onSubmit: (values) => {"    //the "values" passed from AddBrand.jsx from formik "brandData: values" is passed to here so that the title can be extracted and updated
     return response.data;
 };
 

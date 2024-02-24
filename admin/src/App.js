@@ -44,10 +44,11 @@ function App() {
           <Route path='color-list' element={<ColorList />} />             {/* the path should be same as the MainLayout key values */}
           <Route path='color' element={<AddColor />} />             {/* the path should be same as the MainLayout key values */}
           <Route path='category-list' element={<CategoryList />} />       {/* the path should be same as the MainLayout key values */}
-          <Route path='category' element={<AddCategory />} />       {/* the path should be same as the MainLayout key values */}
+          <Route path='category' element={<AddCategory />} />         {/* the path should be same as the MainLayout key values */}
+          <Route path='category/:id' element={<AddCategory />} />   {/* both update function and create function are in the AddCategory */}  {/* the path should be same as the MainLayout key values */}
           <Route path='brand-list' element={<BrandList />} />             {/* the path should be same as the MainLayout key values */}
           <Route path='brand' element={<AddBrand />} />             {/* the path should be same as the MainLayout key values */}
-          <Route path='brand/:id' element={<AddBrand />} />             {/* the path should be same as the MainLayout key values */}
+          <Route path='brand/:id' element={<AddBrand />} />   {/* both update function and create function are in the AddBrand */}            {/* the path should be same as the MainLayout key values */}
           <Route path='product-list' element={<ProductList />} />         {/* the path should be same as the MainLayout key values */}
           <Route path='product' element={<AddProduct />} />         {/* the path should be same as the MainLayout key values */}
         </Route>
