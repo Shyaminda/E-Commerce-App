@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import blogCatService from "./blogCatService";
 
 export const getBlogCategories = createAsyncThunk("blogCategory/get-blogCat",async (thunkAPI) => {
@@ -21,6 +21,7 @@ export const createBlogCategory = createAsyncThunk(    //This thunk is responsib
     }
 );
 
+export const resetState = createAction("Reset_all");   //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
 const initialState = {
     blogCat: [],
     isError: false,
@@ -63,7 +64,8 @@ export const blogCatSlice = createSlice({
             state.isError = true;
             state.isSuccess = false;
             state.message = action.error;
-        });
+        })
+        .addCase(resetState, () => initialState);    //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
     },
 });
 export default blogCatSlice.reducer;

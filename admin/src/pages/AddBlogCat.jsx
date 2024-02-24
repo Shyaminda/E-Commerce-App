@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createBlogCategory } from "../feature/blogCategory/blogCatSlice";
+import { createBlogCategory, resetState } from "../feature/blogCategory/blogCatSlice";
 
 let schema = Yup.object().shape({
     //the validation schema
@@ -39,6 +39,7 @@ const AddBlogCat = () => {
         dispatch(createBlogCategory(values));
         formik.resetForm();
         setTimeout(() => {
+            dispatch(resetState());       //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
             navigate("/admin/blog-category-list");   //navigating to the products page after the product is added
         },1000);
         },

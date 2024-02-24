@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { createColor } from "../feature/color/colorSlice";
+import { resetState } from "../feature/brand/brandSlice";
 
 let schema = Yup.object().shape({
     //the validation schema
@@ -39,6 +40,7 @@ const AddColor = () => {
         dispatch(createColor(values));
         formik.resetForm();
         setTimeout(() => {
+            dispatch(resetState());       //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
             navigate("/admin/color-list");   //navigating to the products page after the product is added
         },1000);
         },

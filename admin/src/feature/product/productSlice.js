@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import productService from "./productService";
 
 
@@ -28,6 +28,8 @@ const initialState = {
     isSuccess: false,
     message: "",
 };
+
+export const resetState = createAction("Reset_all");   //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
 export const productSlice = createSlice({
     name: "products",
     initialState,
@@ -64,6 +66,7 @@ export const productSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
         })
+        .addCase(resetState, () => initialState);    //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
     },
 });
 export default productSlice.reducer;

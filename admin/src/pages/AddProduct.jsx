@@ -11,7 +11,7 @@ import { getProductCategories } from '../feature/productCategory/productCatSlice
 import { getColors } from "../feature/color/colorSlice.js";
 import Dropzone from 'react-dropzone';
 import { deleteImg, uploadImg } from "../feature/upload/uploadSlice.js";
-import { createProducts } from "../feature/product/productSlice.js";
+import { createProducts, resetState } from "../feature/product/productSlice.js";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -102,6 +102,7 @@ const AddProduct = () => {
         formik.resetForm();
         setColor(null);
         setTimeout(() => {
+            dispatch(resetState());       //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
             navigate("/admin/product-list");   //navigating to the products page after the product is added
         },1000);
         },

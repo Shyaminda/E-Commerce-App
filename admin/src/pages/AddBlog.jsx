@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import CustomInput from '../components/CustomInput';
 import { Select } from 'antd';
 import ReactQuill from 'react-quill';
@@ -12,6 +12,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { createBlog } from "../feature/blog/blogSlice.js";
 import { getBlogCategories } from "../feature/blogCategory/blogCatSlice.js";
+import { resetState } from "../feature/brand/brandSlice.js";
 
 let schema = Yup.object().shape({
     //the validation schema
@@ -21,13 +22,11 @@ let schema = Yup.object().shape({
 });
 
 const AddBlog = () => {
-    //const [img, setImg] = useState([]);   //for the images
-    // console.log(color);
     const dispatch = useDispatch();   //dispatching the action 
     const navigate = useNavigate();   //for the navigation
 
     useEffect(() => {          //this is used to get all the brands to show in the select option dropdown   
-        dispatch(getBlogCategories());   //dispatching from productCatSlice
+        dispatch(getBlogCategories());   //dispatching from blogCatSlice
     }, [dispatch]);
 
     const imgState = useSelector((state) => state.upload.images);   //getting the state from uploadSlice
@@ -75,7 +74,8 @@ const AddBlog = () => {
         dispatch(createBlog(values));
         formik.resetForm();
         setTimeout(() => {
-            navigate("/admin/blog-list");   //navigating to the products page after the product is added
+            dispatch(resetState());       //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
+            navigate("/admin/blog-list");   //navigating to the blogs page after the blog is added
         },1000);
         },
     });
