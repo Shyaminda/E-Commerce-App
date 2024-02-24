@@ -17,6 +17,9 @@ import { IoMdNotifications } from "react-icons/io";
 import { Layout, Menu, Button, theme } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { RiCoupon3Fill } from "react-icons/ri";
+import { RiCouponFill } from "react-icons/ri";
+import { AiOutlineStock } from "react-icons/ai";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
@@ -24,7 +27,7 @@ const MainLayout = () => {
     const navigate = useNavigate();
     return (
     <div>
-        <Layout>
+        <Layout /* onContextMenu={(e)=>e.preventDefault()}*/>      {/*This is done to prevent the right click on the page to view the source code*/}
             <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className='logo'>
                     <h3 className='text-white text-center py-3 mb-0'>
@@ -108,6 +111,23 @@ const MainLayout = () => {
                             label: 'Orders',
                         },
                         {
+                            key: 'marketing',
+                            icon: <AiOutlineStock />,
+                            label: 'Marketing',
+                            children: [
+                                {
+                                    key: 'coupon',
+                                    icon: <RiCouponFill />,
+                                    label: 'Add Coupon',
+                                },
+                                {
+                                    key: 'coupon-list',
+                                    icon: <RiCoupon3Fill />,
+                                    label: 'Coupon List',
+                                },
+                            ]
+                        },
+                        {
                             key: 'blog',
                             icon: <FaBlogger />,
                             label: 'Blogs',
@@ -134,6 +154,7 @@ const MainLayout = () => {
                                 }
                             ]
                         },
+
                         {
                             key: 'inquiries',
                             icon: <TbPhoneCall />,

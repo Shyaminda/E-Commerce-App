@@ -30,7 +30,7 @@ const BrandList = () => {
         dispatch(getBrands());
     },[dispatch]);
 
-    const brandState = useSelector((state) => state.brand.brands);    //state.color is same as the brand in the store.js   and the "brands" is same as the "brands" in the initialState name array in the brandSlice.js
+    const brandState = useSelector((state) => state.brand.brands);    //state.brand is same as the brand in the store.js   and the "brands" is same as the "brands" in the brandSlice.js "state.brands = action.payload;"
     const data1 = [];
     for (let i = 0; i < brandState.length; i++) {
         data1.push({

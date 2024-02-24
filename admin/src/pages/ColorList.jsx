@@ -30,7 +30,7 @@ const ColorList = () => {
         dispatch(getColors());
     },[dispatch]);
 
-    const colorState = useSelector((state) => state.color.colors);  //state.color is same as the color in the store.js   and the "colors" is same as the "colors" in the initialState name array in the colorSlice.js
+    const colorState = useSelector((state) => state.color.colors);  //state.color is same as the color in the store.js   and the "colors" is same as the "colors" in the colorSlice.js "state.colors = action.payload;"
     const data1 = [];
     for (let i = 0; i < colorState.length; i++) {
         data1.push({

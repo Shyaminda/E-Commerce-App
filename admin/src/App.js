@@ -20,6 +20,8 @@ import AddColor from './pages/AddColor.jsx';
 import AddCategory from './pages/AddCategory.jsx';
 import AddBrand from './pages/AddBrand.jsx';
 import AddProduct from './pages/AddProduct.jsx';
+import CouponList from './pages/CouponList.jsx';
+import AddCoupon from './pages/AddCoupon.jsx';
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
           <Route path='inquiries' element={<Inquiries />} />              {/* the path should be same as the MainLayout key values */}
           <Route path='blog-list' element={<BlogList />} />               {/* the path should be same as the MainLayout key values */}
           <Route path='add-blog' element={<AddBlog />} />                 {/* the path should be same as the MainLayout key values */}
+          <Route path='coupon-list' element={<CouponList />} />              {/* the path should be same as the MainLayout key values */}
+          <Route path='coupon' element={<AddCoupon />} />              {/* the path should be same as the MainLayout key values */}
           <Route path='blog-category-list' element={<BlogCatList />} />   {/* the path should be same as the MainLayout key values */}
           <Route path='blog-category' element={<AddBlogCat />} />   {/* the path should be same as the MainLayout key values */}
           <Route path='orders' element={<Orders />} />                    {/* the path should be same as the MainLayout key values */}

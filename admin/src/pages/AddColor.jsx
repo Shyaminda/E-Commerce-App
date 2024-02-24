@@ -10,7 +10,7 @@ import { resetState } from "../feature/brand/brandSlice";
 
 let schema = Yup.object().shape({
     //the validation schema
-        name: Yup.string().required("Color is Required"),     //brandModel name is title
+        name: Yup.string().required("Color is Required"),     //colorModel name is name
     });
 
 const AddColor = () => {

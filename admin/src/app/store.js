@@ -10,6 +10,7 @@ import blogCatReducer from '../feature/blogCategory/blogCatSlice.js';
 import inquiryReducer from '../feature/inquiries/inquirySlice.js';
 import orderReducer from '../feature/order/orderSlice.js';
 import uploadReducer from '../feature/upload/uploadSlice.js';
+import couponReducer from '../feature/coupon/couponSlice.js';
 
 export const store = configureStore({
     reducer: {
@@ -24,5 +25,6 @@ export const store = configureStore({
         inquiry: inquiryReducer,
         order: orderReducer,
         upload: uploadReducer,
+        coupon: couponReducer,
     },
 });

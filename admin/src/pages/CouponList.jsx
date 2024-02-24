@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect} from 'react';
 import { Table } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MdEditNote } from "react-icons/md";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import { getBlogCategories } from '../feature/blogCategory/blogCatSlice';
+import { getCoupons } from '../feature/coupon/couponSlice';
 
 const columns = [
     {
@@ -13,9 +13,19 @@ const columns = [
         dataIndex: 'key',
     },
     {
-        title: 'Title',
-        dataIndex: 'title',
-        sorter: (a, b) => a.title.length - b.title.length,    //sorting the name took from ant design
+        title: 'Name',
+        dataIndex: 'name',
+        sorter: (a, b) => a.name.length - b.name.length,    //sorting the name took from ant design
+    },
+    {
+        title: 'Expire Date',
+        dataIndex: 'expiryDate',
+        sorter: (a, b) => a.expiryDate - b.expiryDate,    //sorting the name took from ant design
+    },
+    {
+        title: 'Discount',
+        dataIndex: 'discount',
+        sorter: (a, b) => a.discount - b.discount,    //sorting the name took from ant design
     },
     {
         title: 'Action',
@@ -23,28 +33,31 @@ const columns = [
     },
 ];
 
-const BlogCatList = () => {
+const CouponList = () => {
     const dispatch = useDispatch();
-    
+
     useEffect(() => {
-        dispatch(getBlogCategories());
+        dispatch(getCoupons());
     },[dispatch]);
 
-    const blogCatState = useSelector((state) => state.blogCat.blogCat);   //state.blogCat is same as the blogCat in the store.js   and the "blogCat" is same as the "blogCat" in the blogCatSlice.js "state.blogCat = action.payload;"
+    const couponState = useSelector((state) => state.coupon.coupons);    //state.coupon is same as the brand in the store.js   and the "coupons" is same as the "coupons" in the couponSlice.js "state.coupons = action.payload;"
     const data1 = [];
-    for (let i = 0; i < blogCatState.length; i++) {
+    for (let i = 0; i < couponState.length; i++) {
         data1.push({
             key: i+1,
-            title: blogCatState[i].title,
+            name: couponState[i].name,
+            expiryDate: new Date(couponState[i].expiryDate).toLocaleString(),   //converting the date to the local date format
+            discount: couponState[i].discount,
             action:(<>
                 <Link to="" className='fs-5 text-danger'><MdEditNote /></Link> 
                 <Link to="" className='fs-5 ms-3 text-danger'><MdOutlineDeleteOutline /></Link>   { /* ms stands for "margin start" */ }
             </>),
         });
     }
+
     return (
         <div>
-            <h3 className="mb-4 title">Blog Categories</h3>
+            <h3 className="mb-4 title">Coupons</h3>
             <div>
                 <Table
                     columns={columns} 
@@ -55,6 +68,6 @@ const BlogCatList = () => {
     )
 }
 
-export default BlogCatList;
+export default CouponList;
 
 //dashboard- navigation of BlogList,Inquiries is done in MainLayout.jsx where the key value of MainLayout.jsx is same as the path value of the BlogList,Inquiries.jsx in App.js

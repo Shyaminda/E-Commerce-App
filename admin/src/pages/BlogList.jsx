@@ -33,7 +33,7 @@ const BlogList = () => {
         dispatch(getBlogs());
     }, [dispatch]);
     
-    const blogState = useSelector((state) => state.blog.blogs);
+    const blogState = useSelector((state) => state.blog.blogs);     //state.blog is same as the blog in the store.js   and the "blogs" is same as the "blogs" in the brandSlice.js "state.blogs = action.payload;"
     const data1 = [];
     for (let i = 0; i < blogState.length; i++) {
         data1.push({
