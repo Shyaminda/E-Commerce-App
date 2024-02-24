@@ -1,7 +1,7 @@
 import React, { useEffect} from 'react';
 import { Table } from 'antd';
 import { useDispatch } from 'react-redux';
-import { getBrands } from '../feature/brand/brandSlice';
+import { getBrands, resetState } from '../feature/brand/brandSlice';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MdEditNote } from "react-icons/md";
@@ -27,6 +27,7 @@ const BrandList = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(resetState()); //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
         dispatch(getBrands());
     },[dispatch]);
 
@@ -37,7 +38,7 @@ const BrandList = () => {
             key: i+1,
             title: brandState[i].title,
             action:(<>
-                <Link to="" className='fs-5 text-danger'><MdEditNote /></Link> 
+                <Link to={`/admin/brand/${brandState[i]._id}`} className='fs-5 text-danger'><MdEditNote /></Link> 
                 <Link to="" className='fs-5 ms-3 text-danger'><MdOutlineDeleteOutline /></Link>   { /* ms stands for "margin start" */ }
             </>),
         });

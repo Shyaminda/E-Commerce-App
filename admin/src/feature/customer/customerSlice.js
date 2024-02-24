@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import customerService from "./customerService";
 
-export const getUsers = createAsyncThunk("customer/get-customers",async (thunkAPI) => {
+export const getUsers = createAsyncThunk("customer/get-customers",async (thunkAPI) => {   //this getUsers is used below addCases not the getUsers in return statement below
     try {
         return await customerService.getUsers();     //the getUsers is same as the .addCase(getUsers.fulfilled, (state, action) => { in the customerSlice.js
     } catch (error) {

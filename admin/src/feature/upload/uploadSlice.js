@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import uploadService from "./uploadService";
 
-export const uploadImg = createAsyncThunk("upload/images",async (data,thunkAPI) => {
+export const uploadImg = createAsyncThunk("upload/images",async (data,thunkAPI) => {   //this uploadImg is used below addCases not the uploadImg in return statement below
     try {
         const formData = new FormData();
         for(let i = 0; i < data.length; i++) {   // loop through the files and append them to the formData
@@ -14,7 +14,7 @@ export const uploadImg = createAsyncThunk("upload/images",async (data,thunkAPI) 
 }
 );
 
-export const deleteImg = createAsyncThunk("delete/images",async (id,thunkAPI) => {
+export const deleteImg = createAsyncThunk("delete/images",async (id,thunkAPI) => {   //this deleteImg is used below addCases not the deleteImg in return statement below
     try {
         return await uploadService.deleteImages(id);
     } catch (error) {

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import productCatService from "./productCatService";
 
-export const getProductCategories = createAsyncThunk("productCategory/get-productCat",async (thunkAPI) => {
+export const getProductCategories = createAsyncThunk("productCategory/get-productCat",async (thunkAPI) => {   //this getProducts is used below addCases not the getProducts in return statement below
     try {
         return await productCatService.getProductCategories();     //the getProducts is same as the .addCase(getProducts.fulfilled, (state, action) => { in the customerSlice.js
     } catch (error) {
@@ -10,7 +10,7 @@ export const getProductCategories = createAsyncThunk("productCategory/get-produc
 }
 );
 
-export const createProductCategory = createAsyncThunk(
+export const createProductCategory = createAsyncThunk(   //this createProducts is used below addCases not the createProducts in return statement below
     "brand/create-productCat",
     async (categoryData, thunkAPI) => {
     try {

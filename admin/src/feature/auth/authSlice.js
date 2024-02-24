@@ -13,7 +13,7 @@ const initialState = {
     message:"",
 };
 
-export const login = createAsyncThunk("auth/admin-login", async (user,thunkAPI) => {     //TODO:tutorial has "auth/login" instead of "auth/admin-login"
+export const login = createAsyncThunk("auth/admin-login", async (user,thunkAPI) => {    //this login is used below addCases not the login in return statement below    //TODO:tutorial has "auth/login" instead of "auth/admin-login"
     try{
         return await authService.login(user);      //"user" same as the authService login function. not certain 100% 
     } catch (error) {

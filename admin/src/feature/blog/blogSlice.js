@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import blogService from "./blogService";
 
-export const getBlogs = createAsyncThunk("color/get-color",async (thunkAPI) => {
+export const getBlogs = createAsyncThunk("color/get-color",async (thunkAPI) => {   //this getBlogs is used below addCases
     try {
         return await blogService.getBlogs();     //the getProducts is same as the .addCase(getProducts.fulfilled, (state, action) => { in the customerSlice.js
     } catch (error) {
@@ -10,7 +10,7 @@ export const getBlogs = createAsyncThunk("color/get-color",async (thunkAPI) => {
 }
 );
 
-export const createBlog = createAsyncThunk(
+export const createBlog = createAsyncThunk(      //this createBlog is used below addCases not the createBlog in return statement below
     "blog/create-blog",
     async (blogData, thunkAPI) => {
     try {

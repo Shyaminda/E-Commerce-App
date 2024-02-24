@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import inquiryService from "./inquiryService";
 
-export const getInquiries = createAsyncThunk("inquiry/get-inquiry",async (thunkAPI) => {
+export const getInquiries = createAsyncThunk("inquiry/get-inquiry",async (thunkAPI) => {   //this getInquiries is used below addCases not the getInquiries in return statement below
     try {
         return await inquiryService.getInquiries();     //the getProducts is same as the .addCase(getProducts.fulfilled, (state, action) => { in the customerSlice.js
     } catch (error) {

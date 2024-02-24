@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import productService from "./productService";
 
 
-export const getProducts = createAsyncThunk("products/get-products",async (thunkAPI) => {
+export const getProducts = createAsyncThunk("products/get-products",async (thunkAPI) => {   //this getProducts is used below addCases not the getProducts in return statement below
     try {
         return await productService.getProducts();     //the getProducts is same as the .addCase(getProducts.fulfilled, (state, action) => { in the customerSlice.js
     } catch (error) {
@@ -11,7 +11,7 @@ export const getProducts = createAsyncThunk("products/get-products",async (thunk
 }
 );
 
-export const createProducts = createAsyncThunk(
+export const createProducts = createAsyncThunk(    //this createProducts is used below addCases not the createProducts in return statement below
     "product/create-products",
     async (productData, thunkAPI) => {
     try {

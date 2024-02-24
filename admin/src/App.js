@@ -47,6 +47,7 @@ function App() {
           <Route path='category' element={<AddCategory />} />       {/* the path should be same as the MainLayout key values */}
           <Route path='brand-list' element={<BrandList />} />             {/* the path should be same as the MainLayout key values */}
           <Route path='brand' element={<AddBrand />} />             {/* the path should be same as the MainLayout key values */}
+          <Route path='brand/:id' element={<AddBrand />} />             {/* the path should be same as the MainLayout key values */}
           <Route path='product-list' element={<ProductList />} />         {/* the path should be same as the MainLayout key values */}
           <Route path='product' element={<AddProduct />} />         {/* the path should be same as the MainLayout key values */}
         </Route>

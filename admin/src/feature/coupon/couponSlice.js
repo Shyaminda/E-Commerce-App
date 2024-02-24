@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import couponService from "./couponService";
 
-export const getCoupons = createAsyncThunk("coupon/get-coupons",async (thunkAPI) => {
+export const getCoupons = createAsyncThunk("coupon/get-coupons",async (thunkAPI) => {     //this getCoupons is used below addCases not the getCoupons in return statement below
     try {
         return await couponService.getCoupons();   //getCoupons: This thunk is responsible for fetching coupon data asynchronously from the server. It calls the getCoupons function from the couponService module.  //the getProducts is same as the .addCase(getProducts.fulfilled, (state, action) => { in the customerSlice.js
     } catch (error) {
@@ -10,7 +10,7 @@ export const getCoupons = createAsyncThunk("coupon/get-coupons",async (thunkAPI)
 }
 );
 
-export const createCoupon = createAsyncThunk(    //This thunk is responsible for creating a new coupon asynchronously. It calls the createCoupon function from the couponService module, passing couponData as an argument.
+export const createCoupon = createAsyncThunk(     //this createCoupon is used below addCases not the createCoupon in return statement below   //This thunk is responsible for creating a new coupon asynchronously. It calls the createCoupon function from the couponService module, passing couponData as an argument.
     "coupon/create-coupon",
     async (couponData, thunkAPI) => {
     try {
