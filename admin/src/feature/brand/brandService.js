@@ -13,12 +13,17 @@ const createBrand = async (brand) => {        //The parameter "brand" in the cre
 };
 
 const updateBrand = async (brand) => {        //The parameter "brand" in the createBrand function represents the data or payload that you want to send as the request body
-    const response = await axios.put(`${base_url}brand/${brand.id}`, {title: brand.brandData.title}, config);    //todo: figure out from where the brandData is coming
+    const response = await axios.put(`${base_url}brand/${brand.id}`, {title: brand.brandData.title}, config);    //todo: figure out from where the brandData is coming when I remove brandData the update is not working anyway there is a brandData is used in brandSlice.js
     return response.data;
 };
 
-const getBrand = async (id) => {        //The parameter "brand" in the createBrand function represents the data or payload that you want to send as the request body
+const getBrand = async (id) => {   
     const response = await axios.get(`${base_url}brand/${id}`, config);
+    return response.data;
+};
+
+const deleteBrand = async (id) => {        
+    const response = await axios.delete(`${base_url}brand/${id}`, config);
     return response.data;
 };
 
@@ -26,7 +31,8 @@ const brandService = {
     getBrands,
     createBrand,
     getBrand,
-    updateBrand
+    updateBrand,
+    deleteBrand,
 };
 
 export default brandService;

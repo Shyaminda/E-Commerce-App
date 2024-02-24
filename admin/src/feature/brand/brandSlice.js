@@ -39,6 +39,15 @@ export const createBrand = createAsyncThunk(     //this createBrand is used in b
     }
 );
 
+export const deleteABrand = createAsyncThunk("brand/delete-brand",async (id,thunkAPI) => {    //this deleteABrand is used in builder cases below not the deleteBrand in return statement below
+    try {
+        return await brandService.deleteBrand(id);   
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+}
+);
+
 export const resetState = createAction("Reset_all");   //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
 const initialState = {
     brands: [],
@@ -108,6 +117,21 @@ export const brandSlice = createSlice({
             state.updatedBrand = action.payload;   //used in AddBrand.jsx
         })
         .addCase(updateABrand.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error;
+        })
+        .addCase(deleteABrand.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(deleteABrand.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.deletedBrand = action.payload;   //used in AddBrand.jsx
+        })
+        .addCase(deleteABrand.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;

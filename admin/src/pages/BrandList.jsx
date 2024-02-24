@@ -1,11 +1,12 @@
-import React, { useEffect} from 'react';
+import React, { useEffect, useState} from 'react';
 import { Table } from 'antd';
 import { useDispatch } from 'react-redux';
-import { getBrands, resetState } from '../feature/brand/brandSlice';
+import { deleteABrand, getBrands, resetState } from '../feature/brand/brandSlice';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MdEditNote } from "react-icons/md";
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import CustomModal from '../components/CustomModal';
 
 const columns = [
     {
@@ -24,6 +25,17 @@ const columns = [
 ];
 
 const BrandList = () => {
+    const [open, setOpen] = useState(false);
+    const [brandId, setBrandId] = useState("");   //this is done to get the id of the brand to be deleted
+    const showModal = (e) => {
+        setOpen(true);
+        setBrandId(e)
+    };
+    //console.log(brandId);   //shows the id of the brand to be deleted
+    const hideModal = () => {
+        setOpen(false);
+    };
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -39,9 +51,24 @@ const BrandList = () => {
             title: brandState[i].title,
             action:(<>
                 <Link to={`/admin/brand/${brandState[i]._id}`} className='fs-5 text-danger'><MdEditNote /></Link> 
-                <Link to="" className='fs-5 ms-3 text-danger'><MdOutlineDeleteOutline /></Link>   { /* ms stands for "margin start" */ }
+                <button 
+                    to="" 
+                    className='fs-5 ms-3 text-danger bg-bg-transparent border-0'   // ms stands for "margin start"
+                    onClick={() => showModal(brandState[i]._id)}    //the id is taken from the brandState and passed to the showModal function
+                >    
+                    <MdOutlineDeleteOutline />
+                </button>   
             </>),
         });
+    }
+
+    const deleteBrand = (e) => {
+        dispatch(deleteABrand(e));
+        setOpen(false);
+        
+        setTimeout(() => {    //this is done to get the updated data after the delete action is performed and more instantly
+            dispatch(getBrands());     //this is done to get the updated data after the delete action is performed
+        },500);
     }
 
     return (
@@ -53,6 +80,12 @@ const BrandList = () => {
                     dataSource={data1}
                 />
             </div>
+            <CustomModal 
+                hideModal={hideModal}
+                open={open}
+                performAction={()=>{deleteBrand(brandId)}}    //brandId is passed from state above
+                title="Are You Sure You Want To Delete This Brand?"
+            />
         </div>
     )
 }

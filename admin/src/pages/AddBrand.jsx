@@ -57,14 +57,14 @@ const AddBrand = () => {
         if (isError) {
             toast.error("Something Went Wrong!");
         }
-    }, [isSuccess, isError, createdBrand, updatedBrand, navigate]);
+    }, [isSuccess, isError, createdBrand, updatedBrand]);
 
 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-        title: brandName || "",    //the value of the brandName is set to the formik values where the selected brand name is shown in the input field
-        },
+        title: brandName || "", //you should provide a default value for brandName in case it's null. You can use optional chaining (?.) to safely access nested properties without throwing an error   
+        },    //the value of the brandName is set to the formik values where the selected brand name is shown in the input field
         validationSchema: schema,
 
         onSubmit: (values) => {
@@ -77,8 +77,8 @@ const AddBrand = () => {
                 formik.resetForm();
                 setTimeout(() => {
                     dispatch(resetState());       //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
-                    navigate("/admin/brand-list");   //navigating to the products page after the product is added
-                },1000);
+                    //navigate("/admin/brand-list");   //navigating to the products page after the product is added
+                },100);
             }
         },
     });
