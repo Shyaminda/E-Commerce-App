@@ -114,7 +114,7 @@ export const productCatSlice = createSlice({
             state.isLoading = false;
             state.isError = false;
             state.isSuccess = true;
-            state.productCategoryName = action.payload.title;        //used in AddCategory.jsx
+            state.productCategoryName = action.payload.title;        //used in AddCategory.jsx  //"title" is productCatModel field
         })
         .addCase(getAProductCategory.rejected, (state, action) => {
             state.isLoading = false;

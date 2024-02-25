@@ -99,7 +99,7 @@ export const colorSlice = createSlice({
             state.isLoading = false;
             state.isError = false;
             state.isSuccess = true;
-            state.colorName = action.payload.title;   //used in AddColor.jsx
+            state.colorName = action.payload.name;   //used in AddColor.jsx //"name" is colorModel field
         })
         .addCase(getAColor.rejected, (state, action) => {
             state.isLoading = false;

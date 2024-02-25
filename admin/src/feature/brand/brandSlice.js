@@ -99,7 +99,7 @@ export const brandSlice = createSlice({
             state.isLoading = false;
             state.isError = false;
             state.isSuccess = true;
-            state.brandName = action.payload.title;   //used in AddBrand.jsx
+            state.brandName = action.payload.title;   //used in AddBrand.jsx   //"title" is brandModel field
         })
         .addCase(getABrand.rejected, (state, action) => {
             state.isLoading = false;

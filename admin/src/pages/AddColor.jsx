@@ -50,7 +50,7 @@ const AddColor = () => {
         name: colorName || "",
         },
         validationSchema: schema,
-//Todo: figure out why the already selected color is not shown in the form field when the form is opened for the second time to edit
+    //*figure out why the already selected color is not shown in the form field when the form is opened for the second time to edit => just figured out the issue was with in ColorSlice getAColor payload, the correct ColorModel field name was not used
         onSubmit: (values) => {
         // alert(JSON.stringify(values, null, 2));   //the alert is just for testing
         if(getColorId !== undefined) {

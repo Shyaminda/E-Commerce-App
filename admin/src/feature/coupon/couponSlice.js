@@ -21,6 +21,33 @@ export const createCoupon = createAsyncThunk(     //this createCoupon is used be
     }
 );
 
+export const getACoupon = createAsyncThunk("coupon/get-coupon",async (id,thunkAPI) => {    //this getAColor is used in builder cases below not the getColor in return statement below
+    try {
+        return await couponService.getCoupon(id);   
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+}
+);
+
+export const updateACoupon = createAsyncThunk("coupon/update-coupon",async (color,thunkAPI) => {    //this updateAColor is used in builder cases below not the updateColor in return statement below
+    try {
+        return await couponService.updateCoupon(color);   //getBrands: This thunk is responsible for fetching brand data asynchronously from the server. It calls the getBrands function from the brandService module.  //the getProducts is same as the .addCase(getProducts.fulfilled, (state, action) => { in the customerSlice.js
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+}
+);
+
+export const deleteACoupon = createAsyncThunk("coupon/delete-coupon",async (id,thunkAPI) => {    //this deleteAColor is used in builder cases below not the deleteColor in return statement below
+    try {
+        return await couponService.deleteCoupon(id);   
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+}
+);
+
 export const resetState = createAction("Reset_all");   //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
 const initialState = {
     coupons: [],
@@ -60,6 +87,51 @@ export const couponSlice = createSlice({
             state.createdCoupon = action.payload;   //used in AddCoupon.jsx
         })
         .addCase(createCoupon.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error;
+        })
+        .addCase(getACoupon.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(getACoupon.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.couponName = action.payload.name;   //used in AddColor.jsx  //"name" is couponModel field
+        })
+        .addCase(getACoupon.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error;
+        })
+        .addCase(updateACoupon.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(updateACoupon.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.updatedCoupon = action.payload;   //used in AddColor.jsx
+        })
+        .addCase(updateACoupon.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+            state.message = action.error;
+        })
+        .addCase(deleteACoupon.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(deleteACoupon.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = true;
+            state.deletedCoupon = action.payload;   //used in AddColor.jsx
+        })
+        .addCase(deleteACoupon.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSuccess = false;

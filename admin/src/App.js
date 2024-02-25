@@ -37,6 +37,7 @@ function App() {
           <Route path='add-blog' element={<AddBlog />} />                 {/* the path should be same as the MainLayout key values */}
           <Route path='coupon-list' element={<CouponList />} />           {/* the path should be same as the MainLayout key values */}
           <Route path='coupon' element={<AddCoupon />} />                 {/* the path should be same as the MainLayout key values */}
+          <Route path='coupon/:id' element={<AddCoupon />} />      {/* both update function and create function are in the AddBrand */}           {/* the path should be same as the MainLayout key values */}
           <Route path='blog-category-list' element={<BlogCatList />} />   {/* the path should be same as the MainLayout key values */}
           <Route path='blog-category' element={<AddBlogCat />} />         {/* the path should be same as the MainLayout key values */}
           <Route path='orders' element={<Orders />} />                    {/* the path should be same as the MainLayout key values */}
