@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaArrowTrendDown } from "react-icons/fa6";
-import { Column } from '@ant-design/plots';
+//import { Column } from '@ant-design/plots';
 import { Table } from 'antd';
 
 const columns = [
@@ -113,6 +113,7 @@ const Dashboard = () => {
             },
         },
     };
+    console.log(config);
     return (
     <div>
         <h3 className="mb-4 title">Dashboard</h3>
@@ -142,7 +143,7 @@ const Dashboard = () => {
         <div className="mt-4">
             <h3 className="mb-4">Income Statistics</h3>
             <div>
-                <Column {...config} />
+                {/* <Column {...config} /> */}
             </div>
         </div>
         <div className="mt-4">
