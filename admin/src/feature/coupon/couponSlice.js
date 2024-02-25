@@ -99,7 +99,9 @@ export const couponSlice = createSlice({
             state.isLoading = false;
             state.isError = false;
             state.isSuccess = true;
-            state.couponName = action.payload.name;   //used in AddColor.jsx  //"name" is couponModel field
+            state.couponName = action.payload.name;    //used in AddColor.jsx  //"name","discount","expiryDate" is couponModel field
+            state.couponDiscount = action.payload.discount;  //in the tutorial [0] is used in front of every payload("action.payload[0].name","action.payload.discount[0]","action.payload[0].expiryDate") but in my case it is not used
+            state.couponExpiry = action.payload.expiryDate;   
         })
         .addCase(getACoupon.rejected, (state, action) => {
             state.isLoading = false;

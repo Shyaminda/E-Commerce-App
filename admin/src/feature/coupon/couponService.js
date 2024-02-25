@@ -13,7 +13,11 @@ const createCoupon = async (coupon) => {        //The parameter "coupon" in the 
 };
 
 const updateCoupon = async (coupon) => {        //The parameter "coupon" in the createBrand function represents the data or payload that you want to send as the request body
-    const response = await axios.put(`${base_url}coupon/${coupon.id}`, {name: coupon.couponData.name}, config);    //"couponData" is passed from AddCoupon.jsx where under the "onSubmit: (values) => {"    //the "values" passed from AddCoupon.jsx from formik "couponData: values" is passed to here so that the title can be extracted and updated
+    const response = await axios.put(`${base_url}coupon/${coupon.id}`, {
+        name: coupon.couponData.name,
+        discount: coupon.couponData.discount,
+        expiryDate: coupon.couponData.expiry,
+    }, config);    //"couponData" is passed from AddCoupon.jsx where under the "onSubmit: (values) => {"    //the "values" passed from AddCoupon.jsx from formik "couponData: values" is passed to here so that the title can be extracted and updated
     return response.data;                                         //also above "name" is the name of the field in the model of the backend
 };
 
