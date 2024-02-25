@@ -17,7 +17,7 @@ const AddCategory = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const getProductCatId = location.pathname.split("/")[3];   //getting the id of the productCategory from the url for better understanding check AddBrand.jsx
+    const getProductCatId = location.pathname.split("/")[3];   //getting the id of the productCategory from the url for better understanding check AddBrand.jsx   //the id is extracted from the url after you click the edit button in of the product category list where from there it is passed, the id of the productCategory
 
     const newCategory = useSelector((state) => state.productCat);   //getting the state from productCatSlice the whole Category state is taken here because we need to check the success and error of the Category
     const { isSuccess, isError, createdProductCat, updatedProductCat, productCategoryName } = newCategory;
@@ -53,7 +53,7 @@ const AddCategory = () => {
 
         onSubmit: (values) => {
             if(getProductCatId !== undefined){
-                const data = {id: getProductCatId, categoryData: values};    //this categoryDate is passed to the updateProductCategory action in the productCatSlice.js
+                const data = {id: getProductCatId, categoryData: values};    //this categoryData is passed to the updateProductCategory as the parameter as below "data" action in the productCatSlice.js then passed to productCatService.js updateProductCategory function
                 dispatch(updateProductCategory(data));   //the "data" is passed to the updateProductCategory action in the productCatSlice.js
                 dispatch(resetState());  //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
             } else {

@@ -17,7 +17,7 @@ const AddBrand = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const getBrandId = location.pathname.split("/")[3];   //getting the id from the url
+    const getBrandId = location.pathname.split("/")[3];   //getting the id from the url  //the id is extracted from the url after you click the edit button in of the brand list where from there it is passed, the id of the color
     //console.log(getBrandId);   //the id is taken from the url //by useLocation we get a array and the url is split by "/" and the id is taken from the array [3] 
     //console.log data
         //     0
@@ -70,7 +70,7 @@ const AddBrand = () => {
         onSubmit: (values) => {
         // alert(JSON.stringify(values, null, 2));   //the alert is just for testing
             if(getBrandId !== undefined) {
-                const data = {id: getBrandId, brandData: values};    //this brandData is passed to the updateBrand action in the brandSlice.js
+                const data = {id: getBrandId, brandData: values};    //this brandData is passed to the updateBrand as the parameter as below "data" action in the brandSlice.js then passed to brandService.js updateBrand function
                 dispatch(updateABrand(data));    //the "data" is passed to the updateBrand action in the brandSlice.js
                 dispatch(resetState());   //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
             } else {
@@ -79,7 +79,7 @@ const AddBrand = () => {
                 setTimeout(() => {
                     dispatch(resetState());       //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
                     //navigate("/admin/brand-list");   //navigating to the products page after the product is added
-                },100);
+                },500);
             }
         },
     });

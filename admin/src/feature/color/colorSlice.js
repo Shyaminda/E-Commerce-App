@@ -23,7 +23,7 @@ export const createColor = createAsyncThunk(      //this createColor is used bel
 
 export const getAColor = createAsyncThunk("color/get-color",async (id,thunkAPI) => {    //this getAColor is used in builder cases below not the getColor in return statement below
     try {
-        return await colorService.getColor(id);   //getBrands: This thunk is responsible for fetching brand data asynchronously from the server. It calls the getBrands function from the brandService module.  //the getProducts is same as the .addCase(getProducts.fulfilled, (state, action) => { in the customerSlice.js
+        return await colorService.getColor(id);   
     } catch (error) {
         return thunkAPI.rejectWithValue(error);
     }
