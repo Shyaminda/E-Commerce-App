@@ -8,6 +8,7 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 import { deleteABlogCategory, getBlogCategories } from '../feature/blogCategory/blogCatSlice';
 import { resetState } from '../feature/product/productSlice';
 import CustomModal from '../components/CustomModal';
+import { toast } from 'react-toastify';
 
 const columns = [
     {
@@ -67,11 +68,21 @@ const BlogCatList = () => {
     const deleteBlogCat = (e) => {
         dispatch(deleteABlogCategory(e));
         setOpen(false);
+        if (isSuccess && deleteABlogCategory) {
+            toast.success("Blog Category Deleted Successfully!");
+        }
+        if (isError) {
+            toast.error("Something Went Wrong!");
+        }
         
         setTimeout(() => {    //this is done to get the updated data after the delete action is performed and more instantly
             dispatch(getBlogCategories());     //this is done to get the updated data after the delete action is performed
         },500);
     }
+
+    const newBlogCategory = useSelector((state) => state.blogCat); //"blogCat" should be same as store.js  //getting the state from blogCatSlice the whole brand state is taken here because we need to check the success and error of the blogCat
+    const { isSuccess, isError } = newBlogCategory;
+    
     
     return (
         <div>
