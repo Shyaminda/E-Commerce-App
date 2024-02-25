@@ -12,9 +12,27 @@ const createColor = async (color) => {        //The parameter "color" in the cre
     return response.data;
 };
 
+const updateColor = async (color) => {        //The parameter "color" in the createBrand function represents the data or payload that you want to send as the request body
+    const response = await axios.put(`${base_url}color/${color.id}`, {title: color.colorData.title}, config);    //"colorData" is passed from AddColor.jsx where under the "onSubmit: (values) => {"    //the "values" passed from AddColor.jsx from formik "colorData: values" is passed to here so that the title can be extracted and updated
+    return response.data;
+};
+
+const getColor = async (id) => {   
+    const response = await axios.get(`${base_url}color/${id}`, config);
+    return response.data;
+};
+
+const deleteColor = async (id) => {        
+    const response = await axios.delete(`${base_url}color/${id}`, config);
+    return response.data;
+};
+
 const colorService = {
     getColors,
-    createColor
+    createColor,
+    getColor,
+    updateColor,
+    deleteColor,
 };
 
 export default colorService;
