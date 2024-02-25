@@ -13,7 +13,12 @@ const createBlog = async (blog) => {
 };
 
 const updateBlog = async (blog) => {        //The parameter "blog" in the createBrand function represents the data or payload that you want to send as the request body
-    const response = await axios.put(`${base_url}blog/${blog.id}`, {title: blog.blogData.title}, config);    //"blogData" is passed from AddBlog.jsx where under the "onSubmit: (values) => {"    //the "values" passed from AddBlog.jsx from formik "blogData: values" is passed to here so that the title can be extracted and updated
+    const response = await axios.put(`${base_url}blog/${blog.id}`, {
+        title: blog.blogData.title,
+        category: blog.blogData.category,
+        
+        images: blog.blogData.images,
+    }, config);    //"blogData" is passed from AddBlog.jsx where under the "onSubmit: (values) => {"    //the "values" passed from AddBlog.jsx from formik "blogData: values" is passed to here so that the title can be extracted and updated
     return response.data;                                         //also above "title" is the name of the field in the model of the backend
 };
 

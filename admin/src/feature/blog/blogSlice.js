@@ -100,6 +100,9 @@ export const blogSlice = createSlice({
             state.isError = false;
             state.isSuccess = true;
             state.blogName = action.payload.title;   //used in AddBlog.jsx //"title" is blogModel field
+            state.blogCategory = action.payload.category;   //used in AddBlog.jsx
+            state.blogDesc = action.payload.description;   //used in AddBlog.jsx
+            state.blogImages = action.payload.images;   //used in AddBlog.jsx
         })
         .addCase(getABlog.rejected, (state, action) => {
             state.isLoading = false;

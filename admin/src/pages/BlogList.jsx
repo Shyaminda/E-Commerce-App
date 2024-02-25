@@ -55,7 +55,7 @@ const BlogList = () => {
             title: blogState[i].title,
             category: blogState[i].category,
             action:(<>
-                <Link to={`/admin/blog/${blogState[i]._id}`} className='fs-5 text-danger'><MdEditNote /></Link> 
+                <Link to={`/admin/add-blog/${blogState[i]._id}`} className='fs-5 text-danger'><MdEditNote /></Link> 
                 <button 
                     to="" 
                     className='fs-5 ms-3 text-danger bg-bg-transparent border-0'   // ms stands for "margin start"
