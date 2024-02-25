@@ -35,6 +35,7 @@ function App() {
           <Route path='inquiries' element={<Inquiries />} />              {/* the path should be same as the MainLayout key values */}
           <Route path='blog-list' element={<BlogList />} />               {/* the path should be same as the MainLayout key values */}
           <Route path='add-blog' element={<AddBlog />} />                 {/* the path should be same as the MainLayout key values */}
+          <Route path='add-blog/:id' element={<AddBlog />} />      {/* both update function and create function are in the AddBlog */}           {/* the path should be same as the MainLayout key values */}
           <Route path='coupon-list' element={<CouponList />} />           {/* the path should be same as the MainLayout key values */}
           <Route path='coupon' element={<AddCoupon />} />                 {/* the path should be same as the MainLayout key values */}
           <Route path='coupon/:id' element={<AddCoupon />} />      {/* both update function and create function are in the AddCoupon */}           {/* the path should be same as the MainLayout key values */}
