@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import { getInquiries } from '../feature/inquiries/inquirySlice';
+import { deleteAInquiry, getInquiries } from '../feature/inquiries/inquirySlice';
+import { FaRegEye } from "react-icons/fa";
+import CustomModal from '../components/CustomModal';
 
 const columns = [
     {
@@ -43,6 +45,17 @@ const columns = [
 ];
 
 const Inquiries = () => {
+    const [open, setOpen] = useState(false);
+    const [inquiryId, setInquiryId] = useState("");   //this is done to get the id of the brand to be deleted
+    const showModal = (e) => {
+        setOpen(true);
+        setInquiryId(e)
+    };
+    //console.log(brandId);   //shows the id of the brand to be deleted
+    const hideModal = () => {
+        setOpen(false);
+    };
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -67,10 +80,27 @@ const Inquiries = () => {
                 </>
             ),
             action:(<>
-                <Link to="" className='fs-5 ms-3 text-danger'><MdOutlineDeleteOutline /></Link>   { /* ms stands for "margin start" */ }
+                <Link to={`/admin/inquiries/${inquiryState[i]._id}`} className='fs-5 ms-3 text-danger'><FaRegEye /></Link>   { /* ms stands for "margin start" */ }
+                <button 
+                    to="" 
+                    className='fs-5 ms-3 text-danger bg-bg-transparent border-0'   // ms stands for "margin start"
+                    onClick={() => showModal(inquiryState[i]._id)}    //the id is taken from the brandState and passed to the showModal function
+                >    
+                    <MdOutlineDeleteOutline />
+                </button>   { /* ms stands for "margin start" */ }
             </>),
         });
     }
+
+    const deleteInquiry = (e) => {
+        dispatch(deleteAInquiry(e));
+        setOpen(false);
+        
+        setTimeout(() => {    //this is done to get the updated data after the delete action is performed and more instantly
+            dispatch(getInquiries());     //this is done to get the updated data after the delete action is performed
+        },500);
+    }
+
     return (
     <div>
         <h3 className="mb-4 title">Inquiries</h3>
@@ -80,6 +110,12 @@ const Inquiries = () => {
                 dataSource={data1}
             />
         </div>
+        <CustomModal 
+                hideModal={hideModal}
+                open={open}
+                performAction={()=>{deleteInquiry(inquiryId)}}    //brandId is passed from state above
+                title="Are You Sure You Want To Delete This Inquiry?"
+            />
     </div>
     )
 }
