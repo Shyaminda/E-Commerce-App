@@ -22,6 +22,7 @@ import AddBrand from './pages/AddBrand.jsx';
 import AddProduct from './pages/AddProduct.jsx';
 import CouponList from './pages/CouponList.jsx';
 import AddCoupon from './pages/AddCoupon.jsx';
+import ViewInquiries from './pages/ViewInquiries.jsx';
 
 function App() {
   return (
@@ -32,7 +33,8 @@ function App() {
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/admin' element={<MainLayout />}>
           <Route index element={<DashBoard />} />
-          <Route path='inquiries' element={<Inquiries />} />              {/* the path should be same as the MainLayout key values */}
+          <Route path='inquiries' element={<Inquiries />} />              {/* the path should be same as the MainLayout key values */}             {/* the path should be same as the MainLayout key values */}
+          <Route path='view-inquiries/:id' element={<ViewInquiries />} />              {/* the path should be same as the MainLayout key values */}             {/* the path should be same as the MainLayout key values */}
           <Route path='blog-list' element={<BlogList />} />               {/* the path should be same as the MainLayout key values */}
           <Route path='add-blog' element={<AddBlog />} />                 {/* the path should be same as the MainLayout key values */}
           <Route path='add-blog/:id' element={<AddBlog />} />      {/* both update function and create function are in the AddBlog */}           {/* the path should be same as the MainLayout key values */}

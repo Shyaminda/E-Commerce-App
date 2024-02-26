@@ -17,13 +17,11 @@ const deleteInquiry = async (id) => {
     return response.data;
 };
 
-const updateInquiry = async (inquiry) => {        //The parameter "inquiry" in the updateInquiry function represents the data or payload that you want to send as the request body
-    const response = await axios.put(`${base_url}inquiry/${inquiry.id}`, {
-        name: inquiry.inquiryData.name
+const updateInquiry = async (inquiry) => {
+    const response = await axios.put(`${base_url}inquiry/${inquiry.id}`,{ status: inquiry.inquiryData },config);  //this is the url of the backend   //"inquiryData" is passed from AddInquiry.jsx where under the "onSubmit: (values) => {"    //the "values" passed from AddInquiry.jsx from formik "inquiryData: values" is passed to here so that the title can be extracted and updated
+    return response.data;                                   //also above "status" is the name of the field in the model of the backend
+};                                       
 
-    }, config);    //"inquiryData" is passed from AddInquiry.jsx where under the "onSubmit: (values) => {"    //the "values" passed from AddInquiry.jsx from formik "inquiryData: values" is passed to here so that the title can be extracted and updated
-    return response.data;                                         //also above "name" is the name of the field in the model of the backend
-};
 
 const inquiryService = {
     getInquiries,

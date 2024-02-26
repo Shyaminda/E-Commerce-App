@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import { deleteAInquiry, getInquiries } from '../feature/inquiries/inquirySlice';
+import { deleteAInquiry, getInquiries, updateAInquiry } from '../feature/inquiries/inquirySlice';
 import { FaRegEye } from "react-icons/fa";
 import CustomModal from '../components/CustomModal';
 
@@ -74,15 +74,23 @@ const Inquiries = () => {
             date: inquiryState[i].createdAt,
             status: (
                 <>
-                    <select name='' className='form-control form-select' id=''>
-                        <option value=''>set status</option>
+                    <select
+                        name=""
+                        defaultValue={inquiryState[i].status ? inquiryState[i].status : "Submitted"}
+                        className="form-control form-select"
+                        id=""
+                        onChange={(e) => setInquiryStatus(e.target.value, inquiryState[i]._id)}
+                    >
+                        <option value="Submitted">Submitted</option>
+                        <option value="Contacted">Contacted</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
                     </select>
                 </>
             ),
             action:(<>
-                <Link to={`/admin/inquiries/${inquiryState[i]._id}`} className='fs-5 ms-3 text-danger'><FaRegEye /></Link>   { /* ms stands for "margin start" */ }
+                <Link to={`/admin/view-inquiries/${inquiryState[i]._id}`} className='fs-5 ms-3 text-danger'><FaRegEye /></Link>   { /* ms stands for "margin start" */ }
                 <button 
-                    to="" 
                     className='fs-5 ms-3 text-danger bg-bg-transparent border-0'   // ms stands for "margin start"
                     onClick={() => showModal(inquiryState[i]._id)}    //the id is taken from the brandState and passed to the showModal function
                 >    
@@ -91,6 +99,12 @@ const Inquiries = () => {
             </>),
         });
     }
+
+    const setInquiryStatus = (e, i) => {
+        //console.log(e, i);
+        const data = { id: i, inquiryData: e };
+        dispatch(updateAInquiry(data));
+    };
 
     const deleteInquiry = (e) => {
         dispatch(deleteAInquiry(e));
