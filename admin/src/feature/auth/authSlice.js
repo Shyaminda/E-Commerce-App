@@ -9,8 +9,7 @@ const initialState = {
     user: getUserFromLocalStorage,
     orders: [],
     userOrder: {
-        products: [],
-        product: [],
+        products: [],    //this not included in the tutorial. I added this.because without this code line an error occurs
     },
     isLoading: false,
     isError: false,
