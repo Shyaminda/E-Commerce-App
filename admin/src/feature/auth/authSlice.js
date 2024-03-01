@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk,createAction } from "@reduxjs/toolkit";
 import authService from "./authService";
 
 const getUserFromLocalStorage = localStorage.getItem("user")
@@ -7,6 +7,11 @@ const getUserFromLocalStorage = localStorage.getItem("user")
 
 const initialState = {
     user: getUserFromLocalStorage,
+    orders: [],
+    userOrder: {
+        products: [],
+        product: [],
+    },
     isLoading: false,
     isError: false,
     isSuccess: false,
@@ -21,10 +26,29 @@ export const login = createAsyncThunk("auth/admin-login", async (user,thunkAPI) 
     }
 });
 
+export const getOrders = createAsyncThunk("order/get-orders",async (thunkAPI) => {     //this getOrders is used below addCases not the getOrders in return statement below
+    try {
+        return await authService.getOrders();     //the getProducts is same as the .addCase(getProducts.fulfilled, (state, action) => { in the customerSlice.js
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+}
+);
+
+export const getAOrder = createAsyncThunk("order/get-order",async (id,thunkAPI) => {     //this getAOrder is used below addCases not the getOrder in return statement below
+    try {
+        return await authService.getOrder(id);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+}
+);
+
 export const resetLoginStatus = () => ({
     type: 'auth/resetLoginStatus',
 });
 
+export const resetState = createAction("Reset_all");   //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
 export const authSlice = createSlice({
     name: "auth",
     initialState: initialState,
@@ -52,8 +76,38 @@ export const authSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
-
             })
+            .addCase(getOrders.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getOrders.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.orders = action.payload;
+            })
+            .addCase(getOrders.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+            })
+            .addCase(getAOrder.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getAOrder.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.userOrder = action.payload;
+            })
+            .addCase(getAOrder.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+            })
+            .addCase(resetState, () => initialState);
     },
 });
 

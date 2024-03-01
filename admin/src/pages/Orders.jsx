@@ -5,8 +5,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MdEditNote } from "react-icons/md";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import { getOrders } from '../feature/order/orderSlice';
-
+import { getOrders } from '../feature/auth/authSlice';
 
 const columns = [
     {
@@ -44,19 +43,18 @@ const Orders = () => {
         dispatch(getOrders());
     },[dispatch]);
 
-    const orderState = useSelector((state) => state.order.orders);  //state.color is same as the color in the store.js   and the "colors" is same as the "colors" in the initialState name array in the colorSlice.js
+    const orderState = useSelector((state) => state.auth.orders);  //state.color is same as the color in the store.js   and the "colors" is same as the "colors" in the initialState name array in the colorSlice.js
+    //console.log(orderState);
     const data1 = [];
     for (let i = 0; i < orderState.length; i++) {
         data1.push({
             key: i+1,
             name: orderState[i].orderBy.firstName,
-            product: orderState[i].products.map((item,j) => {
-                return (
-                    <ul key={j}>
-                        <li>{item.product.title}</li>
-                    </ul>
-                );
-            }),
+            product: (
+                <Link to={`/admin/order/${orderState[i].orderBy._id}`}>
+                    View Orders
+                </Link>
+            ),
             amount: orderState[i].paymentIntent.amount,
             date: new Date(orderState[i].createdAt).toLocaleString(),
             action:(<>

@@ -23,6 +23,7 @@ import AddProduct from './pages/AddProduct.jsx';
 import CouponList from './pages/CouponList.jsx';
 import AddCoupon from './pages/AddCoupon.jsx';
 import ViewInquiries from './pages/ViewInquiries.jsx';
+import ViewOrders from './pages/ViewOrders.jsx';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path='blog-category' element={<AddBlogCat />} />         {/* the path should be same as the MainLayout key values */}
           <Route path='blog-category/:id' element={<AddBlogCat />} />  {/* both update function and create function are in the AddBlogCat */}       {/* the path should be same as the MainLayout key values */}
           <Route path='orders' element={<Orders />} />                    {/* the path should be same as the MainLayout key values */}
+          <Route path='order/:id' element={<ViewOrders />} />                    {/* the path should be same as the MainLayout key values */}
           <Route path='customers' element={<Customers />} />              {/* the path should be same as the MainLayout key values */}
           <Route path='color-list' element={<ColorList />} />             {/* the path should be same as the MainLayout key values */}
           <Route path='color' element={<AddColor />} />                   {/* the path should be same as the MainLayout key values */}

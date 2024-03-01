@@ -351,10 +351,10 @@ const userCart = asyncHandler(async (req, res) => {
         let products = [];    //here we create an empty array
         const user = await User.findById(_id);    //here we get the user from the database
         
-        const alreadyExistCart = await Cart.findOne({orderBy: user._id});    //here we check if the cart already exists   //the login user id will be taken from here
-        if(alreadyExistCart){    //here we check if the cart already exists
-            alreadyExistCart.remove();    //here we remove the cart because we are going to update the cart
-        }
+        // const alreadyExistCart = await Cart.findOne({orderBy: user._id});    //here we check if the cart already exists   //the login user id will be taken from here
+        // if(alreadyExistCart){    //here we check if the cart already exists
+        //     alreadyExistCart.remove();    //here we remove the cart because we are going to update the cart
+        // }
         for(let i=0;i<cart.length;i++){    //here we loop through the cart
             const product = {};    //here we create an empty object
             product.product = cart[i]._id;    //here we get the product id from the cart   //here cart[i] means the first item in the array   //_id is passed from cartModel in product field which has the link to product db
@@ -478,7 +478,7 @@ const createOrder = asyncHandler(async (req, res) => {
                 method: "COD",
             },
             orderBy: user._id,    //here we get the user id from the user
-            orderStatus: "Cash on Delivery  ",
+            orderStatus: "Cash on Delivery",
         }).save();
         
         const update = userCart.products.map((item) => {         //here we loop through the userCart.products
@@ -515,6 +515,18 @@ const getAllOrders = asyncHandler(async (req, res) => {
         res.json(allUserOrders);
     } catch (error) {
         throw new Error(error,'Error while getting all orders(user.controller.js getAllOrders)');
+    }
+});
+
+const getOrderByUser = asyncHandler(async (req, res) => {
+    const { id } = req.params;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
+    validateMdbId(id);    //here we validate the id
+
+    try {
+        const userOrdersById = await Order.findOne({orderBy: id}).populate("products.product");    //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection   //here we get the orders from the database   //here we populate the products field which is in the orderModel with the product model 
+        res.json(userOrdersById);
+    } catch (error) {
+        throw new Error(error,'Error while getting the order(user.controller.js getOrderByUser)');
     }
 });
 
@@ -561,4 +573,5 @@ export {
     getOrders,
     updateOrderStatus,
     getAllOrders,
+    getOrderByUser,
 };
