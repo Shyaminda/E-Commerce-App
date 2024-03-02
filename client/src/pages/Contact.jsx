@@ -17,6 +17,7 @@ const Contact = () => {
                 <div className="col-12">
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15846.07519758786!2d80.04231435!3d6.82822225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2slk!4v1706946931004!5m2!1sen!2slk" 
+                        title="Google Maps"
                         width="600" 
                         height="450" 
                         className='border-0 w-100' 

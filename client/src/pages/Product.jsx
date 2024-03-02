@@ -14,7 +14,7 @@ import Container from '../components/Container';
 const Product = () => {
     const props = {width: 400, height: 500, zoomWidth: 450, img: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D"};
 
-    const [orderedProduct, setOrderedProduct] = useState(true);
+    const [orderedProduct] = useState(true);     //, setOrderedProduct
     const copyToClipboard = (text) => {
         console.log('text', text)
         var textField = document.createElement('textarea')
@@ -108,10 +108,10 @@ const Product = () => {
 
                             <div className="d-flex align-items-center gap-15">
                                 <div>
-                                    <a href=''><IoGitCompare  size={17} className='me-2' />Compare</a>
+                                    <a href='/'><IoGitCompare  size={17} className='me-2' />Compare</a>
                                 </div>
                                 <div>
-                                    <a href=''><FaRegHeart size={16} className='me-2' />Add to Wishlist</a>
+                                    <a href='/'><FaRegHeart size={16} className='me-2' />Add to Wishlist</a>
                                 </div>
                             </div>
 
@@ -124,8 +124,8 @@ const Product = () => {
 
                             <div className='d-flex gap-10 align-items-center my-2'>
                                 <h4 className='product-heading'>Product Link:</h4>
-                                    <a href='javascript:void(0);' onClick={() => copyToClipboard("https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D")} className='product-data'>Copy Product Link</a>     {/* copying the link to clipboard */}
-                            </div>
+                                    <a href='/' onClick={() => copyToClipboard("https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D")} className='product-data'>Copy Product Link</a>     {/* copying the link to clipboard */}
+                            </div>  {/* inside href="javascript:void(0);" */}
                             
                         </div>
                     </div>
