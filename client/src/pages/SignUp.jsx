@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 const signUpSchema = yup.object({
     firstName: yup.string().required("First name is required"),
     lastName: yup.string().required("Last name is required"),
-    email: yup.string().email("Email is required"),
+    email: yup.string().email("Email is required").required("Email is required"),
     mobile: yup.string().required("Mobile Number is required"),
     password: yup.string().required("Password is required"), //.min(6, "Password must be at least 6 characters"),
 });
@@ -25,7 +25,7 @@ const SignUp = () => {
 
     useEffect(() => {
         if (isSuccess && createdUser) {
-            toast.info("User Created Successfully!");
+            toast.success("User Created Successfully!");
         }
         if (isError) {
             toast.error("Something Went Wrong!");
