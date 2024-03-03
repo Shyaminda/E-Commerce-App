@@ -1,21 +1,28 @@
 import React from 'react';
 import ReactStars from "react-rating-stars-component";
 import { Link,useLocation } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { addToWishlist } from '../features/products/productSlice';
 
 const ProductCard = (Props) => {
     const { grid, data } = Props;
     const location = useLocation();
     //console.log(data);
-    
+    const dispatch = useDispatch();
+
+    const addToWish = (productId) => {
+        dispatch(addToWishlist(productId));
+    };
+
     return (
     <>
         {
             Array.isArray(data) && data?.map((item, index) => {     //Array.isArray() is used to determine whether the passed value is an array. If it is, the method returns true, otherwise it returns false.
                 return (
                     <div key={index} className={`${location.pathname === "/store" ? `gr-${grid}` : "col-3"}`}>
-                        <Link to="product/:id" className="product-card position-relative">
+                        <Link className="product-card position-relative">   {/* to="product/:id" */}
                             <div className="wishlist-icon position-absolute">
-                                <button className='border-0 bg-transparent'>
+                                <button className='border-0 bg-transparent' onClick={(e)=>{addToWish(item?._id)}}>
                                     <img src="images/wish.svg" alt="wishlist" />
                                 </button>
                             </div>

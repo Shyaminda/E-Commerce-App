@@ -17,8 +17,8 @@ export const login = createAsyncThunk("auth/login", async (userData,thunkAPI) =>
     }
 });
 
-const getCustomerFromLocalStorage = localStorage.getItem("customer")
-? JSON.parse(localStorage.getItem("customer")) 
+const getCustomerFromLocalStorage = localStorage.getItem("user")
+? JSON.parse(localStorage.getItem("user")) 
 : null;
 
 

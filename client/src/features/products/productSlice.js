@@ -9,6 +9,14 @@ export const getAllProducts = createAsyncThunk("product/get-product", async (thu
     }
 });
 
+export const addToWishlist = createAsyncThunk("product/wishList", async (productId,thunkAPI) => {    //this getAllProducts is used below addCases not the getProducts in return statement below 
+    try{
+        return await productService.addToWishlist(productId);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+});
+
 const productState = {           //While "initialState" is a conventional name, you can use any name for your initial state object. In this case, "productState" might have been chosen to better reflect the purpose of the state slice, which appears to be related to product-related data management.
     product: "",
     isLoading: false,
@@ -40,6 +48,21 @@ export const productSlice = createSlice({
                 state.product = action.payload;
             })
             .addCase(getAllProducts.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+            })
+            .addCase(addToWishlist.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(addToWishlist.fulfilled, (state, action) => {
+                state.isError = false;
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.wishlist = action.payload;
+            })
+            .addCase(addToWishlist.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;
