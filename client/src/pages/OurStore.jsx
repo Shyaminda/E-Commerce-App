@@ -7,7 +7,7 @@ import ProductCard from '../components/ProductCard';
 import Color from '../components/Color';
 import Container from '../components/Container';
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts } from '../features/products/productSlice';
+import { getProducts } from '../features/products/productSlice';
 
 const OurStore = () => {
     const [grid, setGrid] = useState(4); 
@@ -17,11 +17,11 @@ const OurStore = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        getProducts();
+        getAllProducts();
     },[]);
 
-    const getProducts = () => {
-        dispatch(getAllProducts());
+    const getAllProducts = () => {
+        dispatch(getProducts());
     };
 
 return (

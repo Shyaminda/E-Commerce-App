@@ -17,7 +17,7 @@ export const getABlog = createAsyncThunk("blog/get-blog", async (id,thunkAPI) =>
     }
 });
 
-const productState = {           //While "initialState" is a conventional name, you can use any name for your initial state object. In this case, "productState" might have been chosen to better reflect the purpose of the state slice, which appears to be related to product-related data management.
+const blogState = {           //While "initialState" is a conventional name, you can use any name for your initial state object. In this case, "productState" might have been chosen to better reflect the purpose of the state slice, which appears to be related to product-related data management.
     blog: "",
     isLoading: false,
     isError: false,
@@ -25,9 +25,9 @@ const productState = {           //While "initialState" is a conventional name, 
     message:"",
 };
 
-export const productSlice = createSlice({
+export const blogSlice = createSlice({
     name: "blog",
-    initialState: productState,
+    initialState: blogState,
     reducers:{},
     extraReducers: (builder) => {
         builder
@@ -64,4 +64,4 @@ export const productSlice = createSlice({
     }
 });
 
-export default productSlice.reducer;   
+export default blogSlice.reducer;   

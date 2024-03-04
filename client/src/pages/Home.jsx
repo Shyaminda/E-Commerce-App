@@ -9,18 +9,27 @@ import services from '../utils/Data';
 import { useDispatch, useSelector } from "react-redux";
 import { getBlogs } from '../features/blog/blogSlice';
 import moment from 'moment';
+import { getProducts } from '../features/products/productSlice';
 
 function Home() {
     const blogState = useSelector((state) => state.blog.blog);
     //console.log(blogState);
+    const productState = useSelector((state) => state.product.product);
+    console.log(productState);
+
     const dispatch = useDispatch();
 
     useEffect(() => {
         getAllBlogs();
+        getAllProducts();
     },[]);
 
     const getAllBlogs = () => {
         dispatch(getBlogs());
+    };
+
+    const getAllProducts = () => {
+        dispatch(getProducts());
     };
 
     return (
@@ -183,10 +192,26 @@ function Home() {
                     </div>
                 </div>
                 <div className='row'>
-                    <SpecialProduct />
-                    <SpecialProduct />
-                    <SpecialProduct />
-                    <SpecialProduct />
+                {
+                    productState && productState?.map((item,index) => {
+                        if(item.tags === "special"){
+                            return(
+                                <SpecialProduct 
+                                    key={index}
+                                    id={item?._id}
+                                    title={item?.title}
+                                    price={item?.price}
+                                    brand={item?.brand}
+                                    totalRatings={item?.totalRatings.toString()}
+                                    images={item?.images[0].url}
+                                    sold={item?.sold}
+                                    quantity={item?.quantity}
+                                />
+                            )
+                        }
+                        return null;
+                    })
+                }
                 </div> 
             </Container>
 
