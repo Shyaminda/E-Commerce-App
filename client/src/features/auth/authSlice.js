@@ -33,14 +33,7 @@ const initialState = {
 export const authSlice = createSlice({
     name: "auth",
     initialState: initialState,
-    reducers:{
-        resetLoginStatus: (state) => {
-            state.isSuccess = false;
-            state.isError = false;
-            state.isLoading = false;
-            state.message = "";
-        },
-    },
+    reducers:{},
     extraReducers: (builder) => {
         builder
             .addCase(register.pending, (state) => {
