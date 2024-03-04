@@ -10,7 +10,7 @@ const getProducts = async () =>{
 };
 
 const addToWishlist = async (productId) =>{
-    const response = await axios.put(`${base_url}product/wishList`,{productId},config);  //this url: http://localhost:3000/api/product/wishList is the same url as the backend    //here this "productId" should be same as the key used in the server side product.controller.js addToWishList function
+    const response = await axios.put(`${base_url}product/wishList`,productId,config);  //this url: http://localhost:3000/api/product/wishList is the same url as the backend    //here this "productId" should be same as the key used in the server side product.controller.js addToWishList function
     if(response.data){
         return response.data;
     }
