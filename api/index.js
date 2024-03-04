@@ -17,7 +17,11 @@ import cors from 'cors';
 import uploadRouter from './routes/uploadRouter.js';
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3001', // Allow requests from the client origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specified HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allow specified headers
+    }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
