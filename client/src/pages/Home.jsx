@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Marquee from "react-fast-marquee";
 import BlogCard from '../components/BlogCard';
@@ -6,8 +6,23 @@ import ProductCard from '../components/ProductCard';
 import SpecialProduct from '../components/SpecialProduct';
 import Container from '../components/Container';
 import services from '../utils/Data';
+import { useDispatch, useSelector } from "react-redux";
+import { getBlogs } from '../features/blog/blogSlice';
+import moment from 'moment';
 
 function Home() {
+    const blogState = useSelector((state) => state.blog.blog);
+    //console.log(blogState);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        getAllBlogs();
+    },[]);
+
+    const getAllBlogs = () => {
+        dispatch(getBlogs());
+    };
+
     return (
         <>
             <Container class1="home-wrapper-1 py-5">
@@ -278,18 +293,24 @@ function Home() {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-3">
-                        <BlogCard />
-                    </div>
-                    <div className="col-3">
-                        <BlogCard />
-                    </div>
-                    <div className="col-3">
-                        <BlogCard />
-                    </div>
-                    <div className="col-3">
-                        <BlogCard />
-                    </div>
+                {
+                    blogState && blogState?.map((item,index) => {
+                        if(index < 4){
+                            return(
+                                <div className="col-3" key={index}>
+                                    <BlogCard 
+                                        id={item?._id}
+                                        title={item?.title}
+                                        description={item?.description}
+                                        images={item?.images[0].url}
+                                        date={moment(item?.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                                    />
+                                </div>
+                            )
+                        }
+                        return null;
+                    })
+                }
                 </div>
             </Container>
         </>

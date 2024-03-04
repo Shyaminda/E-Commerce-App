@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Meta from '../components/Meta';
 import BreadCrumbs from '../components/BreadCrumbs';
 import BlogCard from '../components/BlogCard';
 import Container from '../components/Container';
+import { useDispatch, useSelector } from "react-redux";
+import { getBlogs } from '../features/blog/blogSlice';
+import moment from 'moment';
 
-const Blog   = () => {
+const Blog = () => {
+    const blogState = useSelector((state) => state.blog.blog);
+    //console.log(blogState);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        getAllBlogs();
+    },[]);
+
+    const getAllBlogs = () => {
+        dispatch(getBlogs());
+    };
+    
     return (
     <>
         <Meta title="Blogs" />
@@ -28,18 +43,21 @@ const Blog   = () => {
                 </div>
                 <div className="col-9">
                     <div className="row">
-                        <div className="col-6 mb-3">
-                            <BlogCard />
-                        </div>
-                        <div className="col-6 mb-3">
-                            <BlogCard />
-                        </div>
-                        <div className="col-6 mb-3">
-                            <BlogCard />
-                        </div>
-                        <div className="col-6 mb-3">
-                            <BlogCard />
-                        </div>
+                    {
+                        blogState && blogState?.map((item,index) => {
+                            return(
+                                <div className="col-6 mb-3" key={index}>
+                                    <BlogCard 
+                                        id={item?._id}
+                                        title={item?.title}
+                                        description={item?.description}
+                                        images={item?.images[0].url}
+                                        date={moment(item?.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                                    />
+                                </div>
+                            )
+                        })
+                    }
                     </div>
                 </div>
             </div>
