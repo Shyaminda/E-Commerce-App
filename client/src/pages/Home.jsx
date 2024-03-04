@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useLocation } from 'react-router-dom';
 import Marquee from "react-fast-marquee";
 import BlogCard from '../components/BlogCard';
 import ProductCard from '../components/ProductCard';
@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBlogs } from '../features/blog/blogSlice';
 import moment from 'moment';
 import { getProducts } from '../features/products/productSlice';
+import ReactStars from "react-rating-stars-component";
+import { addToWishlist } from '../features/products/productSlice';
 
 function Home() {
     const blogState = useSelector((state) => state.blog.blog);
@@ -30,6 +32,10 @@ function Home() {
 
     const getAllProducts = () => {
         dispatch(getProducts());
+    };
+
+    const addToWish = (productId) => {
+        dispatch(addToWishlist(productId));
     };
 
     return (
@@ -267,10 +273,59 @@ function Home() {
                         </div>
                     </div>
                     <div className="row">
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
+
+                    {
+                        productState && productState?.map((item,index) => {
+                            if(item.tags === "popular"){
+                                return(
+                                    <div key={index} className={"col-3"}>
+                                    <Link className="product-card position-relative">   {/* to="product/:id" */}
+                                        <div className="wishlist-icon position-absolute">
+                                            <button className='border-0 bg-transparent' onClick={(e)=>{addToWish(item?._id)}}>
+                                                <img src="images/wish.svg" alt="wishlist" />
+                                            </button>
+                                        </div>
+
+                                        <div className="product-image">
+                                            <img src={item.images.length > 0 && item.images[0].url} alt="product" className='img-fluid' />
+                                            <img src="images/watch-1.webp" alt="product" className='img-fluid' />
+                                        </div>
+
+                                        <div className="product-details">
+                                            <h6 className="brand">{item?.brand}</h6>
+                                            <h5 className="product-title">{item?.title}</h5>
+                                            <ReactStars
+                                                count={5}
+                                                size={10}
+                                                value={item?.totalRatings.toString()}
+                                                edit={false}
+                                                activeColor="#ffd700" 
+                                            />
+                                            <p className='price'>$ {item?.price}</p>
+                                        </div>
+                                        
+                                        <div className="action-bar position-absolute">
+                                            <div className="d-flex flex-column gap-10">
+                                                <button className='border-0 bg-transparent'>
+                                                    <img src="images/add-cart.svg" alt="add-cart" />
+                                                </button>
+                                                <button className='border-0 bg-transparent'>
+                                                    <img src="images/prodcompare.svg" alt="prodcompare" />
+                                                </button>
+                                                <button className='border-0 bg-transparent'>
+                                                    <img src="images/view.svg" alt="view" />
+                                                </button>
+                                                
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </div>
+                                )
+                            }
+                            return null;
+                        })
+                    }
+
                     </div>
             </Container>
 
