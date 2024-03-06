@@ -41,7 +41,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 });
 
 const getProduct = asyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params;  // get the id from the req.params which is done with the useLocation in productService.js in client
     try {
         const findProducts = await Product.findById(id);
         res.json(findProducts);

@@ -192,7 +192,7 @@ return (
                         </div>
                     </div>
                     <div className="product-list pb-5">
-                        <div className="d-flex flex-wrap gap-10"><ProductCard data={productState} grid={grid}/></div>     {/* if an error occur with not displaying the products in this page do data={productState ? productState : []} */}
+                        <div className="d-flex flex-wrap gap-10"><ProductCard data={productState} grid={grid} /></div>     {/* if an error occur with not displaying the products in this page do data={productState ? productState : []} */}
                     </div>
                 </div>
             </div>

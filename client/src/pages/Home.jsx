@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import { Link,useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Marquee from "react-fast-marquee";
 import BlogCard from '../components/BlogCard';
-import ProductCard from '../components/ProductCard';
 import SpecialProduct from '../components/SpecialProduct';
 import Container from '../components/Container';
 import services from '../utils/Data';
@@ -20,6 +19,7 @@ function Home() {
     console.log(productState);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         getAllBlogs();
@@ -189,7 +189,7 @@ function Home() {
                             if(item.tags === "featured"){
                                 return(
                                     <div key={index} className={"col-3"}>
-                                    <Link className="product-card position-relative">   {/* to="product/:id" */}
+                                    <div className="product-card position-relative">   {/* to="product/:id" */}
                                         <div className="wishlist-icon position-absolute">
                                             <button className='border-0 bg-transparent' onClick={(e)=>{addToWish(item?._id)}}>
                                                 <img src="images/wish.svg" alt="wishlist" />
@@ -223,12 +223,12 @@ function Home() {
                                                     <img src="images/prodcompare.svg" alt="prodcompare" />
                                                 </button>
                                                 <button className='border-0 bg-transparent'>
-                                                    <img src="images/view.svg" alt="view" />
+                                                    <img onClick={()=>navigate("/product/" + item?._id)} src="images/view.svg" alt="view" />
                                                 </button>
                                                 
                                             </div>
                                         </div>
-                                    </Link>
+                                    </div>
                                 </div>
                                 )
                             }
@@ -326,7 +326,7 @@ function Home() {
                             if(item.tags === "popular"){
                                 return(
                                     <div key={index} className={"col-3"}>
-                                    <Link className="product-card position-relative">   {/* to="product/:id" */}
+                                    <div className="product-card position-relative">   {/* to="product/:id" */}
                                         <div className="wishlist-icon position-absolute">
                                             <button className='border-0 bg-transparent' onClick={(e)=>{addToWish(item?._id)}}>
                                                 <img src="images/wish.svg" alt="wishlist" />
@@ -359,13 +359,13 @@ function Home() {
                                                 <button className='border-0 bg-transparent'>
                                                     <img src="images/prodcompare.svg" alt="prodcompare" />
                                                 </button>
-                                                <button className='border-0 bg-transparent'>
-                                                    <img src="images/view.svg" alt="view" />
+                                                <button to={`/product/${item._id}`} className='border-0 bg-transparent' >
+                                                    <img onClick={()=>navigate("/product/" + item?._id)} src="images/view.svg" alt="view" />
                                                 </button>
                                                 
                                             </div>
                                         </div>
-                                    </Link>
+                                    </div>
                                 </div>
                                 )
                             }

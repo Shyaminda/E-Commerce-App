@@ -1,18 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import BreadCrumbs from '../components/BreadCrumbs';
 import Meta from '../components/Meta';
 import ProductCard from '../components/ProductCard';
 import ReactStars from "react-rating-stars-component";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import ReactImageZoom from 'react-image-zoom';
 import Color from '../components/Color';
 import { IoGitCompare } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa";
 import Container from '../components/Container';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAProduct } from '../features/products/productSlice';
 
 const Product = () => {
-    const props = {width: 400, height: 500, zoomWidth: 450, img: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D"};
+    const location = useLocation();
+    const getProductId = location.pathname.split('/')[2];    //splitting the url to get the product id
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getAProduct(getProductId));
+    },[dispatch, getProductId]);
+
+    const productState = useSelector((state) => state.product.singleProduct);
+    //console.log(productState);
+
+
+    const props = {width: 400, height: 500, zoomWidth: 450, img: productState?.images[0]?.url ? productState?.images[0]?.url : "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D"  };
 
     const [orderedProduct] = useState(true);     //, setOrderedProduct
     const copyToClipboard = (text) => {
@@ -35,20 +49,27 @@ const Product = () => {
                         <div><ReactImageZoom {...props} /></div>
                     </div>
                     <div className="other-product-images d-flex flex-wrap gap-10">
+                        {productState?.images?.map((img, index) => {
+                            return(
+                                <div key={index}>
+                                    <img src={img?.url} alt='watch' className='img-fluid' />
+                                </div>
+                            )
+                        })}
+                        {/* <div><img src='https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D' alt='watch' className='img-fluid' /></div>
                         <div><img src='https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D' alt='watch' className='img-fluid' /></div>
                         <div><img src='https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D' alt='watch' className='img-fluid' /></div>
-                        <div><img src='https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D' alt='watch' className='img-fluid' /></div>
-                        <div><img src='https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D' alt='watch' className='img-fluid' /></div>
+                        <div><img src='https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D' alt='watch' className='img-fluid' /></div> */}
                     </div>
                 </div>
                 
                 <div className="col-6">
                     <div className="main-product-details">
                         <div className='border-bottom'>
-                            <h5 className='title'>Titan watch with water resistance</h5>
+                            <h5 className='title'>{productState?.title}</h5>
                         </div>
                         <div className="border-bottom py-3">
-                            <p className="price">$ 100</p>
+                            <p className="price">$ {productState?.price}</p>
                             <div className="d-flex align-items-center gap-10">
                                 <ReactStars
                                     count={5}
@@ -68,15 +89,15 @@ const Product = () => {
                             </div>
                             <div className='d-flex gap-10 align-items-center my-2'>
                                 <h4 className='product-heading'>Brand:</h4>
-                                <p className='product-data'>Rolex</p>
+                                <p className='product-data'>{productState?.brand}</p>
                             </div>
                             <div className='d-flex gap-10 align-items-center my-2'>
                                 <h4 className='product-heading'>Category:</h4>
-                                <p className='product-data'>Watch</p>
+                                <p className='product-data'>{productState?.category}</p>
                             </div>
                             <div className='d-flex gap-10 align-items-center my-2'>
                                 <h4 className='product-heading'>Tags:</h4>
-                                <p className='product-data'>watch</p>
+                                <p className='product-data'>{productState?.tags}</p>
                             </div>
                             <div className='d-flex gap-10 align-items-center my-2'>
                                 <h4 className='product-heading'>Availability:</h4>
@@ -124,7 +145,7 @@ const Product = () => {
 
                             <div className='d-flex gap-10 align-items-center my-2'>
                                 <h4 className='product-heading'>Product Link:</h4>
-                                    <a href='/' onClick={() => copyToClipboard("https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D")} className='product-data'>Copy Product Link</a>     {/* copying the link to clipboard */}
+                                    <a href="javascript:void(0);" onClick={() => {copyToClipboard(window.location.href)}} className='product-data'>Copy Product Link</a>     {/* copying the link to clipboard */}
                             </div>  {/* inside href="javascript:void(0);" */}
                             
                         </div>
@@ -138,11 +159,7 @@ const Product = () => {
                 <div className="col-12">
                     <h4>Description</h4>
                     <div className="bg-white p-3">
-                        <p>
-                            Eum dicta nulla praesentium voluptatem ut at facilis cumque. Et et et amet ipsam enim aliquid est sapiente. Dolorem ut vitae dolores adipisci nostrum et est. Officia eos dolor adipisci est.
-                            Nesciunt esse iste assumenda est quasi quisquam ipsum praesentium et. Suscipit quisquam voluptas amet voluptatem adipisci neque ipsa. Enim amet illo quae sit voluptatum. Deserunt quae iusto est quaerat doloremque sint sed. Voluptas pariatur corporis.
-                            Veritatis neque laborum. Accusamus dicta repellat et. Quia sed ea tempora quia quod cupiditate. Corporis praesentium atque incidunt enim est ipsum ipsam dolorem. Omnis aliquam iste debitis ut animi possimus sint autem. Consequatur aut eius quae sapiente quia.
-                        </p>
+                        <p dangerouslySetInnerHTML={{__html: productState?.description}}></p>
                     </div>
                 </div>
             </div>
@@ -160,7 +177,7 @@ const Product = () => {
                                     <ReactStars
                                         count={5}
                                         size={15}
-                                        value={4}
+                                        value={productState?.totalRatings.toString()}
                                         edit={false}
                                         activeColor="#ffd700" 
                                     />

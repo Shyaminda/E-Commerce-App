@@ -20,7 +20,7 @@ const ProductCard = (Props) => {
             Array.isArray(data) && data?.map((item, index) => {     //Array.isArray() is used to determine whether the passed value is an array. If it is, the method returns true, otherwise it returns false.
                 return (
                     <div key={index} className={`${location.pathname === "/store" ? `gr-${grid}` : "col-3"}`}>
-                        <Link className="product-card position-relative">   {/* to="product/:id" */}
+                        <div className="product-card position-relative">   {/* to="product/:id" */}
                             <div className="wishlist-icon position-absolute">
                                 <button className='border-0 bg-transparent' onClick={(e)=>{addToWish(item?._id)}}>
                                     <img src="images/wish.svg" alt="wishlist" />
@@ -51,13 +51,13 @@ const ProductCard = (Props) => {
                                     <button className='border-0 bg-transparent'>
                                         <img src="images/prodcompare.svg" alt="prodcompare" />
                                     </button>
-                                    <button className='border-0 bg-transparent'>
+                                    <Link to={`/product/${item._id}`} className='border-0 bg-transparent'>
                                         <img src="images/view.svg" alt="view" />
-                                    </button>
+                                    </Link>
                                     
                                 </div>
                             </div>
-                        </Link>
+                        </div>
                     </div>
                 )
             })
