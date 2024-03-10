@@ -11,6 +11,7 @@ import Order from '../models/orderModel.js';
 import Product from '../models/productModel.js';
 import Coupon from '../models/couponModel.js';
 import uniqid from 'uniqid';
+import { log } from 'console';
 
 const createUser = asyncHandler (async (req, res) => {        //here we use the asyncHandler middleware to handle asynchronous operations within the route handler. This middleware helps to avoid repetitive try-catch blocks for error handling.
     const email = req.body.email;
@@ -344,40 +345,21 @@ const getWishList = asyncHandler(async (req, res) => {       //here we get the w
 });
 
 const userCart = asyncHandler(async (req, res) => {
-    const { cart } = req.body;    //here we get the cart from the req.body object
+    console.log("userCart function is being executed");
+    const { productId,color,quantity,price } = req.body;    //here we get the cart from the req.body object
+
     const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
     validateMdbId(_id);    //here we validate the id
     try {
-        let products = [];    //here we create an empty array
-        const user = await User.findById(_id);    //here we get the user from the database
         
-        // const alreadyExistCart = await Cart.findOne({orderBy: user._id});    //here we check if the cart already exists   //the login user id will be taken from here
-        // if(alreadyExistCart){    //here we check if the cart already exists
-        //     alreadyExistCart.remove();    //here we remove the cart because we are going to update the cart
-        // }
-        for(let i=0;i<cart.length;i++){    //here we loop through the cart
-            const product = {};    //here we create an empty object
-            product.product = cart[i]._id;    //here we get the product id from the cart   //here cart[i] means the first item in the array   //_id is passed from cartModel in product field which has the link to product db
-            product.quantity = cart[i].quantity;    //here we get the quantity from the cart
-            product.color = cart[i].color;    //here we get the color from the cart
-            
-            const getPrice = await Product.findById(cart[i]._id).select("price").exec();   //here we get the price from the database and we use exec() to execute the query
-            product.price = getPrice.price;    //here we need to store the price in the product object because we need the price in the order model
-            products.push(product);    //here we push the product object to the products array because we need to store the products in the order model
-        }
-        //console.log(products);   //to get this console log a product items must have a price given (ex-2000) then only this will execute anyway update the price of the product in the database
-        let cartTotal = 0;    //here we create a variable and assign 0 to it
-        for(let i=0;i<products.length;i++){    //here we loop through the products
-            cartTotal = cartTotal + products[i].price * products[i].quantity;    //here we calculate the cartTotal   //here products[i] means the first item in the array
-        }
-        //console.log(cartTotal,products);    //to get this console log a product items must have a price given (ex-2000) then only this will execute
-
         const newCart = await new Cart({   //here we create a new cart
-            orderBy: user._id,
-            products: products,
-            cartTotal: cartTotal,
+            userId: _id,
+            productId,
+            color,
+            quantity,
+            price,
         }).save();
-        res.json(newCart);    
+        res.json(newCart);
 
         // {
         //     "orderBy": "65ac2c02f98f661518a0962a",
@@ -415,7 +397,7 @@ const getUserCart = asyncHandler(async (req, res) => {     //here we get the car
     validateMdbId(_id);    //here we validate the id
 
     try {
-        const cart = await Cart.findOne({orderBy: _id}).populate("products.product");      //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection    //here we get the cart from the database  //a cart will created to a user id   //here we populate the products field which is in the cartModel with the product model
+        const cart = await Cart.findOne({userId: _id}).populate("productId").populate("color");      //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection    //here we get the cart from the database  //a cart will created to a user id   //here we populate the products field which is in the cartModel with the product model
         res.json(cart);
     } catch (error) {
         throw new Error(error,'Error while getting the cart(user.controller.js getUserCart)');
@@ -575,3 +557,30 @@ export {
     getAllOrders,
     getOrderByUser,
 };
+
+
+
+//**the code below is from userCart function 
+// let products = [];    //here we create an empty array
+//         const user = await User.findById(_id);    //here we get the user from the database
+        
+//         // const alreadyExistCart = await Cart.findOne({orderBy: user._id});    //here we check if the cart already exists   //the login user id will be taken from here
+//         // if(alreadyExistCart){    //here we check if the cart already exists
+//         //     alreadyExistCart.remove();    //here we remove the cart because we are going to update the cart
+//         // }
+//         for(let i=0;i<cart.length;i++){    //here we loop through the cart
+//             const product = {};    //here we create an empty object
+//             product.product = cart[i]._id;    //here we get the product id from the cart   //here cart[i] means the first item in the array   //_id is passed from cartModel in product field which has the link to product db
+//             product.quantity = cart[i].quantity;    //here we get the quantity from the cart
+//             product.color = cart[i].color;    //here we get the color from the cart
+            
+//             const getPrice = await Product.findById(cart[i]._id).select("price").exec();   //here we get the price from the database and we use exec() to execute the query
+//             product.price = getPrice.price;    //here we need to store the price in the product object because we need the price in the order model
+//             products.push(product);    //here we push the product object to the products array because we need to store the products in the order model
+//         }
+//         //console.log(products);   //to get this console log a product items must have a price given (ex-2000) then only this will execute anyway update the price of the product in the database
+//         let cartTotal = 0;    //here we create a variable and assign 0 to it
+//         for(let i=0;i<products.length;i++){    //here we loop through the products
+//             cartTotal = cartTotal + products[i].price * products[i].quantity;    //here we calculate the cartTotal   //here products[i] means the first item in the array
+//         }
+//         //console.log(cartTotal,products);    //to get this console log a product items must have a price given (ex-2000) then only this will execute

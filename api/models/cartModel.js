@@ -1,33 +1,55 @@
 import mongoose from "mongoose";
 
 const cartSchema = new mongoose.Schema({
-    orderBy: {
+    userId:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        //required: true,
+        ref: "User"
     },
-    products: [
-        {
-            product: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Product",
-            },
-            quantity: {
-                type: Number,
-                //required: true,
-            },
-            color: {
-                type: String,
-                //required: true,
-            },
-            price: {
-                type: Number,
-                //required: true,
-            },
-        },
-    ],
-    cartTotal: Number,
-    totalAfterDiscount: Number,
+    productId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product"
+    },
+    quantity:{
+        type: Number,
+        required: true,
+    },
+    price:{
+        type: Number,
+        required: true,
+    },
+    color:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Color"
+    },
+
+
+    // orderBy: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "User",
+    //     //required: true,
+    // },
+    // products: [
+    //     {
+    //         product: {
+    //             type: mongoose.Schema.Types.ObjectId,
+    //             ref: "Product",
+    //         },
+    //         quantity: {
+    //             type: Number,
+    //             //required: true,
+    //         },
+    //         color: {
+    //             type: String,
+    //             //required: true,
+    //         },
+    //         price: {
+    //             type: Number,
+    //             //required: true,
+    //         },
+    //     },
+    // ],
+    // cartTotal: Number,
+    // totalAfterDiscount: Number,
     // paymentStatus: {
     //     type: String,
     //     enum: ["pending", "completed", "cancelled", "refund"],

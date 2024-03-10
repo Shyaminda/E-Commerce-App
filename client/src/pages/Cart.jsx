@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import BreadCrumbs from '../components/BreadCrumbs';
 import Meta from '../components/Meta';
 import { MdDeleteSweep } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCart } from '../features/auth/authSlice';
 
 
 const Cart = () => {
+    const dispatch = useDispatch();
+    const userCartState = useSelector((state) => state.auth.userCart);
+    console.log(userCartState);
+
+    useEffect(() => {
+        dispatch(getCart());
+    },[dispatch]);
+    
+
     return (
     <>
         <Meta title="Cart" />
@@ -21,32 +32,42 @@ const Cart = () => {
                         <h4 className='cart-col-4'>Total</h4>
                     </div>
 
-                    <div className="cart-data py-3 d-flex justify-content-between align-items-center">
-                        <div className='cart-col-1 gap-15 d-flex align-items-center'>
-                            <div className='w-25'>
-                                <img src="images/watch.jpg" alt="watch" className='img-fluid' />
-                            </div>
-                            <div className='w-75'>
-                                <p>Watch</p>
-                                <p>Colour: black</p>
-                                <p>Size: L</p>
-                            </div>
-                        </div>
-                        <div className='cart-col-2'>
-                            <h6 className="price">$ 100</h6>
-                        </div>
-                        <div className='cart-col-3 d-flex align-items-center gap-15'>
-                            <div>
-                                <input type="number" name="" min={1} id="" className='form-control' />
-                            </div>
-                            <div>
-                            <MdDeleteSweep size={25} />
-                            </div>
-                        </div>
-                        <div className='cart-col-4'>
-                            <h6 className="price">$ 100</h6>
-                        </div>
-                    </div>
+                    {
+                        userCartState && userCartState?.map((item, index)=>{
+                            return(
+                                <div key={index} className="cart-data py-3 d-flex justify-content-between align-items-center">
+                                    <div className='cart-col-1 gap-15 d-flex align-items-center'>
+                                        <div className='w-25'>
+                                            <img src="images/watch.jpg" alt="watch" className='img-fluid' />
+                                        </div>
+                                        <div className='w-75'>
+                                            <p>{item?.productId?.title}</p>
+                                            <p>Colour: 
+                                                <ul className='colors ps-0'>
+                                                    <li style={{backgroundColor: item?.name}}></li>
+                                                </ul>
+                                            </p>
+                                            {/* <p>Size: L</p> */}
+                                        </div>  
+                                    </div>
+                                    <div className='cart-col-2'>
+                                        <h6 className="price">$ {item?.price}</h6>
+                                    </div>
+                                    <div className='cart-col-3 d-flex align-items-center gap-15'>
+                                        <div>
+                                            <input type="number" name="" min={1} id="" value={item?.quantity} className='form-control' />
+                                        </div>
+                                        <div>
+                                        <MdDeleteSweep size={25} />
+                                        </div>
+                                    </div>
+                                    <div className='cart-col-4'>
+                                        <h6 className="price">$ {item?.price * item?.quantity}</h6>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
 
                     <div className='col-12 py-2 mt-4'>
                         <div className="d-flex justify-content-between align-items-baseline">

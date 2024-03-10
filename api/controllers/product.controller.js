@@ -43,7 +43,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 const getProduct = asyncHandler(async (req, res) => {
     const { id } = req.params;  // get the id from the req.params which is done with the useLocation in productService.js in client
     try {
-        const findProducts = await Product.findById(id);
+        const findProducts = await Product.findById(id).populate("color");   // find the product by id and populate the color field
         res.json(findProducts);
     } catch (error) {
         throw new Error(error, 'Product retrieving failed(getProduct product.controller.js)');

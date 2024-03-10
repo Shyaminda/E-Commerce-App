@@ -12,8 +12,15 @@ import { FaRegHeart } from "react-icons/fa";
 import Container from '../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAProduct } from '../features/products/productSlice';
+import { toast } from 'react-toastify';
+import { addToCart } from '../features/auth/authSlice';
 
 const Product = () => {
+    const [color, setColor] = useState(null);
+    const [quantity, setQuantity] = useState(1);
+    //console.log(quantity);
+    //console.log(color);
+
     const location = useLocation();
     const getProductId = location.pathname.split('/')[2];    //splitting the url to get the product id
 
@@ -24,6 +31,28 @@ const Product = () => {
 
     const productState = useSelector((state) => state.product.singleProduct);
     //console.log(productState);
+
+    const uploadCart = () => {
+        if(color === null){
+            toast.error('Please select a color');
+            return false;
+        } else {
+            dispatch(addToCart({productId: productState?._id, color , quantity, price: productState?.price}));     //here the quantity and color are are taken from the state to send
+            console.log({productId: productState?._id, color , quantity, price: productState?.price});
+        }
+    };
+
+    // const newCart = useSelector((state) => state.auth);    //getting the state from the authSlice.js
+    // const { isSuccess, isError, cart } = newCart;    //getting the success and error from the authSlice.js
+
+    // useEffect(() => {
+    //     if (isSuccess && cart) {
+    //         toast.success("Product added to cart successfully!");
+    //     }
+    //     if (isError) {
+    //         toast.error("Something Went Wrong!");
+    //     }
+    // }, [isSuccess, isError, dispatch, cart]);
 
 
     const props = {width: 400, height: 500, zoomWidth: 450, img: productState?.images[0]?.url ? productState?.images[0]?.url : "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D"  };
@@ -114,15 +143,29 @@ const Product = () => {
                             </div>
                             <div className='d-flex gap-10 flex-column mt-2 mb-3'>
                                 <h4 className='product-heading'>Colour:</h4>
-                                <Color />
+                                <Color setColor={setColor} colorData={productState?.color} />
                             </div>
                             <div className='d-flex gap-10 align-items-center flex-row mt-2 mb-3'>
                                 <h4 className='product-heading'>Quantity:</h4>
                                 <div className=''>
-                                    <input type="number" name="" min={1} style={{width:"60px"}} id='' className='form-control' />
+                                    <input 
+                                        type="number" 
+                                        name="" min={1} 
+                                        style={{width:"60px"}} 
+                                        id='' 
+                                        className='form-control' 
+                                        onChange={(e) => setQuantity(e.target.value)}
+                                        value={quantity}
+                                    />
                                 </div>
                                 <div className='d-flex align-items-center gap-15 ms-5'>
-                                    <button type='submit' className='button signIn'>Add to cart</button>
+                                    <button 
+                                        type='submit'
+                                        className='button signIn'
+                                        onClick={() => {uploadCart()}}
+                                    >
+                                        Add to cart
+                                    </button>
                                     <button to="/sign-up" className='button signup'>Buy Now</button>
                                 </div>
                             </div>

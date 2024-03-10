@@ -16,7 +16,7 @@ function Home() {
     const blogState = useSelector((state) => state.blog.blog);
     //console.log(blogState);
     const productState = useSelector((state) => state.product.product);
-    console.log(productState);
+    //console.log(productState);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();

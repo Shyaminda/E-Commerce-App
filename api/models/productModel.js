@@ -50,7 +50,10 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    color: [],
+    color: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Color",
+    }],
     tags: String,
     images: [{
         public_id: String,
