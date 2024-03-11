@@ -26,9 +26,17 @@
         }
     });
 
-    export const getCart = createAsyncThunk("auth/cart/get", async (thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
+    export const getCart = createAsyncThunk("auth/cart/get-product", async (thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
         try{
             return await authService.getCart();
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    });
+
+    export const deleteCartProduct = createAsyncThunk("auth/cart/delete-product", async (id,thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
+        try{
+            return await authService.removeProductFromCart(id);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
         }
@@ -115,6 +123,27 @@
                     state.isError = true;
                     state.isSuccess = false;
                     state.message = action.error.message;
+                })
+                .addCase(deleteCartProduct.pending, (state) => {
+                    state.isLoading = true;
+                })
+                .addCase(deleteCartProduct.fulfilled, (state, action) => {
+                    state.isError = false;
+                    state.isLoading = false;
+                    state.isSuccess = true;
+                    state.deletedCartProduct = action.payload;
+                    if(state.isSuccess){
+                        toast.success("Product removed from cart")
+                    }
+                })
+                .addCase(deleteCartProduct.rejected, (state, action) => {
+                    state.isLoading = false;
+                    state.isError = true;
+                    state.isSuccess = false;
+                    state.message = action.error.message;
+                    if(state.isSuccess === false){
+                        toast.error("something went wrong!")
+                    }
                 })
         }
     });

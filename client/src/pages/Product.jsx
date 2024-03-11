@@ -29,7 +29,7 @@ const Product = () => {
     const productState = useSelector((state) => state.product.singleProduct);
     //console.log(productState);
     const cartState = useSelector((state) => state.auth.userCart);
-    //console.log(cartState);
+    //console.log(cartState);     //**output: undefined    figure out why
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -37,13 +37,13 @@ const Product = () => {
         dispatch(getCart())
     },[dispatch, getProductId]);
 
-    useEffect(() => {
-        for(let i=0; i<cartState.length; i++){
-            if(getProductId[i] === cartState[i]?.productId?._id){    //checking if the product is already in the cart
-                setAlreadyAdded(true);
-            }
-        }
-    },[cartState, getProductId]);
+    // useEffect(() => {
+    //     for(let i=0; i<cartState.length; i++){
+    //         if(getProductId[i] === cartState[i]?.productId?._id){    //checking if the product is already in the cart
+    //             setAlreadyAdded(true);
+    //         }
+    //     }
+    // },[cartState, getProductId]);
 
     const uploadCart = () => {
         if(color === null){

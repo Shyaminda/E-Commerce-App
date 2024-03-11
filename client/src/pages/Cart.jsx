@@ -5,17 +5,24 @@ import { MdDeleteSweep } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCart } from '../features/auth/authSlice';
+import { deleteCartProduct, getCart } from '../features/auth/authSlice';
 
 
 const Cart = () => {
     const dispatch = useDispatch();
     const userCartState = useSelector((state) => state.auth.userCart);
-    console.log(userCartState);
+    //console.log(userCartState);    //**output: undefined    figure out why
 
     useEffect(() => {
         dispatch(getCart());
     },[dispatch]);
+
+    const deleteACartProduct = (id) =>{
+        dispatch(deleteCartProduct(id));
+        setTimeout(() => {
+            dispatch(getCart());
+        }, 500);
+    }
     
 
     return (
@@ -58,7 +65,7 @@ const Cart = () => {
                                             <input type="number" name="" min={1} id="" value={item?.quantity} className='form-control' />
                                         </div>
                                         <div>
-                                        <MdDeleteSweep size={25} />
+                                        <MdDeleteSweep onClick={()=>{deleteACartProduct(item?._id)}} size={25} />
                                         </div>
                                     </div>
                                     <div className='cart-col-4'>
