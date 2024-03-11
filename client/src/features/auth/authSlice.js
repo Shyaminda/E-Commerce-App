@@ -34,9 +34,17 @@
         }
     });
 
-    export const deleteCartProduct = createAsyncThunk("auth/cart/delete-product", async (id,thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
+    export const deleteCartProduct = createAsyncThunk("auth/cart/delete-product", async (cartItemId,thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
         try{
-            return await authService.removeProductFromCart(id);
+            return await authService.removeProductFromCart(cartItemId);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    });
+
+    export const updateCartProduct = createAsyncThunk("auth/cart/update-product", async (cartItemId,thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
+        try{
+            return await authService.updateProductFromCart(cartItemId);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
         }
@@ -137,6 +145,27 @@
                     }
                 })
                 .addCase(deleteCartProduct.rejected, (state, action) => {
+                    state.isLoading = false;
+                    state.isError = true;
+                    state.isSuccess = false;
+                    state.message = action.error.message;
+                    if(state.isSuccess === false){
+                        toast.error("something went wrong!")
+                    }
+                })
+                .addCase(updateCartProduct.pending, (state) => {
+                    state.isLoading = true;
+                })
+                .addCase(updateCartProduct.fulfilled, (state, action) => {
+                    state.isError = false;
+                    state.isLoading = false;
+                    state.isSuccess = true;
+                    state.updatedCartProduct = action.payload;
+                    if(state.isSuccess){
+                        toast.success("Product updated from cart successfully")
+                    }
+                })
+                .addCase(updateCartProduct.rejected, (state, action) => {
                     state.isLoading = false;
                     state.isError = true;
                     state.isSuccess = false;

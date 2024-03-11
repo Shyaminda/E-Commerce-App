@@ -43,7 +43,14 @@ const getCart = async () =>{
 };
 
 const removeProductFromCart = async (cartItemId) =>{
-    const response = await axios.delete(`${base_url}user/delete-product-cart/${cartItemId}` ,config);  //this url: http://localhost:3000/api/user/register is the same url as the backend
+    const response = await axios.delete(`${base_url}user/delete-product-cart/${cartItemId}` ,config);  //this url: http://localhost:3000/api/user/register is the same url as the backend   //the cartItemId is used because of the user.controller.js removeProductFromCart function
+    if(response.data){
+        return response.data;
+    }
+};
+
+const updateProductFromCart = async (cartDetail) =>{
+    const response = await axios.put(`${base_url}user/update-product-cart/${cartDetail.cartItemId}/${cartDetail.quantity}` ,config);  //this url: http://localhost:3000/api/user/register is the same url as the   //the cartItemId is used because of the user.controller.js updateProductFromCart function
     if(response.data){
         return response.data;
     }
@@ -55,7 +62,8 @@ const authService = {
     addTOCart,
     getCart,
     getWishlist,
-    removeProductFromCart
+    removeProductFromCart,
+    updateProductFromCart
 };
 
 export default authService;

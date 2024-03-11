@@ -1,5 +1,5 @@
 import express from 'express';
-import {adminLogin, applyCoupon, blockUser, createOrder, createUser,deleteAUser,emptyCart,forgotPasswordToken,getAUser,getAllOrders,getAllUsers,getOrderByUser,getOrders,getUserCart,getWishList,handleRefreshToken,logOut,login, removeProductFromCart, resetPassword, saveAddress, unBlockUser, updateAUser, updateOrderStatus, updatePassword, userCart} from '../controllers/user.controller.js';
+import {adminLogin, applyCoupon, blockUser, createOrder, createUser,deleteAUser,emptyCart,forgotPasswordToken,getAUser,getAllOrders,getAllUsers,getOrderByUser,getOrders,getUserCart,getWishList,handleRefreshToken,logOut,login, removeProductFromCart, resetPassword, saveAddress, unBlockUser, updateAUser, updateOrderStatus, updatePassword, updateProductQuantityFromCart, userCart} from '../controllers/user.controller.js';
 import {authMiddleware,isAdmin} from '../middleware/authMiddleware.js';
 
 const authRouter = express.Router();
@@ -27,6 +27,7 @@ authRouter.get('/cart',authMiddleware,getUserCart);
 authRouter.get('/:id',authMiddleware,isAdmin,getAUser);
 authRouter.delete('/empty-cart',authMiddleware,emptyCart);
 authRouter.delete('/delete-product-cart/:cartItemId',authMiddleware,removeProductFromCart);
+authRouter.put('/update-product-cart/:cartItemId/:newQuantity',authMiddleware,updateProductQuantityFromCart);
 authRouter.delete('/:id',deleteAUser);
 
 authRouter.put('/edit-user',authMiddleware,updateAUser);

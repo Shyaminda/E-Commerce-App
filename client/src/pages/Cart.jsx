@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import BreadCrumbs from '../components/BreadCrumbs';
 import Meta from '../components/Meta';
 import { MdDeleteSweep } from "react-icons/md";
@@ -9,6 +9,8 @@ import { deleteCartProduct, getCart } from '../features/auth/authSlice';
 
 
 const Cart = () => {
+    const [cartProductUpdateDetail, setCartProductUpdateDetail] = useState(null);
+
     const dispatch = useDispatch();
     const userCartState = useSelector((state) => state.auth.userCart);
     //console.log(userCartState);    //**output: undefined    figure out why
@@ -17,11 +19,24 @@ const Cart = () => {
         dispatch(getCart());
     },[dispatch]);
 
+    useEffect(() => {
+        if(cartProductUpdateDetail !== null){    //if the cartProductUpdateDetail is not null then only dispatch the updateACartProduct
+            dispatch(updateACartProduct({cartItemId:cartProductUpdateDetail?.cartItemId,quantity:cartProductUpdateDetail?.quantity}));
+            setTimeout(() => {
+                dispatch(getCart());
+            }, 500);
+        }
+    },[cartProductUpdateDetail,dispatch]);
+
     const deleteACartProduct = (id) =>{
-        dispatch(deleteCartProduct(id));
+        dispatch(deleteCartProduct(id));   //here the id is passed 
         setTimeout(() => {
             dispatch(getCart());
         }, 500);
+    }
+
+    const updateACartProduct = (id,quantity) =>{
+        
     }
     
 
@@ -62,7 +77,15 @@ const Cart = () => {
                                     </div>
                                     <div className='cart-col-3 d-flex align-items-center gap-15'>
                                         <div>
-                                            <input type="number" name="" min={1} id="" value={item?.quantity} className='form-control' />
+                                            <input 
+                                                type="number" 
+                                                name="" 
+                                                min={1} 
+                                                id="" 
+                                                value={cartProductUpdateDetail?.quantity ? cartProductUpdateDetail?.quantity : item?.quantity} 
+                                                onChange={(e)=>{setCartProductUpdateDetail({cartItemId:item?._id,quantity:e.target.value})}} 
+                                                className='form-control' 
+                                            />
                                         </div>
                                         <div>
                                         <MdDeleteSweep onClick={()=>{deleteACartProduct(item?._id)}} size={25} />

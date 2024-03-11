@@ -406,7 +406,7 @@ const getUserCart = asyncHandler(async (req, res) => {     //here we get the car
 
 const removeProductFromCart = asyncHandler(async (req, res) => {          //here we remove a product from the cart
     const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
-    const { cartItemId } = req.params;    //here we get the cartItemId from the req.body object
+    const { cartItemId } = req.params;    //here we get the cartItemId from the req.body object  which is used in authService.removeProductFromCart(cartItemId) in the authSlice.js
     validateMdbId(_id);    //here we validate the id
 
     try{
@@ -414,6 +414,21 @@ const removeProductFromCart = asyncHandler(async (req, res) => {          //here
         res.json(deleteProductFromCart);
     } catch (error) {
         throw new Error(error,'Error while deleting the product from the cart(user.controller.js removeProductFromCart)');
+    }
+});
+
+const updateProductQuantityFromCart = asyncHandler(async (req, res) => {          //here we update the product quantity from cart
+    const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
+    const { cartItemId,newQuantity } = req.params;    //here we get the cartItemId and quantity from the req.body object
+    validateMdbId(_id);    //here we validate the id
+
+    try {
+        const cartItem = await Cart.findOne({_id: cartItemId,userId:_id});    //here we update the product quantity from cart
+        cartItem.quantity = newQuantity;    //here we update the quantity
+        cartItem.save();    //here we save the cartItem
+        res.json(cartItem);
+    } catch (error) {
+        throw new Error(error,'Error while updating the product quantity(user.controller.js updateProductQuantity)');
     }
 });    
 
@@ -563,6 +578,7 @@ export {
     userCart,
     getUserCart,
     removeProductFromCart,
+    updateProductQuantityFromCart,
     emptyCart,
     applyCoupon,
     createOrder,
