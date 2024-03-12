@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import Meta from '../components/Meta';
 import BreadCrumbs from '../components/BreadCrumbs';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Container from '../components/Container';
 import CustomInput from '../components/CustomInput';
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { login } from '../features/auth/authSlice';
+import { login, resetState } from '../features/auth/authSlice';
 
 const signInSchema = yup.object({
     email: yup.string().email("Email is required").required("Email is required"),
@@ -17,6 +17,7 @@ const signInSchema = yup.object({
 
 const SignIn = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const user = useSelector((state) => state.auth);
     const { isError, isSuccess, loggedUser } = user;
@@ -40,6 +41,15 @@ const SignIn = () => {
 
         onSubmit: (values) => {
             dispatch(login(values));
+
+            navigate('/');
+            
+            // setTimeout(() => {
+            //     if(isSuccess){
+            //         navigate('/');
+            //         dispatch(resetState());   //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
+            //     }
+            // }, 3000);   
         },
     });
 

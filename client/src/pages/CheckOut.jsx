@@ -8,7 +8,6 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { config } from '../utils/axiosConfig';
 import { createOrder } from '../features/auth/authSlice';
-import { set } from 'mongoose';
 
 const shippingSchema = yup.object({
     firstName: yup.string().required("first Name is required"),

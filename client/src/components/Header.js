@@ -11,6 +11,7 @@ const Header = () => {
 
   const cartState = useSelector((state) => state?.auth?.userCart);     //**output: undefined    figure out why
   //console.log(cartState);
+  const authState = useSelector((state) => state?.auth);    
 
   useEffect(() => {
     let sum = 0;
@@ -32,7 +33,7 @@ const Header = () => {
             </div>
             <div className="col-6">
               <p className="text-end text-white mb-0">
-                Hotline:{" "}
+                Hotline:
                 <a href="tel:0123456789" className="text-white">
                   0123456789
                 </a>
@@ -74,18 +75,25 @@ const Header = () => {
                   </Link>
                   <p className="mb-0 text-white">Compare <br />Products</p>
                 </div>
+
                 <div>
                 <Link to="/wishlist" className="d-flex align-items-center gap-5 text-white">
                     <img src="images/wishlist.svg" alt="wishlist" />
                 </Link>
                 <p className="mb-0 text-white">Wishlist</p>
                 </div>
+
                 <div>
-                <Link to="/signIn" className="d-flex align-items-center gap-5 text-white">
+                <Link to={ authState?.loggedUser === null ? "/signIn" : ""} className="d-flex align-items-center gap-5 text-white">
                     <img src="images/user.svg" alt="login" />
                 </Link>
-                <p className="mb-0 text-white">Login <br />My Account</p>
+                {
+                  authState?.loggedUser === null ?
+                  <p className="mb-0 text-white">Login <br />My Account</p> 
+                  : <p className="mb-0 text-white">welcome {authState?.loggedUser?.firstName}</p>
+                }
                 </div>
+
                 <div>
                 <Link to="/cart" className="d-flex align-items-center gap-5 text-white">
                     <img src="images/cart.svg" alt="cart" />
@@ -95,6 +103,7 @@ const Header = () => {
                   <p className="mb-0">$ {totalAmount ? totalAmount : 0}</p>
                 </div>
                 </div>
+
               </div>
             </div>
           </div>

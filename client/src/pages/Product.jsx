@@ -37,13 +37,13 @@ const Product = () => {
         dispatch(getCart())
     },[dispatch, getProductId]);
 
-    // useEffect(() => {
-    //     for(let i=0; i<cartState.length; i++){
-    //         if(getProductId[i] === cartState[i]?.productId?._id){    //checking if the product is already in the cart
-    //             setAlreadyAdded(true);
-    //         }
-    //     }
-    // },[cartState, getProductId]);
+    useEffect(() => {
+        for(let i=0; i<cartState?.length; i++){
+            if(getProductId[i] === cartState[i]?.productId?._id){    //checking if the product is already in the cart
+                setAlreadyAdded(true);
+            }
+        }
+    },[cartState, getProductId]);
 
     const uploadCart = () => {
         if(color === null){
