@@ -6,10 +6,12 @@ import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteCartProduct, getCart } from '../features/auth/authSlice';
+import { toast } from 'react-toastify';
 
 
 const Cart = () => {
     const [cartProductUpdateDetail, setCartProductUpdateDetail] = useState(null);
+    const [totalAmount, setTotalAmount] = useState(null);
 
     const dispatch = useDispatch();
     const userCartState = useSelector((state) => state.auth.userCart);
@@ -38,6 +40,14 @@ const Cart = () => {
     const updateACartProduct = (id,quantity) =>{
         
     }
+
+    useEffect(() => {
+        let sum = 0;
+        for(let i=0; i<userCartState?.length; i++){
+            sum = sum + (Number(userCartState[i]?.quantity) * userCartState[i]?.price);
+            setTotalAmount(sum);
+        }
+    },[userCartState]);
     
 
     return (
@@ -102,11 +112,14 @@ const Cart = () => {
                     <div className='col-12 py-2 mt-4'>
                         <div className="d-flex justify-content-between align-items-baseline">
                         <Link to="/product" className="button">continue to shopping</Link>
-                            <div className='d-flex flex-column align-items-end'>
-                                <h4 className='fs-6'>Sub-Total: $1000</h4>
+                            {
+                                (totalAmount !== null || totalAmount !== 0) &&
+                                <div className='d-flex flex-column align-items-end'>
+                                <h4 className='fs-6'>Sub-Total: $ {totalAmount}</h4>
                                 <p>Taxes and shipping calculated at checkout</p>
                                 <Link to="/checkout" className="button">proceed to checkout</Link>
                             </div>
+                            }
                         </div>
                     </div>
                 </div>
