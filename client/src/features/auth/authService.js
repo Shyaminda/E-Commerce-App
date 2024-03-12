@@ -78,3 +78,4 @@ export default authService;
 
 
 //todo: everything is working fine but the only problematic thing is the cart related stuff here cannot get the cart and also cannot add to the cart
+//todo: issue with wishlist not showing up in the UI

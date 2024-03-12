@@ -18,6 +18,14 @@
         }
     });
 
+    export const getUserWishlist = createAsyncThunk("auth/wishlist", async (thunkAPI) => {    //this getUserWishlist is used below addCases not the getUserWishlist in return statement below 
+        try{
+            return await authService.getWishlist();
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    });
+
     export const addToCart = createAsyncThunk("auth/cart", async (cartData,thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
         try{
             return await authService.addTOCart(cartData);
@@ -65,6 +73,7 @@
 
     const initialState = {
         user: getCustomerFromLocalStorage,
+        wishlist: [], //without this line, the wishlistState in Wishlist.jsx will be undefined
         isLoading: false,
         isError: false,
         isSuccess: false,
@@ -103,6 +112,21 @@
                     state.loggedUser = action.payload;
                 })
                 .addCase(login.rejected, (state, action) => {
+                    state.isLoading = false;
+                    state.isError = true;
+                    state.isSuccess = false;
+                    state.message = action.error;
+                })
+                .addCase(getUserWishlist.pending, (state) => {
+                    state.isLoading = true;
+                })
+                .addCase(getUserWishlist.fulfilled, (state, action) => {
+                    state.isError = false;
+                    state.isLoading = false;
+                    state.isSuccess = true;
+                    state.wishlist  = action.payload;
+                })
+                .addCase(getUserWishlist.rejected, (state, action) => {
                     state.isLoading = false;
                     state.isError = true;
                     state.isSuccess = false;
