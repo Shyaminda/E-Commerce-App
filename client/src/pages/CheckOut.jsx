@@ -3,8 +3,12 @@ import { Link } from 'react-router-dom';
 import { IoIosArrowBack } from "react-icons/io";
 import Container from '../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { config } from '../utils/axiosConfig';
+import { createOrder } from '../features/auth/authSlice';
+import { set } from 'mongoose';
 
 const shippingSchema = yup.object({
     firstName: yup.string().required("first Name is required"),
@@ -19,6 +23,8 @@ const shippingSchema = yup.object({
 const CheckOut = () => {
     const [totalAmount, setTotalAmount] = useState(null);
     const [shippingInfo, setShippingInfo] = useState(null);
+    const [cartProductState, setCartProductState] = useState([]); 
+    const [paymentInfo, setPaymentInfo] = useState({razorpayOrderId: "", razorpayPaymentId: ""});
 
     const dispatch = useDispatch();
     const userCartState = useSelector(state => state.auth.userCart);
@@ -47,8 +53,95 @@ const CheckOut = () => {
         onSubmit: (values) => {
             // alert(JSON.stringify(values));
             setShippingInfo(values);
+            setTimeout(() => {
+                checkOutHandler();
+            }, 500);
         },
     });
+
+    const loadScript = (src) => {      // the purpose of this function is to asynchronously load a JavaScript file and provide feedback via a Promise on whether the loading was successful or not.
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = () => {
+                resolve(true);
+            }
+            script.onerror = () => {
+                resolve(false);
+            }
+            document.body.appendChild(script);
+        })
+    }
+
+    useEffect(() => {
+        let items = [];
+        for(let i=0; i<userCartState?.length; i++){       //here we are creating the orderItems array
+            items.push({
+                product: userCartState[i]?.productId?._id,
+                quantity: userCartState[i]?.quantity,
+                color: userCartState[i]?.color?._id,
+                price: userCartState[i]?.price,
+            })
+        }
+        setCartProductState(items);
+    },[userCartState]);
+    //console.log(cartProductState);
+
+    const checkOutHandler = async () => {
+        const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js');
+        if(!res){
+            alert('Razorpay SDK failed to load.');
+            return;
+        }
+        const result = await axios.post('http://localhost:3000/api/user/order/checkout',{amount:totalAmount + 30},config);    //** "amount:totalAmount + 30" here 30 is the shipping cost make it dynamic
+        if(!result){
+            alert('Server error.');
+            return;
+        }
+        alert('Payment Gateway is loading...fine')
+
+        const { amount,id: order_id, currency } = result.data.order;
+        const options = {
+            key: "",     //the key key_id: "" from payment.controller.js // Enter the Key ID generated from the Dashboard
+            amount: amount,
+            currency: currency,
+            name: "chamika",
+            description: "Test Transaction",
+            image: {  },
+            order_id: order_id,
+            handler: async function (response) {
+                const data = {
+                    orderCreationId: order_id,
+                    razorpayPaymentId: response.razorpay_payment_id,
+                    razorpayOrderId: response.razorpay_order_id,
+                };
+
+                const result = await axios.post("http://localhost:3000/api/user/order/paymentVerification", data,config);
+
+                setPaymentInfo({
+                    razorpayPaymentId: response.razorpay_payment_id,
+                    razorpayOrderId: response.razorpay_order_id,
+                });
+                dispatch(createOrder({shippingInfo, totalPrice: totalAmount, totalPriceAfterDiscount: totalAmount, orderItems:cartProductState,paymentInfo }));     //these values should be same as the orderModel in the backend
+            },
+            prefill: {
+                name: "chamika",
+                email: "chamika@gmail.com",
+                contact: "9999999999",
+            },
+            notes: {
+                address: "chamika Corporate Office",
+            },
+            theme: {
+                color: "#61dafb",
+            },
+        };
+
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
+    };
+
+    
     
 
     return (
@@ -202,6 +295,7 @@ const CheckOut = () => {
                                 <div className='d-flex justify-content-between align-items-center'>
                                     <Link to="/cart" className="text-dark fw-semibold"><IoIosArrowBack className='me-2' />Return to cart</Link>
                                     <Link to="/cart" className="button">continue to shipping</Link>
+
                                     <button className='button' type='submit'>Place Order</button>
                                 </div>
                             </div>

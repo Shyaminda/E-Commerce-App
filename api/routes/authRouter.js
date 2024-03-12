@@ -1,6 +1,7 @@
 import express from 'express';
 import {adminLogin, blockUser, createOrder, createUser,deleteAUser,forgotPasswordToken,getAUser,getAllUsers,getUserCart,getWishList,handleRefreshToken,logOut,login, removeProductFromCart, resetPassword, saveAddress, unBlockUser, updateAUser, updatePassword, updateProductQuantityFromCart, userCart} from '../controllers/user.controller.js';
 import {authMiddleware,isAdmin} from '../middleware/authMiddleware.js';
+import { checkOut, paymentVerification } from '../controllers/payment.controller.js';
 
 const authRouter = express.Router();
                                                 //order of the routes matter
@@ -13,6 +14,8 @@ authRouter.put("/update-password",authMiddleware,updatePassword);
 authRouter.post('/login',login);
 authRouter.post('/admin-login',adminLogin);
 authRouter.post('/cart',authMiddleware,userCart);
+authRouter.post('/order/checkout',authMiddleware,checkOut);
+authRouter.post('/order/paymentVerification',authMiddleware,paymentVerification);
 //authRouter.post('/cart/apply-coupon',authMiddleware,applyCoupon);
 authRouter.post('/cart/create-order',authMiddleware,createOrder);
 authRouter.get('/all-users',getAllUsers);

@@ -56,6 +56,13 @@ const updateProductFromCart = async (cartDetail) =>{
     }
 };
 
+const createOrder = async (orderDetail) =>{
+    const response = await axios.post(`${base_url}user/cart/create-order`,orderDetail,config);  //this url: http://localhost:3000/api/user/register is the same url as the   //the cartItemId is used because of the user.controller.js updateProductFromCart function
+    if(response.data){
+        return response.data;
+    }
+};
+
 const authService = {
     register,
     login,
@@ -63,7 +70,8 @@ const authService = {
     getCart,
     getWishlist,
     removeProductFromCart,
-    updateProductFromCart
+    updateProductFromCart,
+    createOrder
 };
 
 export default authService;
