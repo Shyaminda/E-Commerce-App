@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteCartProduct, getCart } from '../features/auth/authSlice';
-import { toast } from 'react-toastify';
 
 
 const Cart = () => {

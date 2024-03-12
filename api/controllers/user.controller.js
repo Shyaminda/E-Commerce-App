@@ -430,133 +430,149 @@ const updateProductQuantityFromCart = asyncHandler(async (req, res) => {        
     } catch (error) {
         throw new Error(error,'Error while updating the product quantity(user.controller.js updateProductQuantity)');
     }
-});    
-
-const emptyCart = asyncHandler(async (req, res) => {
-    const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
-    validateMdbId(_id);    //here we validate the id
-
-    try {
-        const user = await User.findById({_id});    //here we get the user from the database
-        const cart = await Cart.findOneAndDelete({orderBy: user._id});    //here we delete the cart from the database
-        res.json(cart);
-    } catch (error) {
-        throw new Error(error,'Error while deleting the cart(user.controller.js emptyCart)');
-    }
-});
-
-const applyCoupon = asyncHandler(async (req, res) => {    //http://localhost:3000/api/user/cart/apply-coupon in postman
-    const { coupon } = req.body;    //here we get the coupon from the req.body object
-    const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
-    validateMdbId(_id);    //here we validate the id
-
-    const validCoupon = await Coupon.findOne({name: coupon});    //here we get the coupon from the database
-    if(!validCoupon)throw new Error('Invalid coupon');    //here we check if the coupon exists
-
-    const user = await User.findById({_id});    //here we get the user from the database
-    let {cartTotal} = await Cart.findOne({orderBy: user._id}).populate("products.product");      //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection    //here we get the cart from the database   //here we populate the products field which is in the cartModel with the product model
-    let totalAfterDiscount = (cartTotal - (cartTotal * validCoupon.discount) / 100).toFixed(2);    //here we calculate the totalAfterDiscount   
-    await Cart.findOneAndUpdate({orderBy: user._id},{totalAfterDiscount: totalAfterDiscount},{new: true});    //here we update the totalAfterDiscount in the database
-    res.json(totalAfterDiscount);
 });
 
 const createOrder = asyncHandler(async (req, res) => {
-    const { COD,couponApplied } = req.body;    //here we get the COD and couponApplied from the req.body object
+    const { shippingInfo,orderItems,totalPrice,totalPriceAfterDiscount,orderStatus,paymentInfo } = req.body;    //here we get the shippingInfo,orderItems,totalPrice,totalPriceAfterDiscount,orderStatus,paymentInfo from the req.body object
     const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
     validateMdbId(_id);    //here we validate the id
 
-    try {
-        if(!COD)throw new Error('creating cash on delivery order failed');    //here we check if the COD is required
-        const user = await User.findById({_id});    //here we get the user from the database
-        
-        const userCart = await Cart.findOne({orderBy: user._id});    //here we get the cart from the database   //here we populate the products field which is in the cartModel with the product model
-        let finalAmount = 0;    //here we create a variable and assign 0 to it
-        if(couponApplied && userCart.totalAfterDiscount){    //here we check if the couponApplied and userCart.totalAfterDiscount exists
-            finalAmount = userCart.totalAfterDiscount;    //here we assign the userCart.totalAfterDiscount to the finalAmount
-        } else {
-            finalAmount = userCart.cartTotal;    //here we assign the userCart.cartTotal to the finalAmount   
-        }
-
-        const newOrder = await new Order({
-            products: userCart.products,    //here we get the products from the userCart
-            paymentIntent: {
-                id: uniqid(),
-                amount: finalAmount,
-                currency: "usd",
-                status: "Cash on Delivery",
-                created: Date.now(),
-                method: "COD",
-            },
-            orderBy: user._id,    //here we get the user id from the user
-            orderStatus: "Cash on Delivery",
-        }).save();
-        
-        const update = userCart.products.map((item) => {         //here we loop through the userCart.products
-            return{
-                updateOne: {
-                    filter: { _id: item.product._id },    //here we get the product id from the userCart.products
-                    update: { $inc: { quantity: -item.quantity, sold: +item.quantity } },    //here we update the quantity and sold
-                },
-            }
+    try{
+        const order = await Order.create({shippingInfo,orderItems,totalPrice,totalPriceAfterDiscount,orderStatus,paymentInfo,user: _id});    //here we create the order
+        res.json({
+            order,
+            success: true,
         });
-        const updated = await Product.bulkWrite(update, {});    //here we update the product quantity and sold in the database
-        res.json("Order created successfully");
-
     } catch (error) {
         throw new Error(error,'Error while creating the order(user.controller.js createOrder)');
     }
 });
 
-const getOrders = asyncHandler(async (req, res) => {
-    const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
-    validateMdbId(_id);    //here we validate the id
+// const emptyCart = asyncHandler(async (req, res) => {
+//     const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
+//     validateMdbId(_id);    //here we validate the id
 
-    try {
-        const userOrders = await Order.find({orderBy: _id}).populate("products.product").exec();    //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection   //here we get the orders from the database   //here we populate the products field which is in the orderModel with the product model 
-        res.json(userOrders);
-    } catch (error) {
-        throw new Error(error,'Error while getting the orders(user.controller.js getOrders)');
-    }
-});
+//     try {
+//         const user = await User.findById({_id});    //here we get the user from the database
+//         const cart = await Cart.findOneAndDelete({orderBy: user._id});    //here we delete the cart from the database
+//         res.json(cart);
+//     } catch (error) {
+//         throw new Error(error,'Error while deleting the cart(user.controller.js emptyCart)');
+//     }
+// });
 
-const getAllOrders = asyncHandler(async (req, res) => {
-    try {
-        const allUserOrders = await Order.find().populate("products.product").populate("orderBy").exec();    //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection   //here we get the orders from the database   //here we populate the products field which is in the orderModel with the product model 
-        res.json(allUserOrders);
-    } catch (error) {
-        throw new Error(error,'Error while getting all orders(user.controller.js getAllOrders)');
-    }
-});
+// const applyCoupon = asyncHandler(async (req, res) => {    //http://localhost:3000/api/user/cart/apply-coupon in postman
+//     const { coupon } = req.body;    //here we get the coupon from the req.body object
+//     const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
+//     validateMdbId(_id);    //here we validate the id
 
-const getOrderByUser = asyncHandler(async (req, res) => {
-    const { id } = req.params;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
-    validateMdbId(id);    //here we validate the id
+//     const validCoupon = await Coupon.findOne({name: coupon});    //here we get the coupon from the database
+//     if(!validCoupon)throw new Error('Invalid coupon');    //here we check if the coupon exists
 
-    try {
-        const userOrdersById = await Order.findOne({orderBy: id}).populate("products.product");    //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection   //here we get the orders from the database   //here we populate the products field which is in the orderModel with the product model 
-        res.json(userOrdersById);
-    } catch (error) {
-        throw new Error(error,'Error while getting the order(user.controller.js getOrderByUser)');
-    }
-});
+//     const user = await User.findById({_id});    //here we get the user from the database
+//     let {cartTotal} = await Cart.findOne({orderBy: user._id}).populate("products.product");      //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection    //here we get the cart from the database   //here we populate the products field which is in the cartModel with the product model
+//     let totalAfterDiscount = (cartTotal - (cartTotal * validCoupon.discount) / 100).toFixed(2);    //here we calculate the totalAfterDiscount   
+//     await Cart.findOneAndUpdate({orderBy: user._id},{totalAfterDiscount: totalAfterDiscount},{new: true});    //here we update the totalAfterDiscount in the database
+//     res.json(totalAfterDiscount);
+// });
 
-const updateOrderStatus = asyncHandler(async (req, res) => {
-    const {status} = req.body;    //here we get the status from the req.body object
-    const { id } = req.params;    //here we get the id from the url
-    validateMdbId(id);    //here we validate the id
+// const createOrder = asyncHandler(async (req, res) => {
+//     const { COD,couponApplied } = req.body;    //here we get the COD and couponApplied from the req.body object
+//     const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
+//     validateMdbId(_id);    //here we validate the id
 
-    try {
-        const updateOrderStatus = await Order.findByIdAndUpdate(id,{
-            orderStatus: status,
-            paymentIntent: {
-                status: status,        ////this is a payment gateway status
-            },
-        },{new: true});
-        res.json(updateOrderStatus);
-    } catch (error) {
-        throw new Error(error,'Error while updating the order status(user.controller.js updateOrderStatus)');
-    }
-});
+//     try {
+//         if(!COD)throw new Error('creating cash on delivery order failed');    //here we check if the COD is required
+//         const user = await User.findById({_id});    //here we get the user from the database
+        
+//         const userCart = await Cart.findOne({orderBy: user._id});    //here we get the cart from the database   //here we populate the products field which is in the cartModel with the product model
+//         let finalAmount = 0;    //here we create a variable and assign 0 to it
+//         if(couponApplied && userCart.totalAfterDiscount){    //here we check if the couponApplied and userCart.totalAfterDiscount exists
+//             finalAmount = userCart.totalAfterDiscount;    //here we assign the userCart.totalAfterDiscount to the finalAmount
+//         } else {
+//             finalAmount = userCart.cartTotal;    //here we assign the userCart.cartTotal to the finalAmount   
+//         }
+
+//         const newOrder = await new Order({
+//             products: userCart.products,    //here we get the products from the userCart
+//             paymentIntent: {
+//                 id: uniqid(),
+//                 amount: finalAmount,
+//                 currency: "usd",
+//                 status: "Cash on Delivery",
+//                 created: Date.now(),
+//                 method: "COD",
+//             },
+//             orderBy: user._id,    //here we get the user id from the user
+//             orderStatus: "Cash on Delivery",
+//         }).save();
+        
+//         const update = userCart.products.map((item) => {         //here we loop through the userCart.products
+//             return{
+//                 updateOne: {
+//                     filter: { _id: item.product._id },    //here we get the product id from the userCart.products
+//                     update: { $inc: { quantity: -item.quantity, sold: +item.quantity } },    //here we update the quantity and sold
+//                 },
+//             }
+//         });
+//         const updated = await Product.bulkWrite(update, {});    //here we update the product quantity and sold in the database
+//         res.json("Order created successfully");
+
+//     } catch (error) {
+//         throw new Error(error,'Error while creating the order(user.controller.js createOrder)');
+//     }
+// });
+
+// const getOrders = asyncHandler(async (req, res) => {
+//     const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
+//     validateMdbId(_id);    //here we validate the id
+
+//     try {
+//         const userOrders = await Order.find({orderBy: _id}).populate("products.product").exec();    //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection   //here we get the orders from the database   //here we populate the products field which is in the orderModel with the product model 
+//         res.json(userOrders);
+//     } catch (error) {
+//         throw new Error(error,'Error while getting the orders(user.controller.js getOrders)');
+//     }
+// });
+
+// const getAllOrders = asyncHandler(async (req, res) => {
+//     try {
+//         const allUserOrders = await Order.find().populate("products.product").populate("orderBy").exec();    //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection   //here we get the orders from the database   //here we populate the products field which is in the orderModel with the product model 
+//         res.json(allUserOrders);
+//     } catch (error) {
+//         throw new Error(error,'Error while getting all orders(user.controller.js getAllOrders)');
+//     }
+// });
+
+// const getOrderByUser = asyncHandler(async (req, res) => {
+//     const { id } = req.params;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
+//     validateMdbId(id);    //here we validate the id
+
+//     try {
+//         const userOrdersById = await Order.findOne({orderBy: id}).populate("products.product");    //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection   //here we get the orders from the database   //here we populate the products field which is in the orderModel with the product model 
+//         res.json(userOrdersById);
+//     } catch (error) {
+//         throw new Error(error,'Error while getting the order(user.controller.js getOrderByUser)');
+//     }
+// });
+
+// const updateOrderStatus = asyncHandler(async (req, res) => {
+//     const {status} = req.body;    //here we get the status from the req.body object
+//     const { id } = req.params;    //here we get the id from the url
+//     validateMdbId(id);    //here we validate the id
+
+//     try {
+//         const updateOrderStatus = await Order.findByIdAndUpdate(id,{
+//             orderStatus: status,
+//             paymentIntent: {
+//                 status: status,        ////this is a payment gateway status
+//             },
+//         },{new: true});
+//         res.json(updateOrderStatus);
+//     } catch (error) {
+//         throw new Error(error,'Error while updating the order status(user.controller.js updateOrderStatus)');
+//     }
+// });
 
 export {
     createUser,
@@ -579,13 +595,7 @@ export {
     getUserCart,
     removeProductFromCart,
     updateProductQuantityFromCart,
-    emptyCart,
-    applyCoupon,
     createOrder,
-    getOrders,
-    updateOrderStatus,
-    getAllOrders,
-    getOrderByUser,
 };
 
 
