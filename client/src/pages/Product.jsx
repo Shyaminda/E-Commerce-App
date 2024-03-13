@@ -11,7 +11,7 @@ import { IoGitCompare } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa";
 import Container from '../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAProduct } from '../features/products/productSlice';
+import { addRating, getAProduct, getProducts } from '../features/products/productSlice';
 import { toast } from 'react-toastify';
 import { addToCart, getCart } from '../features/auth/authSlice';
 
@@ -20,6 +20,8 @@ const Product = () => {
     const [quantity, setQuantity] = useState(1);
     const [alreadyAdded, setAlreadyAdded] = useState(false);
     const [popularProducts, setPopularProducts] = useState([]);
+    const [star, setStar] = useState(null);
+    const [comment, setComment] = useState(null);
 
     //console.log(quantity);
     //console.log(color);
@@ -39,6 +41,7 @@ const Product = () => {
     useEffect(() => {
         dispatch(getAProduct(getProductId));
         dispatch(getCart())
+        dispatch(getProducts())
     },[dispatch, getProductId]);
 
     useEffect(() => {
@@ -98,10 +101,26 @@ const Product = () => {
     },[productsState]);
     //console.log(popularProducts);
 
+    const addProductRating = () => {
+        if(star === null){
+            toast.error('Please select a star');
+            return false;
+        } else if (comment === null){
+            toast.error('Please write a comment');
+            return false;
+        } else {
+            dispatch(addRating({productId:getProductId,star:star,comments:comment}));
+            setTimeout(() => {
+                dispatch(getAProduct(getProductId));
+            }, 500);
+        }
+        return false;
+    };
+
     return (
     <>
         <Meta title="Product Name" />
-        <BreadCrumbs title="Product Name" />
+        <BreadCrumbs title={productState?.title} />
         <Container class1="main-product-wrapper py-2 home-wrapper-2">
             <div className="row">
                 <div className="col-6">
@@ -282,60 +301,58 @@ const Product = () => {
                         </div>
 
                         <div className="review-form py-4">
-                        <h4 className='mb-2'>Write a Review</h4>
-                        <form className='d-flex flex-column gap-10'>
-                                <div>
+                            <h4 className='mb-2'>Write a Review</h4>
+
+                            <div>
                                 <ReactStars
                                         count={5}
                                         size={15}
                                         value={4}
                                         edit={true}
                                         activeColor="#ffd700" 
+                                        onChange={(e) => setStar(e)}
+                                    />
+                            </div>
+                                <div>
+                                    <textarea 
+                                        name='' 
+                                        id='' 
+                                        cols={30} 
+                                        rows={5} 
+                                        placeholder="Comments" 
+                                        className='form-control mb-3 w-100' 
+                                        onChange={(e) => setComment(e.target.value)}
                                     />
                                 </div>
-                                <div>
-                                    <textarea name='' id='' cols={30} rows={5} placeholder="Comments" className='form-control mb-3 w-100' />
+                                <div className='d-flex justify-content-end mt-3'>
+                                    <button onClick={addProductRating} className='button' type='button'>Submit Review</button>
                                 </div>
-                                <div className='d-flex justify-content-end'>
-                                    <button className='button'>Submit Review</button>
-                                </div>
-                            </form>
                         </div>
                         
                         <div className="reviews mt-3">
-                            <div className="review">
-                                <div className="d-flex gap-10 align-items-center">
-                                    <h6 className='mb-0'>John Doe</h6>
-                                    <ReactStars
-                                        count={5}
-                                        size={15}
-                                        value={4}
-                                        edit={false}
-                                        activeColor="#ffd700" 
-                                    />
-                                </div>
-                                <p className='mt-3'>
-                                    Eum dicta nulla praesentium voluptatem ut at facilis cumque. Et et et amet ipsam enim aliquid est sapiente. Dolorem ut vitae dolores adipisci nostrum et est. Officia eos dolor adipisci est.
-                                    Nesciunt esse iste
-                                </p>
-                            </div>
-                            <div className="review">
-                                <div className="d-flex gap-10 align-items-center">
-                                    <h6 className='mb-0'>John Doe</h6>
-                                    <ReactStars
-                                        count={5}
-                                        size={15}
-                                        value={4}
-                                        edit={false}
-                                        activeColor="#ffd700" 
-                                    />
-                                </div>
-                                <p className='mt-3'>
-                                    Eum dicta nulla praesentium voluptatem ut at facilis cumque. Et et et amet ipsam enim aliquid est sapiente. Dolorem ut vitae dolores adipisci nostrum et est. Officia eos dolor adipisci est.
-                                    Nesciunt esse iste
-                                </p>
-                            </div>
+                            {
+                                productState && productState?.rating?.map((item, index) => {
+                                    return(
+                                        <div key={index} className="review">
+                                            <div className="d-flex gap-10 align-items-center">
+                                                <h6 className='mb-0'>John Doe</h6>
+                                                <ReactStars
+                                                    count={5}
+                                                    size={15}
+                                                    value={item?.star}
+                                                    edit={false}
+                                                    activeColor="#ffd700" 
+                                                />
+                                            </div>
+                                            <p className='mt-3'>
+                                                {item?.comment}
+                                            </p>
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
+
                     </div>
                 </div>
             </div>

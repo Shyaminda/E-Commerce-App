@@ -23,10 +23,18 @@ const addToWishlist = async (productId) =>{
     }
 };
 
+const rateProduct = async (productData) =>{
+    const response = await axios.put(`${base_url}product/ratings`,productData,config);  //this url: http://localhost:3000/api/product/wishList is the same url as the backend    //here this "productId" should be same as the key used in the server side product.controller.js addToWishList function
+    if(response.data){
+        return response.data;
+    }
+};
+
 const productService = {
     getProducts,
     addToWishlist,
-    getProduct
+    getProduct,
+    rateProduct
 };
 
 export default productService;

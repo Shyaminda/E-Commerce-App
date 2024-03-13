@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import productService from "./productService";
+import { toast } from "react-toastify";
 
 export const getProducts = createAsyncThunk("product/get-products", async (thunkAPI) => {    //this getAllProducts is used below addCases not the getProducts in return statement below 
     try{
@@ -23,7 +24,15 @@ export const addToWishlist = createAsyncThunk("product/wishlist", async (product
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
         }
-    });
+});
+
+export const addRating = createAsyncThunk("product/ratings", async (productData,thunkAPI) => {    //this getAllProducts is used below addCases not the getProducts in return statement below 
+    try{
+        return await productService.rateProduct(productData);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+});
 
 const productState = {           //While "initialState" is a conventional name, you can use any name for your initial state object. In this case, "productState" might have been chosen to better reflect the purpose of the state slice, which appears to be related to product-related data management.
     product: "",
@@ -83,6 +92,27 @@ export const productSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
+            })
+            .addCase(addRating.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(addRating.fulfilled, (state, action) => {
+                state.isError = false;
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.rating = action.payload;
+                if(state.isSuccess){
+                    toast.success("Rating added to successfully!")
+                }
+            })
+            .addCase(addRating.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+                if(state.isSuccess === false){
+                    toast.error("something went wrong!")
+                }
             });
     }
 });
