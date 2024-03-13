@@ -300,9 +300,9 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {     //http://loca
     const user = await User.findOne({email});    //here we get the user from the database
     if(!user)throw new Error('No user found');    //here we check if the user exists
     try {
-        const token = await user.createPasswordResetToken();    //here we create the password reset token
+        const token = await user.createPasswordResetToken();    //"createPasswordResetToken" this is from userModel    //here we create the password reset token
         await user.save();
-        const resetURL = `Follow the link to reset the password. Only valid for 10min <a href='http://localhost:3000/api/user/reset-password/${token}'>Click Here</>`;    //here we create the reset url
+        const resetURL = `Follow the link to reset the password. Only valid for 10min <a href='http://localhost:3001/reset-password/${token}'>Click Here</>`;    //here we create the reset url
         const data = {
             to: email,
             subject: "Password Reset",
@@ -318,7 +318,7 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {     //http://loca
 
 const resetPassword = asyncHandler(async (req, res) => {     //http://localhost:3000/api/user/reset-password/4928841b0ae5268c5b8abbf33aa254333cc8dfbae44d13ea6aa69f8d1c41501b in postman
     const { password } = req.body;    //here we get the password from the req.body object
-    const { token } = req.params;    //here we get the token from the url from http://localhost:3000/api/user/reset-password/${token}
+    const { token } = req.params;    //here we get the token from the url from http://localhost:3001/reset-password/${token}
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");    //here we hash the token
     const user = await User.findOne({
         passwordResetToken: hashedToken,    //here we check if the hashed token is equal to the passwordResetToken in the database

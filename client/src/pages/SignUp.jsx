@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const signUpSchema = yup.object({
     firstName: yup.string().required("First name is required"),
@@ -19,6 +20,7 @@ const signUpSchema = yup.object({
 
 const SignUp = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const newUser = useSelector((state) => state.auth);
     const { isError, isSuccess, createdUser } = newUser;
@@ -44,6 +46,7 @@ const SignUp = () => {
 
         onSubmit: (values) => {
             dispatch(register(values));
+            navigate("/signIn");
         },
     });
 

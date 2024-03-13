@@ -78,6 +78,20 @@ const updateUser = async (data) =>{
     }
 };
 
+const forgotPassword = async (data) =>{
+    const response = await axios.post(`${base_url}user/forgot-password-token`,data);  //this url: http://localhost:3000/api/user/register is the same url as the   //the cartItemId is used because of the user.controller.js updateProductFromCart function
+    if(response.data){
+        return response.data;
+    }
+};
+
+const resetPassword = async (data) =>{
+    const response = await axios.put(`${base_url}user/reset-password/${data.token}`,{password:data?.password},data);  //this url: http://localhost:3000/api/user/register is the same url as the   //the cartItemId is used because of the user.controller.js updateProductFromCart function
+    if(response.data){
+        return response.data;
+    }
+};
+
 const authService = {
     register,
     login,
@@ -88,7 +102,9 @@ const authService = {
     updateProductFromCart,
     createOrder,
     getOrders,
-    updateUser
+    updateUser,
+    forgotPassword,
+    resetPassword
 };
 
 export default authService;

@@ -106,3 +106,6 @@ const SignIn = () => {
 }
 
 export default SignIn;
+
+
+//todo:there are some issues that need to be resolved. The issues are: showing the profile page even though the login credentials are wrong and aso just navigate to the home page after entering the wrong credentials

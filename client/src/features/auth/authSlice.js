@@ -82,6 +82,22 @@
         }
     });
 
+    export const forgotPassword = createAsyncThunk("auth/forgotPassword", async (userData,thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
+        try{
+            return await authService.forgotPassword(userData);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    });
+
+    export const resetPassword = createAsyncThunk("auth/resetPassword", async (userData,thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
+        try{
+            return await authService.resetPassword(userData);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    });
+
     const getCustomerFromLocalStorage = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")) 
     : null;
@@ -273,6 +289,48 @@
                     state.isError = true;
                     state.isSuccess = false;
                     state.message = action.error.message;
+                })
+                .addCase(forgotPassword.pending, (state) => {
+                    state.isLoading = true;
+                })
+                .addCase(forgotPassword.fulfilled, (state, action) => {
+                    state.isError = false;
+                    state.isLoading = false;
+                    state.isSuccess = true;
+                    state.password = action.payload;
+                    if(state.isSuccess){
+                        toast.success("Email sent successfully")
+                    }
+                })
+                .addCase(forgotPassword.rejected, (state, action) => {
+                    state.isLoading = false;
+                    state.isError = true;
+                    state.isSuccess = false;
+                    state.message = action.error.message;
+                    if(state.isSuccess === false){
+                        toast.error("something went wrong!")
+                    }
+                })
+                .addCase(resetPassword.pending, (state) => {
+                    state.isLoading = true;
+                })
+                .addCase(resetPassword.fulfilled, (state, action) => {
+                    state.isError = false;
+                    state.isLoading = false;
+                    state.isSuccess = true;
+                    state.resetPassword = action.payload;
+                    if(state.isSuccess){
+                        toast.success("Password changed successfully")
+                    }
+                })
+                .addCase(resetPassword.rejected, (state, action) => {
+                    state.isLoading = false;
+                    state.isError = true;
+                    state.isSuccess = false;
+                    state.message = action.error.message;
+                    if(state.isSuccess === false){
+                        toast.error("something went wrong!")
+                    }
                 })
                 .addCase(resetState, () => initialState);   //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
         }

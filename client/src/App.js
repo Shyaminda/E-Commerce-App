@@ -47,7 +47,7 @@ function App() {
           <Route path="signIn" element={<SignIn />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="sign-up" element={<PublicRoute><SignUp /></PublicRoute>} />   {/* if the user is logged in then user cant view this function but reconsider this behavior */}
-          <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="reset-password/:token" element={<ResetPassword />} />
           <Route path="privacy-policy" element={<Privacypolicy />} />
           <Route path="refund-policy" element={<RefundPolicy />} />
           <Route path="shipping-policy" element={<ShippingPolicy />} />
