@@ -448,6 +448,24 @@ const createOrder = asyncHandler(async (req, res) => {
     }
 });
 
+
+const getOrders = asyncHandler(async (req, res) => {
+    const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
+    validateMdbId(_id);    //here we validate the id
+
+    try {
+        const userOrders = await Order.find({user: _id}).populate("user").populate("orderItems.product").populate("orderItems.color");    //When you use .populate("orderItems.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection   //here we get the orders from the database   //here we populate the products field which is in the orderModel with the product model
+        res.json(userOrders);
+    } catch (error) {
+        throw new Error(error,'Error while getting the orders(user.controller.js getOrders)');
+    }
+});
+
+/* .populate("user"): The .populate() method in Mongoose is used to replace references to other documents (in this case, the user field) with the actual document(s) from another collection. This is known as "population". In this context, it retrieves the user information associated with each order.
+.populate("orderItems.product"): This line populates the product field within the orderItems array of each order. It replaces references to product documents with the actual product documents themselves.
+.populate("orderItems.color"): Similarly, this line populates the color field within the orderItems array of each order. It replaces references to color documents with the actual color documents themselves. */
+
+
 // const emptyCart = asyncHandler(async (req, res) => {
 //     const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
 //     validateMdbId(_id);    //here we validate the id
@@ -596,6 +614,7 @@ export {
     removeProductFromCart,
     updateProductQuantityFromCart,
     createOrder,
+    getOrders,
 };
 
 

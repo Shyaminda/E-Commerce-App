@@ -66,6 +66,14 @@
         }
     });
 
+    export const getOrders = createAsyncThunk("auth/get-orders", async (thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
+        try{
+            return await authService.getOrders();
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    });
+
     const getCustomerFromLocalStorage = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")) 
     : null;
@@ -227,6 +235,21 @@
                     if(state.isSuccess === false){
                         toast.error("something went wrong!")
                     }
+                })
+                .addCase(getOrders.pending, (state) => {
+                    state.isLoading = true;
+                })
+                .addCase(getOrders.fulfilled, (state, action) => {
+                    state.isError = false;
+                    state.isLoading = false;
+                    state.isSuccess = true;
+                    state.userOrders = action.payload;
+                })
+                .addCase(getOrders.rejected, (state, action) => {
+                    state.isLoading = false;
+                    state.isError = true;
+                    state.isSuccess = false;
+                    state.message = action.error.message;
                 })
                 .addCase(resetState, () => initialState);   //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
         }
