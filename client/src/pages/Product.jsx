@@ -19,6 +19,8 @@ const Product = () => {
     const [color, setColor] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [alreadyAdded, setAlreadyAdded] = useState(false);
+    const [popularProducts, setPopularProducts] = useState([]);
+
     //console.log(quantity);
     //console.log(color);
 
@@ -26,9 +28,11 @@ const Product = () => {
     const getProductId = location.pathname.split('/')[2];    //splitting the url to get the product id
     const navigate = useNavigate();
 
-    const productState = useSelector((state) => state.product.singleProduct);
+    const productState = useSelector((state) => state?.product?.singleProduct);
     //console.log(productState);
-    const cartState = useSelector((state) => state.auth.userCart);
+    const productsState = useSelector((state) => state.product.product);
+    //console.log(productsState);
+    const cartState = useSelector((state) => state?.auth?.userCart);
     //console.log(cartState);     //**output: undefined    figure out why
 
     const dispatch = useDispatch();
@@ -81,6 +85,19 @@ const Product = () => {
         document.execCommand('copy')
         textField.remove()
     }
+
+    useEffect(() => {
+        let data = [];
+        for (let i = 0; i < productsState.length; i++) {
+            const element = productsState[i];
+            if(element.tags === "popular"){
+                data.push(element);
+            }
+            setPopularProducts(data);
+        }
+    },[productsState]);
+    //console.log(popularProducts);
+
     return (
     <>
         <Meta title="Product Name" />
@@ -331,8 +348,7 @@ const Product = () => {
                 </div>
             </div>
             <div className="row">
-                <ProductCard />
-                <ProductCard />
+                <ProductCard data={popularProducts} />
                 
             </div>
         </Container>
