@@ -24,6 +24,7 @@ import CheckOut from './pages/CheckOut';
 import { PrivateRoute } from './routes/PrivateRoute';
 import { PublicRoute } from './routes/PublicRoute';
 import Orders from './pages/Orders';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="blog/:id" element={<BlogPage />} />
           <Route path="cart" element={<PrivateRoute><Cart /></PrivateRoute>} />   {/* if the user is not logged in then user cant view this function */}
           <Route path="my-orders" element={<PrivateRoute><Orders /></PrivateRoute>} />   {/* if the user is not logged in then user cant view this function */}
+          <Route path="my-profile" element={<PrivateRoute><Profile /></PrivateRoute>} />   {/* if the user is not logged in then user cant view this function */}
           <Route path="checkout" element={<PrivateRoute><CheckOut /></PrivateRoute>} />      {/* if the user is not logged in then user cant view this function */}
           <Route path="compare-products" element={<CompareProducts />} />
           <Route path="wishlist" element={<PrivateRoute><Wishlist /></PrivateRoute>} />    {/* if the user is not logged in then user cant view this function */}

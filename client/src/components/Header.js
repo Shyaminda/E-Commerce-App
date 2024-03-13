@@ -84,7 +84,7 @@ const Header = () => {
                 </div>
 
                 <div>
-                <Link to={ authState?.loggedUser === null ? "/signIn" : ""} className="d-flex align-items-center gap-5 text-white">
+                <Link to={ authState?.loggedUser === null ? "/signIn" : "/my-profile"} className="d-flex align-items-center gap-5 text-white">       {/*if the user is not logged in then user cant view this function */}
                     <img src="images/user.svg" alt="login" />
                 </Link>
                 {

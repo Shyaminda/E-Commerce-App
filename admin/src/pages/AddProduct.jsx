@@ -130,9 +130,9 @@ return (
                 type="text"
                 label="Enter Product Title"
                 name="title"
-                onCh={formik.handleChange("title")}
-                onBl={formik.handleBlur("title")}
-                val={formik.values.title}
+                onChange={formik.handleChange("title")}
+                onBlur={formik.handleBlur("title")}
+                value={formik.values.title}
             />
             <div className="error">
                 {formik.touched.title && formik.errors.title}
@@ -154,10 +154,10 @@ return (
             <CustomInput 
                 type="number" 
                 label="Enter Product Price"
-                val={formik.values.price}
+                value={formik.values.price}
                 name="price"
-                onCh={formik.handleChange("price")}
-                onBl={formik.handleBlur("price")}
+                onChange={formik.handleChange("price")}
+                onBlur={formik.handleBlur("price")}
             />
             <div className="error">
                 {formik.touched.price && formik.errors.price}
@@ -240,9 +240,9 @@ return (
                 type="number" 
                 label="Enter Product Quantity"
                 name="quantity"
-                onCh={formik.handleChange("quantity")}
-                onBl={formik.handleBlur("quantity")}
-                val={formik.values.quantity}
+                onChange={formik.handleChange("quantity")}
+                onBlur={formik.handleBlur("quantity")}
+                value={formik.values.quantity}
             />
             <div className="error">
                 {formik.touched.quantity && formik.errors.quantity}

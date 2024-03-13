@@ -8,7 +8,7 @@ import { getOrders } from '../features/auth/authSlice';
 const Orders = () => {
     const dispatch = useDispatch();
 
-    const orderState = useSelector(state => state.auth.userOrders);    //.orders
+    const orderState = useSelector(state => state.auth?.userOrders);    //.orders
     //console.log(orderState);     //* figure out why orderState is undefined
 
     useEffect(() => {

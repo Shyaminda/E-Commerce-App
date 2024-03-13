@@ -130,15 +130,15 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
 });
 
 const updateAUser = asyncHandler(async (req, res) => {     //here we update a single user by id
-    const { id } = req.user;    //here we get the id from the url    //here we get the id from the req.user object because we have assigned the user to the req object in the authMiddleware
-    validateMdbId(id);    //here we validate the id
+    const { _id } = req.user;     //here we get the id from the req.user object because we have assigned the user to the req object in the authMiddleware
+    validateMdbId(_id);    //here we validate the id
 
     try {
-        const updateUser = await User.findByIdAndUpdate(id,{
-            firstName: req?.body?.firstName,
-            lastName: req?.body?.lastName,
-            email: req?.body?.email,
-            mobile: req?.body?.mobile,    
+        const updateUser = await User.findByIdAndUpdate(_id,{
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            mobile: req.body.mobile,    
         },{new: true});
         res.json(updateUser);
     } catch (error) {

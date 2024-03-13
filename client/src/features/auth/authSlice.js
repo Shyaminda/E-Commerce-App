@@ -74,6 +74,14 @@
         }
     });
 
+    export const updateProfile = createAsyncThunk("auth/update-profile", async (userData,thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
+        try{
+            return await authService.updateUser(userData);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    });
+
     const getCustomerFromLocalStorage = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")) 
     : null;
@@ -246,6 +254,21 @@
                     state.userOrders = action.payload;
                 })
                 .addCase(getOrders.rejected, (state, action) => {
+                    state.isLoading = false;
+                    state.isError = true;
+                    state.isSuccess = false;
+                    state.message = action.error.message;
+                })
+                .addCase(updateProfile.pending, (state) => {
+                    state.isLoading = true;
+                })
+                .addCase(updateProfile.fulfilled, (state, action) => {
+                    state.isError = false;
+                    state.isLoading = false;
+                    state.isSuccess = true;
+                    state.updatedProfile = action.payload;
+                })
+                .addCase(updateProfile.rejected, (state, action) => {
                     state.isLoading = false;
                     state.isError = true;
                     state.isSuccess = false;

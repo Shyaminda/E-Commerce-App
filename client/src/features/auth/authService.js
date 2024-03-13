@@ -70,6 +70,14 @@ const getOrders = async () =>{
     }
 };
 
+const updateUser = async (data) =>{
+    //console.log(data);   //the data is passing correctly
+    const response = await axios.put(`${base_url}user/edit-user`,data,config);  //this url: http://localhost:3000/api/user/register is the same url as the   //the cartItemId is used because of the user.controller.js updateProductFromCart function
+    if(response.data){
+        return response.data;
+    }
+};
+
 const authService = {
     register,
     login,
@@ -79,7 +87,8 @@ const authService = {
     removeProductFromCart,
     updateProductFromCart,
     createOrder,
-    getOrders
+    getOrders,
+    updateUser
 };
 
 export default authService;
