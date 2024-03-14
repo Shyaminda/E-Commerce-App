@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import { getAProduct } from "../features/products/productSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -82,6 +83,7 @@ const Header = () => {
                 onPaginate={() => console.log('Results paginated')}
                 onChange={(selected) => {
                   navigate(`/product/${selected[0]?.productId}`);
+                  dispatch(getAProduct(selected[0]?.productId));
                 }}
                 options={productOptions}
                 paginate={paginate}

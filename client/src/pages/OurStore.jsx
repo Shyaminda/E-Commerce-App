@@ -10,7 +10,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from '../features/products/productSlice';
 
 const OurStore = () => {
-    const [grid, setGrid] = useState(4); 
+    const [grid, setGrid] = useState(4);
+    const [brands, setBrands] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [tags,setTags] = useState([]);
+    //const [colors,setColors] = useState([]);
+
+    //filter states
+    const [tag, setTag] = useState(null);   //This is the state that will be used to filter the products based on the brand or category or tag. It will be passed to the ProductCard component as a prop to filter the products based on the brand or category or tag.
+    const [category, setCategory] = useState(null);
+    const [brand, setBrand] = useState(null);
+    const [minPrice, setMinPrice] = useState(null);
+    const [maxPrice, setMaxPrice] = useState(null);
+    const [sortBy, setSortBy] = useState(null);
+    //const [color,setColor] = useState(null);
+    //console.log(sort);
 
     const productState = useSelector((state) => state.product.product);
     //console.log(productState);
@@ -18,11 +32,30 @@ const OurStore = () => {
 
     useEffect(() => {
         getAllProducts();
-    },[]);
+    },[sortBy,tag,category,brand,minPrice,maxPrice]);   //todo: trying doing this for the previous error commits
 
     const getAllProducts = () => {
-        dispatch(getProducts());
+        dispatch(getProducts({sortBy,tag,category,brand,minPrice,maxPrice}));
     };
+
+    useEffect(() => {
+        let newBrands = [];
+        let category = [];
+        let newTags = [];
+        let newColors = [];
+        for(let i = 0; i < productState?.length; i++){
+            const element = productState[i];
+            newBrands.push(element?.brand);
+            category.push(element?.category);
+            newTags.push(element?.tags);
+            //newColors.push(element?.color);
+        }
+        setBrands(newBrands);
+        setCategories(category);
+        setTags(newTags);
+        //setColors(newColors);
+    },[productState]);
+    //console.log([...new Set(brands)],[...new Set(categories)],[...new Set(tags)]);      //This creates a new Set object, which is a collection of unique values. When you pass an array to new Set(), it creates a Set containing only the unique values from that array. Duplicates are automatically removed.
 
 return (
     <div>
@@ -37,10 +70,13 @@ return (
                         </h3>
                         <div className='ps-0'>
                             <ul>
-                                <li>Watch</li>
-                                <li>Tv</li>
-                                <li>Camera</li>
-                                <li>Laptop</li>
+                            {
+                                categories && [...new Set(categories)].map((item,index) => {           
+                                    return (
+                                        <li key={index} onClick={()=> setCategory(item)}>{item}</li>   //This creates a new Set object, which is a collection of unique values. When you pass an array to new Set(), it creates a Set containing only the unique values from that array. Duplicates are automatically removed.
+                                    )
+                                })
+                            }
                             </ul>
                         </div>
                     </div>
@@ -50,7 +86,7 @@ return (
                         <div>
                             <h5 className="sub-title">Availability</h5>
                             <div>
-                                <div className="form-check d-flex align-items-center gap-1">
+                                {/* <div className="form-check d-flex align-items-center gap-1">
                                     <input className="form-check-input checkbox-lg" type="checkbox" value="" id="" />
                                     <label className="form-check-label" htmlFor="">
                                         In Stock(1)
@@ -61,29 +97,41 @@ return (
                                     <label className="form-check-label" htmlFor="">
                                         Out Of Stock(0)
                                     </label>
-                                </div>
+                                </div> */}
                             </div>
 
                             <h5 className="sub-title">Price</h5>
                             <div className='d-flex align-items-center gap-10'>
                                 <div className="form-floating">
-                                    <input type="text" className="form-control" id="floatingInput" placeholder="from" />
+                                    <input 
+                                        type="number" 
+                                        className="form-control" 
+                                        id="" 
+                                        placeholder="from"
+                                        onChange={(e)=>setMinPrice(e.target.value)}
+                                    />
                                     <label htmlFor="floatingInput">From</label>
                                 </div>
                                 <div className="form-floating">
-                                    <input type="text" className="form-control  " id="floatingInput1" placeholder="to" />
+                                    <input 
+                                        type="number" 
+                                        className="form-control" 
+                                        id="floatingInput1" 
+                                        placeholder="to"
+                                        onChange={(e)=>setMaxPrice(e.target.value)}
+                                    />
                                     <label htmlFor="floatingInput1">To</label>
                                 </div>
                             </div>
 
-                            <h5 className="sub-title">Colours</h5>
+                            {/* <h5 className="sub-title">Colours</h5>
                             <div>
                                 <div>
                                     <Color />
                                 </div>
-                            </div>
+                            </div> */}
 
-                            <h5 className="sub-title">Size</h5>
+                            {/* <h5 className="sub-title">Size</h5>
                             <div>
                                 <div className="form-check d-flex align-items-center gap-1">
                                         <input className="form-check-input checkbox-lg" type="checkbox" value="" id="color-1" />
@@ -97,32 +145,46 @@ return (
                                             m (2)
                                         </label>
                                 </div>
+                            </div> */}
+                            <div className='mt-4 mb-3'>
+                                <h3 className="sub-title">Product Tags</h3>
+                                <div>
+                                    <div className="product-tags d-flex flex-wrap align-items-center gap-10">
+                                    {
+                                        categories && [...new Set(tags)].map((item,index) => {           
+                                            return (
+                                                <span key={index} onClick={()=>setTag(item)} className="text-capitalize badge bg-light text-secondary rounded-3 py-3 px-3">
+                                                    {item}
+                                                </span>
+                                            )
+                                        })
+                                    }
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
-                    <div className='filter-card mb-3'>
-                        <h3 className="filter-title">Product Tags</h3>
+                    
+                    
+                    <div className='mb-3'>
+                        <h3 className="filter-title">Product Brands</h3>
                         <div>
                             <div className="product-tags d-flex flex-wrap align-items-center gap-10">
-                                <span className="badge bg-light text-secondary rounded-3 py-3 px-3">
-                                    Headphone
-                                </span>
-                                <span className="badge bg-light text-secondary rounded-3 py-3 px-3">
-                                    Laptop
-                                </span>
-                                <span className="badge bg-light text-secondary rounded-3 py-3 px-3">
-                                    Mobile
-                                </span>
-                                <span className="badge bg-light text-secondary rounded-3 py-3 px-3">
-                                    Speaker
-                                </span>
-                                <span className="badge bg-light text-secondary rounded-3 py-3 px-3">
-                                    Watch
-                                </span>
+                            {
+                                brands && [...new Set(brands)].map((item,index) => {           
+                                    return (
+                                        <span key={index} onClick={()=>setBrand(item)} className="text-capitalize badge bg-light text-secondary rounded-3 py-3 px-3">
+                                            {item}
+                                        </span>
+                                    )
+                                })
+                            }
                             </div>
                         </div>
                     </div>
-                    <div className='filter-card mb-3'>
+
+                    {/* <div className='filter-card mb-3'>
                         <h3 className="filter-title">Random Products</h3>
                         <div>
                             <div className="random-products mb-3 d-flex">
@@ -159,22 +221,22 @@ return (
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div className='col-9'>
                     <div className="filter-sort-grid mb-4">
                         <div className="d-flex justify-content-between align-items-center">
                             <div className="d-flex align-items-center gap-10">
                                 <p className="mb-0 fw-semibold d-block" style={{"width": "50px"}}>Sort By:</p>
-                                <select name='' className='form-control form-select' id=''>
-                                    <option value='manual'>Featured</option>
-                                    <option value='best-selling' selected="selected">Best Selling</option>
-                                    <option value='title-ascending'>Alphabetically, A-Z</option>
-                                    <option value='title-descending'>Alphabetically, Z-A</option>
-                                    <option value='price-ascending'>Price, Low to High</option>
-                                    <option value='price-descending'>Price, High to Low</option>
-                                    <option value='created-ascending'>Date, Old to New</option>
-                                    <option value='price-descending'>Date, New to Old</option>
+                                <select name='' className='form-control form-select' id='' onChange={(e)=>setSortBy(e.target.value)}>
+                                    {/* <option value='manual'>Featured</option> */}
+                                    {/* <option value='best-selling' selected="selected">Best Selling</option> */}
+                                    <option value='title'>Alphabetically, A-Z</option>
+                                    <option value='-title'>Alphabetically, Z-A</option>   {/* The '-' sign is used to sort the products in descending order. */}
+                                    <option value='price'>Price, Low to High</option>
+                                    <option value='-price'>Price, High to Low</option>
+                                    <option value='-created'>Date, Old to New</option>
+                                    <option value='created'>Date, New to Old</option>
                                 </select>
                             </div>
                             <div>
