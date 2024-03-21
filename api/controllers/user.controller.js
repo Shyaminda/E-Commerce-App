@@ -461,6 +461,77 @@ const getOrders = asyncHandler(async (req, res) => {
     }
 });
 
+const getMonthWiseOrderIncome = asyncHandler(async (req, res) => {      //todo:error occurs due to previous issues in the order functionalities
+    let month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    let date = new Date();
+    let endDate = "";
+    date.setDate(1);
+    for (let i = 0; i < 11; i++) {
+        date.setMonth(date.getMonth());
+        endDate = month[date.getMonth()] + " " + date.getFullYear();
+    }
+    //console.log(endDate);
+    const data = await Order.aggregate([            //here we get the month wise order income
+        {
+            $match: {
+                createdAt: {
+                    $lte: new Date(),
+                    $gte: new Date(endDate),
+                },
+            },
+        },
+        {
+            $group: {
+                _id: {
+                    month: "$month",
+                },
+                amount: { $sum: "$totalPriceAfterDiscount" },
+                count: { $sum: 1 },
+            },
+        }
+    ]);
+    res.json(data);  
+});
+
+const getYearlyTotalOrders = asyncHandler(async (req, res) => {      //todo:error occurs due to previous issues in the order functionalities
+    let month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    let date = new Date();
+    let endDate = "";
+    date.setDate(1);
+    for (let i = 0; i < 11; i++) {
+        date.setMonth(date.getMonth());
+        endDate = month[date.getMonth()] + " " + date.getFullYear();
+    }
+    //console.log(endDate);
+    const data = await Order.aggregate([            //here we get the month wise order income
+        {
+            $match: {
+                createdAt: {
+                    $lte: new Date(),
+                    $gte: new Date(endDate),
+                },
+            },
+        },
+        {
+            $group: {
+                _id: null,
+                count: { $sum: 1 },
+                amount: { $sum: "$totalPriceAfterDiscount" },
+            },
+        }
+    ]);
+    res.json(data);  
+});
+
+const getAllOrders = asyncHandler(async (req, res) => {
+    try {
+        const allUserOrders = await Order.find();
+        res.json(allUserOrders);
+    } catch (error) {
+        throw new Error(error,'Error while getting all orders(user.controller.js getAllOrders)');
+    }
+});
+
 /* .populate("user"): The .populate() method in Mongoose is used to replace references to other documents (in this case, the user field) with the actual document(s) from another collection. This is known as "population". In this context, it retrieves the user information associated with each order.
 .populate("orderItems.product"): This line populates the product field within the orderItems array of each order. It replaces references to product documents with the actual product documents themselves.
 .populate("orderItems.color"): Similarly, this line populates the color field within the orderItems array of each order. It replaces references to color documents with the actual color documents themselves. */
@@ -615,6 +686,9 @@ export {
     updateProductQuantityFromCart,
     createOrder,
     getOrders,
+    getMonthWiseOrderIncome,
+    getYearlyTotalOrders,
+    getAllOrders,
 };
 
 

@@ -69,6 +69,10 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now(),
     },
+    month: {
+        type: String,
+        default: new Date().getMonth(),
+    },
     totalPrice: {
         type: Number,
         required: true,

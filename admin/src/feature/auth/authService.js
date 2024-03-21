@@ -20,10 +20,22 @@ const getOrder = async (id) =>{
     return response.data;      //this is the response from the backend
 };
 
+const getMonthlyOrderIncome = async () =>{
+    const response = await axios.get(`${base_url}user/getMonthOrderIncome`,config);  //this url: http://localhost:3000/api/user/getAllOrders is the same url as the backend  //The second argument is the data payload. In this case, it's an empty string "", indicating that no additional data is being sent in the request body.
+    return response.data;      //this is the response from the backend
+};
+
+const getYearlyOrders = async () =>{
+    const response = await axios.get(`${base_url}user/getYearlyOrderCount`,config);  //this url: http://localhost:3000/api/user/getAllOrders is the same url as the backend  //The second argument is the data payload. In this case, it's an empty string "", indicating that no additional data is being sent in the request body.
+    return response.data;      //this is the response from the backend
+};
+
 const authService = {
     login,
     getOrders,
-    getOrder
+    getOrder,
+    getMonthlyOrderIncome,
+    getYearlyOrders,
 };
 
 export default authService;

@@ -1,5 +1,5 @@
 import express from 'express';
-import {adminLogin, blockUser, createOrder, createUser,deleteAUser,forgotPasswordToken,getAUser,getAllUsers,getOrders,getUserCart,getWishList,handleRefreshToken,logOut,login, removeProductFromCart, resetPassword, saveAddress, unBlockUser, updateAUser, updatePassword, updateProductQuantityFromCart, userCart} from '../controllers/user.controller.js';
+import {adminLogin, blockUser, createOrder, createUser,deleteAUser,forgotPasswordToken,getAUser,getAllOrders,getAllUsers,getMonthWiseOrderCount,getMonthWiseOrderIncome,getOrders,getUserCart,getWishList,getYearlyTotalOrders,handleRefreshToken,logOut,login, removeProductFromCart, resetPassword, saveAddress, unBlockUser, updateAUser, updatePassword, updateProductQuantityFromCart, userCart} from '../controllers/user.controller.js';
 import {authMiddleware,isAdmin} from '../middleware/authMiddleware.js';
 import { checkOut, paymentVerification } from '../controllers/payment.controller.js';
 
@@ -20,12 +20,14 @@ authRouter.post('/order/paymentVerification',authMiddleware,paymentVerification)
 authRouter.post('/cart/create-order',authMiddleware,createOrder);
 authRouter.get('/all-users',getAllUsers);
 authRouter.get('/get-orders',authMiddleware,getOrders);   //todo:check this api route with thunder client
-//authRouter.get('/getallorders',authMiddleware,isAdmin,getAllOrders);
+authRouter.get('/getallorders',authMiddleware,isAdmin,getAllOrders);
 //authRouter.get('/getOrderByUser/:id',authMiddleware,isAdmin,getOrderByUser);
 authRouter.get('/refresh',handleRefreshToken);  //here we get the refresh token,the place where the handleRefreshToken placed is important
 authRouter.get('/logout',logOut);
 authRouter.get('/wishlist',authMiddleware,getWishList);
 authRouter.get('/cart',authMiddleware,getUserCart);
+authRouter.get('/getMonthOrderIncome',authMiddleware,getMonthWiseOrderIncome);
+authRouter.get('/getYearlyOrderCount',authMiddleware,getYearlyTotalOrders);
 
 authRouter.get('/:id',authMiddleware,isAdmin,getAUser);
 //authRouter.delete('/empty-cart',authMiddleware,emptyCart);
