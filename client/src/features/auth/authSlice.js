@@ -74,9 +74,9 @@
         }
     });
 
-    export const updateProfile = createAsyncThunk("auth/update-profile", async (userData,thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
+    export const updateProfile = createAsyncThunk("auth/update-profile", async (data,thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
         try{
-            return await authService.updateUser(userData);
+            return await authService.updateUser(data);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
         }
@@ -99,7 +99,7 @@
     });
 
     const getCustomerFromLocalStorage = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user")) 
+    ? JSON.parse(localStorage.getItem("user"))
     : null;
 
 
@@ -147,7 +147,8 @@
                     state.isSuccess = true;
                     state.loggedUser = action.payload;
                     if(state.isSuccess === true){
-                        localStorage.setItem("token",action.payload.token);   //this is done to store the token in the local storage so that the user can be logged in even after the page is refreshed
+                        // localStorage.setItem("user", JSON.stringify(action.payload));
+                        // localStorage.setItem("token", action.payload.token); // Store token separately if needed
                         toast.success("User Logged in Successfully!");
                     }
                 })
@@ -294,6 +295,18 @@
                     state.isLoading = false;
                     state.isSuccess = true;
                     state.updatedProfile = action.payload;
+                        // let currentUserData = JSON.parse(localStorage.getItem("user"));
+                        // let updatedUserData = {
+                        //     _id: currentUserData?._id,   //this is done to get the id of the user from the local storage already present data
+                        //     token: currentUserData?.token,   //this is done to get the token of the user from the local storage already present data
+                        //     firstName: action?.payload?.firstName,  //this is done to get the updated first name of the user
+                        //     lastName: action?.payload?.lastName,  //this is done to get the updated last name of the user
+                        //     email: action?.payload?.email,  //this is done to get the updated email of the user
+                        //     mobile: action?.payload?.mobile,  //this is done to get the updated mobile of the user
+                        // }
+                        // localStorage.setItem("user",JSON.stringify(updatedUserData));
+                        // state.user = updatedUserData;
+                        toast.success("Profile updated successfully")
                 })
                 .addCase(updateProfile.rejected, (state, action) => {
                     state.isLoading = false;
@@ -348,3 +361,5 @@
     });
 
     export default authSlice.reducer;
+
+    //todo: add redux persist to store data 

@@ -5,7 +5,6 @@ import Container from '../components/Container';
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import { updateProfile } from '../features/auth/authSlice';
 import { TiEdit } from "react-icons/ti";
 
@@ -16,24 +15,30 @@ const profileSchema = yup.object({
     mobile: yup.number().required("Mobile is required"),
 });
 
-
-
 const Profile = () => {
+    const getTokenFromLocalStorage = localStorage.getItem("token"); // Retrieve token using the correct key
+    const config2 = {
+        headers: {
+            Authorization: `Bearer ${getTokenFromLocalStorage}`, // Include the retrieved token in the Authorization header
+            Accept: "application/json",
+        },
+    };
+
     const [edit, setEdit] = useState(true);
     
     const dispatch = useDispatch();
 
-    const profile = useSelector((state) => state.auth);
-    const { isError, isSuccess, updatedProfile } = profile;
+//     const profile = useSelector((state) => state.auth);
+//     const { isError, isSuccess, updatedProfile } = profile;
 
-useEffect(() => {
-    if (isSuccess && updatedProfile) {
-        toast.success("Profile updated Successfully!");
-    }
-    if (isError) {
-        toast.error("Something Went Wrong!");
-    }
-}, [isSuccess, isError, updatedProfile]);
+// useEffect(() => {
+//     if (isSuccess && updatedProfile) {
+//         toast.success("Profile updated Successfully!");
+//     }
+//     if (isError) {
+//         toast.error("Something Went Wrong!");
+//     }
+// }, [isSuccess, isError, updatedProfile]);
 
     const userState = useSelector(state => state.auth.loggedUser);
 
@@ -48,7 +53,7 @@ useEffect(() => {
         validationSchema: profileSchema,
         onSubmit: (values) => {
             // alert(JSON.stringify(values));
-            dispatch(updateProfile(values));
+            dispatch(updateProfile({data: values,config: config2}));
             setEdit(true);
         },
     });

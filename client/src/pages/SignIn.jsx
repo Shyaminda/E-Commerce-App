@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Meta from '../components/Meta';
 import BreadCrumbs from '../components/BreadCrumbs';
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,8 +6,7 @@ import Container from '../components/Container';
 import CustomInput from '../components/CustomInput';
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 import { login, resetState } from '../features/auth/authSlice';
 
 const signInSchema = yup.object({
@@ -97,4 +96,4 @@ const SignIn = () => {
 export default SignIn;
 
 
-//todo:there are some issues that need to be resolved. The issues are: showing the profile page even though the login credentials are wrong and aso just navigate to the home page after entering the wrong credentials
+//todo:there are some issues that need to be resolved. after refreshing logging data will be lost
