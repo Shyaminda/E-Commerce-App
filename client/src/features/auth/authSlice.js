@@ -123,6 +123,7 @@
                     state.isLoading = true;
                 })
                 .addCase(register.fulfilled, (state, action) => {
+                    //console.log('Register action fulfilled:', action.payload); 
                     state.isError = false;
                     state.isLoading = false;
                     state.isSuccess = true;
@@ -133,6 +134,9 @@
                     state.isError = true;
                     state.isSuccess = false;
                     state.message = action.error;
+                    if(state.isError === true){
+                        toast.error(action.payload.response.data.message);
+                    }
                 })
                 .addCase(login.pending, (state) => {
                     state.isLoading = true;
@@ -142,12 +146,19 @@
                     state.isLoading = false;
                     state.isSuccess = true;
                     state.loggedUser = action.payload;
+                    if(state.isSuccess === true){
+                        localStorage.setItem("token",action.payload.token);   //this is done to store the token in the local storage so that the user can be logged in even after the page is refreshed
+                        toast.success("User Logged in Successfully!");
+                    }
                 })
                 .addCase(login.rejected, (state, action) => {
                     state.isLoading = false;
                     state.isError = true;
                     state.isSuccess = false;
                     state.message = action.error;
+                    if(state.isError === true){
+                        toast.error(action.payload.response.data.message);
+                    }
                 })
                 .addCase(getUserWishlist.pending, (state) => {
                     state.isLoading = true;

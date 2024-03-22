@@ -29,9 +29,6 @@ const SignUp = () => {
         if (isSuccess && createdUser) {
             toast.success("User Created Successfully!");
         }
-        if (isError) {
-            toast.error("Something Went Wrong!");
-        }
     }, [isSuccess, isError, createdUser]);
 
     const formik = useFormik({
@@ -49,6 +46,7 @@ const SignUp = () => {
             navigate("/signIn");
         },
     });
+    
 
 return (
     <>

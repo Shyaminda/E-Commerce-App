@@ -19,18 +19,7 @@ const SignIn = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const user = useSelector((state) => state.auth);
-    const { isError, isSuccess, loggedUser } = user;
-
-    useEffect(() => {
-        if (isSuccess && loggedUser) {
-            toast.success("User Logged in Successfully!");
-            localStorage.setItem("token", loggedUser.token);
-        }
-        if (isError) {
-            toast.error("Something Went Wrong!");
-        }
-    }, [isSuccess, isError, loggedUser]);
+    //const authState = useSelector((state) => state.auth);
 
     const formik = useFormik({
         initialValues: {
@@ -42,16 +31,16 @@ const SignIn = () => {
         onSubmit: (values) => {
             dispatch(login(values));
 
-            navigate('/');
-            
-            // setTimeout(() => {
-            //     if(isSuccess){
-            //         navigate('/');
-            //         dispatch(resetState());   //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
-            //     }
-            // }, 3000);   
+                    navigate('/');    //todo: add a timeout for more security 
+                    dispatch(resetState());   //this is done because the toastify message shows even after the relevant data is added and when again the same form is open the toastify message shows again. So, to avoid this.
         },
     });
+
+    // useEffect(() => {
+    //     if(authState.loggedUser !== null && authState.isError === false) {
+    //         navigate('/');
+    //     }
+    // },[authState,navigate]);
 
     return (
     <>

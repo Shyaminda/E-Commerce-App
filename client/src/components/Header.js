@@ -113,15 +113,16 @@ const Header = () => {
                 </div>
 
                 <div>
-                <Link to={ authState?.loggedUser === null ? "/signIn" : "/my-profile"} className="d-flex align-items-center gap-5 text-white">       {/*if the user is not logged in then user cant view this function */}
-                    <img src="images/user.svg" alt="login" />
-                </Link>
-                {
-                  authState?.loggedUser === null ?
-                  <p className="mb-0 text-white">Login <br />My Account</p> 
-                  : <p className="mb-0 text-white">welcome {authState?.loggedUser?.firstName}</p>
-                }
-                </div>
+                  <Link to={authState?.loggedUser ? "/my-profile" : "/signIn"} className="d-flex align-items-center gap-5 text-white">
+                      {/* If the user is not logged in, then display the sign-in link, otherwise display the profile link */}
+                      <img src="images/user.svg" alt="login" />
+                  </Link>
+                  {
+                      authState?.loggedUser ?
+                      <p className="mb-0 text-white">Welcome {authState.loggedUser.firstName}</p> 
+                      : <Link to="/signIn" className="mb-0 text-white">Login <br />My Account</Link>
+                  }
+              </div>
 
                 <div>
                 <Link to="/cart" className="d-flex align-items-center gap-5 text-white">
