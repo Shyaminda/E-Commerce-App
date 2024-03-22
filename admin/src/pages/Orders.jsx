@@ -43,20 +43,20 @@ const Orders = () => {
         dispatch(getOrders());
     },[dispatch]);
 
-    const orderState = useSelector((state) => state.auth.orders);  //state.color is same as the color in the store.js   and the "colors" is same as the "colors" in the initialState name array in the colorSlice.js
+    const orderState = useSelector((state) => state.auth.orders.orders);  //state.auth.orders.orders is taken from the authSlice.js //* be certain whether the state.auth.orders.orders has an extra "orders" or not
     //console.log(orderState);
     const data1 = [];
-    for (let i = 0; i < orderState.length; i++) {
+    for (let i = 0; i < orderState?.length; i++) {
         data1.push({
             key: i+1,
-            name: orderState[i].orderBy.firstName,
+            name: orderState[i]?.user?.firstName,
             product: (
-                <Link to={`/admin/order/${orderState[i].orderBy._id}`}>
+                <Link to={`/admin/order/${orderState[i]?._id}`}>
                     View Orders
                 </Link>
             ),
-            amount: orderState[i].paymentIntent.amount,
-            date: new Date(orderState[i].createdAt).toLocaleString(),
+            amount: orderState[i]?.totalPrice,
+            date: new Date(orderState[i]?.createdAt).toLocaleString(),
             action:(<>
                 <Link to="" className='fs-5 text-danger'><MdEditNote /></Link> 
                 <Link to="" className='fs-5 ms-3 text-danger'><MdOutlineDeleteOutline /></Link>   { /* ms stands for "margin start" */ }

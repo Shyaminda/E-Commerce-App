@@ -11,22 +11,27 @@ const login = async (userData) =>{
 };
 
 const getOrders = async () =>{
-    const response = await axios.get(`${base_url}user/getallorders`,config);  //this url: http://localhost:3000/api/user/getAllOrders is the same url as the backend
+    const response = await axios.get(`${base_url}user/get-all-orders`,config);  //this url: http://localhost:3000/api/user/getAllOrders is the same url as the backend
     return response.data;      //this is the response from the backend
 };
 
 const getOrder = async (id) =>{
-    const response = await axios.get(`${base_url}user/getOrderByUser/${id}`,config);  //this url: http://localhost:3000/api/user/getAllOrders is the same url as the backend  //The second argument is the data payload. In this case, it's an empty string "", indicating that no additional data is being sent in the request body.
+    const response = await axios.get(`${base_url}user/get-order/${id}`,config);  //this url: http://localhost:3000/api/user/getAllOrders is the same url as the backend  //The second argument is the data payload. In this case, it's an empty string "", indicating that no additional data is being sent in the request body.
+    return response.data;      //this is the response from the backend
+};
+
+const updateOrder = async (data) =>{
+    const response = await axios.put(`${base_url}user/update-order/${data.id}`,{orderStatus:data.orderStatus},config);  //here "{data.id}" is used not "{data._id}" because we take the id from the params in the backend
     return response.data;      //this is the response from the backend
 };
 
 const getMonthlyOrderIncome = async () =>{
-    const response = await axios.get(`${base_url}user/getMonthOrderIncome`,config);  //this url: http://localhost:3000/api/user/getAllOrders is the same url as the backend  //The second argument is the data payload. In this case, it's an empty string "", indicating that no additional data is being sent in the request body.
+    const response = await axios.get(`${base_url}user/get-month-order-income`,config);  //this url: http://localhost:3000/api/user/getAllOrders is the same url as the backend  //The second argument is the data payload. In this case, it's an empty string "", indicating that no additional data is being sent in the request body.
     return response.data;      //this is the response from the backend
 };
 
 const getYearlyOrders = async () =>{
-    const response = await axios.get(`${base_url}user/getYearlyOrderCount`,config);  //this url: http://localhost:3000/api/user/getAllOrders is the same url as the backend  //The second argument is the data payload. In this case, it's an empty string "", indicating that no additional data is being sent in the request body.
+    const response = await axios.get(`${base_url}user/get-yearly-order-count`,config);  //this url: http://localhost:3000/api/user/getAllOrders is the same url as the backend  //The second argument is the data payload. In this case, it's an empty string "", indicating that no additional data is being sent in the request body.
     return response.data;      //this is the response from the backend
 };
 
@@ -36,6 +41,7 @@ const authService = {
     getOrder,
     getMonthlyOrderIncome,
     getYearlyOrders,
+    updateOrder,
 };
 
 export default authService;

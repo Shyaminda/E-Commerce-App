@@ -525,10 +525,37 @@ const getYearlyTotalOrders = asyncHandler(async (req, res) => {      //todo:erro
 
 const getAllOrders = asyncHandler(async (req, res) => {
     try {
-        const allUserOrders = await Order.find();
+        const allUserOrders = await Order.find().populate("user");
         res.json(allUserOrders);
     } catch (error) {
         throw new Error(error,'Error while getting all orders(user.controller.js getAllOrders)');
+    }
+});
+
+const getOrder = asyncHandler(async (req, res) => {
+    const { id } = req.params;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
+    validateMdbId(id);    //here we validate the id
+
+    try {
+        const userOrdersById = await Order.findOne({_id: id}).populate("orderItems.product").populate("orderItems.color");
+        res.json(userOrdersById);
+    } catch (error) {
+        throw new Error(error,'Error while getting the order(user.controller.js getOrderByUser)');
+    }
+});
+
+const updateOrder = asyncHandler(async (req, res) => {
+    const { id } = req.params;    //here we get the id from the url
+    validateMdbId(id);    //here we validate the id
+
+    try {
+        const updateOrder = await Order.findById(id);  //here we update the order
+        updateOrder.orderStatus = req.body.orderStatus;    //orderStatus is taken frm the frontend
+        await updateOrder.save();
+
+        res.json(updateOrder);
+    } catch (error) {
+        throw new Error(error,'Error while updating the order status(user.controller.js updateOrderStatus)');
     }
 });
 
@@ -612,57 +639,6 @@ const getAllOrders = asyncHandler(async (req, res) => {
 //     }
 // });
 
-// const getOrders = asyncHandler(async (req, res) => {
-//     const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
-//     validateMdbId(_id);    //here we validate the id
-
-//     try {
-//         const userOrders = await Order.find({orderBy: _id}).populate("products.product").exec();    //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection   //here we get the orders from the database   //here we populate the products field which is in the orderModel with the product model 
-//         res.json(userOrders);
-//     } catch (error) {
-//         throw new Error(error,'Error while getting the orders(user.controller.js getOrders)');
-//     }
-// });
-
-// const getAllOrders = asyncHandler(async (req, res) => {
-//     try {
-//         const allUserOrders = await Order.find().populate("products.product").populate("orderBy").exec();    //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection   //here we get the orders from the database   //here we populate the products field which is in the orderModel with the product model 
-//         res.json(allUserOrders);
-//     } catch (error) {
-//         throw new Error(error,'Error while getting all orders(user.controller.js getAllOrders)');
-//     }
-// });
-
-// const getOrderByUser = asyncHandler(async (req, res) => {
-//     const { id } = req.params;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
-//     validateMdbId(id);    //here we validate the id
-
-//     try {
-//         const userOrdersById = await Order.findOne({orderBy: id}).populate("products.product");    //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection   //here we get the orders from the database   //here we populate the products field which is in the orderModel with the product model 
-//         res.json(userOrdersById);
-//     } catch (error) {
-//         throw new Error(error,'Error while getting the order(user.controller.js getOrderByUser)');
-//     }
-// });
-
-// const updateOrderStatus = asyncHandler(async (req, res) => {
-//     const {status} = req.body;    //here we get the status from the req.body object
-//     const { id } = req.params;    //here we get the id from the url
-//     validateMdbId(id);    //here we validate the id
-
-//     try {
-//         const updateOrderStatus = await Order.findByIdAndUpdate(id,{
-//             orderStatus: status,
-//             paymentIntent: {
-//                 status: status,        ////this is a payment gateway status
-//             },
-//         },{new: true});
-//         res.json(updateOrderStatus);
-//     } catch (error) {
-//         throw new Error(error,'Error while updating the order status(user.controller.js updateOrderStatus)');
-//     }
-// });
-
 export {
     createUser,
     login,
@@ -689,6 +665,8 @@ export {
     getMonthWiseOrderIncome,
     getYearlyTotalOrders,
     getAllOrders,
+    getOrder,
+    updateOrder,
 };
 
 

@@ -73,7 +73,7 @@ const Dashboard = () => {
         });
     }
     setOrderData(data1);
-    }, [monthlyDataState]);
+    }, [monthlyDataState,orderState]);
 
     const config = {
         data: monthlyData,
