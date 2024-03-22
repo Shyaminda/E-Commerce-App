@@ -24,15 +24,18 @@ import CouponList from './pages/CouponList.jsx';
 import AddCoupon from './pages/AddCoupon.jsx';
 import ViewInquiries from './pages/ViewInquiries.jsx';
 import ViewOrders from './pages/ViewOrders.jsx';
+import { PrivateRoute } from './routes/PrivateRoute.js';
+import { PublicRoute } from './routes/PublicRoute.js';
 
 function App() {
   return (
+    //todo:after navigated to thr admin page after the login the data is not shown but the data is shown after refreshing the page figure out why
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Login />} />
+        <Route path='/' element={<PublicRoute><Login /></PublicRoute>} />
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
-        <Route path='/admin' element={<MainLayout />}>
+        <Route path='/admin' element={<PrivateRoute><MainLayout /></PrivateRoute>}>  
           <Route index element={<DashBoard />} />
           <Route path='inquiries' element={<Inquiries />} />              {/* the path should be same as the MainLayout key values */}             {/* the path should be same as the MainLayout key values */}
           <Route path='view-inquiries/:id' element={<ViewInquiries />} />              {/* the path should be same as the MainLayout key values */}             {/* the path should be same as the MainLayout key values */}

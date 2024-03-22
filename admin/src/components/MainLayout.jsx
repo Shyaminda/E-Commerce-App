@@ -20,6 +20,7 @@ import { Link } from 'react-router-dom';
 import { RiCoupon3Fill } from "react-icons/ri";
 import { RiCouponFill } from "react-icons/ri";
 import { AiOutlineStock } from "react-icons/ai";
+import { VscSignOut } from "react-icons/vsc";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
@@ -42,7 +43,8 @@ const MainLayout = () => {
                         defaultSelectedKeys={['']}
                         onClick={({key})=>{
                         if(key === "signout"){
-
+                            localStorage.clear();
+                            window.location.reload();  //this is used to reload the page after the user is logged out
                         } else {
                             navigate(key);   // This is how we navigate to different pages with in the dashboard, in link with same address as BlogList, Inquiries, etc.
                         }
@@ -159,6 +161,11 @@ const MainLayout = () => {
                             key: 'inquiries',
                             icon: <TbPhoneCall />,
                             label: 'Inquiries',
+                        },
+                        {
+                            key: 'signout',
+                            icon: <VscSignOut />,
+                            label: 'Signout',
                         },
                     ]}
                     />
