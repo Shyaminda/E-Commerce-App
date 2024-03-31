@@ -31,7 +31,7 @@ authRouter.get('/get-yearly-order-count',authMiddleware,getYearlyTotalOrders);
 
 authRouter.get('/:id',authMiddleware,isAdmin,getAUser);
 //authRouter.delete('/empty-cart',authMiddleware,emptyCart);
-authRouter.delete('/delete-product-cart/:cartItemId',authMiddleware,removeProductFromCart);
+authRouter.delete('/delete-product-cart/:id',authMiddleware,removeProductFromCart);
 authRouter.put('/update-product-cart/:cartItemId/:newQuantity',authMiddleware,updateProductQuantityFromCart);
 authRouter.delete('/:id',deleteAUser);
 

@@ -360,31 +360,6 @@ const userCart = asyncHandler(async (req, res) => {
             price,
         }).save();
         res.json(newCart);
-
-        // {
-        //     "orderBy": "65ac2c02f98f661518a0962a",
-        //     "products": [
-        //       {
-        //         "product": "65ae3552f8182da30f81a87f",
-        //         "quantity": 5,
-        //         "color": "black",
-        //         "price": 2000,
-        //         "_id": "65b2d8b4a8d8dbfe9bf1af87"     //this is the id of the cart 
-        //       },
-        //       {
-        //         "product": "65ae3546f8182da30f81a87b",
-        //         "quantity": 6,
-        //         "color": "red",
-        //         "price": 3000,
-        //         "_id": "65b2d8b4a8d8dbfe9bf1af88"   //this is the id of the cart 
-        //       }
-        //     ],
-        //     "cartTotal": 28000,
-        //     "_id": "65b2d8b4a8d8dbfe9bf1af86",
-        //     "createdAt": "2024-01-25T21:55:00.988Z",
-        //     "updatedAt": "2024-01-25T21:55:00.988Z",
-        //     "__v": 0
-        //   }  this is the output from the above code here 
         
     } catch (error) {
         throw new Error(error,'Error while getting the cart(user.controller.js userCart)');
@@ -397,7 +372,7 @@ const getUserCart = asyncHandler(async (req, res) => {     //here we get the car
     validateMdbId(_id);    //here we validate the id
 
     try {
-        const cart = await Cart.findOne({userId: _id}).populate("productId").populate("color");      //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection    //here we get the cart from the database  //a cart will created to a user id   //here we populate the products field which is in the cartModel with the product model
+        const cart = await Cart.find({userId: _id}).populate("productId").populate("color");  //*change from "findOne" to "find" to get the data as an array to use in the frontend    //When you use .populate("products.product"), Mongoose will replace the product field in each products array element with the actual document from the "Product" collection    //here we get the cart from the database  //a cart will created to a user id   //here we populate the products field which is in the cartModel with the product model
         res.json(cart);
     } catch (error) {
         throw new Error(error,'Error while getting the cart(user.controller.js getUserCart)');
@@ -406,11 +381,11 @@ const getUserCart = asyncHandler(async (req, res) => {     //here we get the car
 
 const removeProductFromCart = asyncHandler(async (req, res) => {          //here we remove a product from the cart
     const { _id } = req.user;    //here we get the id from the req.user object  without authMiddleWare we can't get the id from the req.user object this should be after the authMiddleWare in the authRouter
-    const { cartItemId } = req.params;    //here we get the cartItemId from the req.body object  which is used in authService.removeProductFromCart(cartItemId) in the authSlice.js
+    const { id } = req.params;    //here we get the cartItemId from the req.body object  which is used in authService.removeProductFromCart(cartItemId) in the authSlice.js
     validateMdbId(_id);    //here we validate the id
 
     try{
-        const deleteProductFromCart = await Cart.deleteOne({_id: cartItemId,userId:_id});    //here we delete the product from the cart
+        const deleteProductFromCart = await Cart.deleteOne({_id: id,userId:_id});    //here we delete the product from the cart
         res.json(deleteProductFromCart);
     } catch (error) {
         throw new Error(error,'Error while deleting the product from the cart(user.controller.js removeProductFromCart)');
@@ -423,7 +398,7 @@ const updateProductQuantityFromCart = asyncHandler(async (req, res) => {        
     validateMdbId(_id);    //here we validate the id
 
     try {
-        const cartItem = await Cart.findOne({_id: cartItemId,userId:_id});    //here we update the product quantity from cart
+        const cartItem = await Cart.findOneAndUpdate({_id: cartItemId,userId:_id});    //here we update the product quantity from cart
         cartItem.quantity = newQuantity;    //here we update the quantity
         cartItem.save();    //here we save the cartItem
         res.json(cartItem);

@@ -34,23 +34,26 @@ const addTOCart = async (cartData) =>{
     }
 };
 
-const getCart = async () =>{
-    const response = await axios.get(`${base_url}user/cart` ,config);  //this url: http://localhost:3000/api/user/register is the same url as the backend
+const getCart = async (data) =>{
+    //console.log(data);   //the data is passing correctly
+    
+    const response = await axios.get(`${base_url}user/cart` ,config);  //this url: http://localhost:3000/api/user/cart is the same url as the backend  //the data here is the config2 which is passed from the Cart.jsx
     if(response.data){
         //console.log(response.data);
         return response.data;
     }
 };
 
-const removeProductFromCart = async (cartItemId) =>{
-    const response = await axios.delete(`${base_url}user/delete-product-cart/${cartItemId}` ,config);  //this url: http://localhost:3000/api/user/register is the same url as the backend   //the cartItemId is used because of the user.controller.js removeProductFromCart function
+const removeProductFromCart = async (data) =>{
+    const response = await axios.delete(`${base_url}user/delete-product-cart/${data.id}` ,data.config2);  //this url: http://localhost:3000/api/user/register is the same url as the backend   //the data is used because of the user.controller.js removeProductFromCart function
     if(response.data){
         return response.data;
     }
 };
 
 const updateProductFromCart = async (cartDetail) =>{
-    const response = await axios.put(`${base_url}user/update-product-cart/${cartDetail.cartItemId}/${cartDetail.quantity}` ,config);  //this url: http://localhost:3000/api/user/register is the same url as the   //the cartItemId is used because of the user.controller.js updateProductFromCart function
+    console.log(cartDetail);   //the data is passing correctly
+    const response = await axios.put(`${base_url}user/update-product-cart/${cartDetail.cartItemId}/${cartDetail.quantity}` ,cartDetail.config2);  //this url: http://localhost:3000/api/user/register is the same url as the   //the cartItemId is used because of the user.controller.js updateProductFromCart function
     if(response.data){
         return response.data;
     }

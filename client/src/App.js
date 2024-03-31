@@ -35,7 +35,7 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="store" element={<OurStore />} />
-          <Route path="product/:id" element={<Product />} />    {/* product/:id */} 
+          <Route path="product/:id" element={<Product />} />
           <Route path="blogs" element={<Blog />} />
           <Route path="blog/:id" element={<BlogPage />} />
           <Route path="cart" element={<PrivateRoute><Cart /></PrivateRoute>} />   {/* if the user is not logged in then user cant view this function */}

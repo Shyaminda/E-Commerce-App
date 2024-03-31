@@ -41,8 +41,8 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    window.location.reload();
     navigate("/");
+    window.location.reload();
   };
 
   return (
@@ -119,9 +119,11 @@ const Header = () => {
                       <img src="images/user.svg" alt="login" />
                   </Link>
                   {
-                      authState?.loggedUser ?
-                      <p className="mb-0 text-white">Welcome {authState.loggedUser.firstName}</p> 
-                      : <Link to="/signIn" className="mb-0 text-white">Login <br />My Account</Link>
+                    (authState?.loggedUser || localStorage.getItem("user")) ? (    //* this change is made because here in this project react persist is not in use so when the page is refreshed the user data is lost except the token and the user which saved in the local storage in the authSlice loggedUse slice
+                        <p className="mb-0 text-white">Welcome {authState.loggedUser?.firstName || JSON.parse(localStorage.getItem("user"))}</p>  //"user" is the key in the local storage to store the user firstName
+                    ) : (
+                        <Link to="/signIn" className="mb-0 text-white">Login <br />My Account</Link>
+                    )
                   }
               </div>
 

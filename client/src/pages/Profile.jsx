@@ -53,6 +53,7 @@ const Profile = () => {
         validationSchema: profileSchema,
         onSubmit: (values) => {
             // alert(JSON.stringify(values));
+            console.log(values);
             dispatch(updateProfile({data: values,config: config2}));
             setEdit(true);
         },

@@ -42,17 +42,17 @@
         }
     });
 
-    export const deleteCartProduct = createAsyncThunk("auth/cart/delete-product", async (cartItemId,thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
+    export const deleteCartProduct = createAsyncThunk("auth/cart/delete-product", async (data,thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
         try{
-            return await authService.removeProductFromCart(cartItemId);
+            return await authService.removeProductFromCart(data);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
         }
     });
 
-    export const updateCartProduct = createAsyncThunk("auth/cart/update-order", async (cartItemId,thunkAPI) => {    //this addToCart is used below addCases not the addToCart in return statement below 
+    export const updateCartProduct = createAsyncThunk("auth/cart/update-cart", async (cartItemId,quantity,thunkAPI) => {    //*here if quantity is not added then an error occur which is with  non-serializable value detected....  //this addToCart is used below addCases not the addToCart in return statement below 
         try{
-            return await authService.updateProductFromCart(cartItemId);
+            return await authService.updateProductFromCart(cartItemId,quantity);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
         }
@@ -147,8 +147,8 @@
                     state.isSuccess = true;
                     state.loggedUser = action.payload;
                     if(state.isSuccess === true){
-                        // localStorage.setItem("user", JSON.stringify(action.payload));
-                        // localStorage.setItem("token", action.payload.token); // Store token separately if needed
+                        localStorage.setItem("user", JSON.stringify(action.payload.firstName)); //* here the user firstName is saved because in this project react persist is not in use so when the page is refreshed the user data is lost except the token and the user which the keys where used in header.js component to show the name regardless of the page refresh but not shown when logged out
+                        localStorage.setItem("token", action.payload.token); // if any thing changes in this line remove the token from the chrome application and login again because this token gets corrupted
                         toast.success("User Logged in Successfully!");
                     }
                 })
@@ -307,6 +307,7 @@
                         // localStorage.setItem("user",JSON.stringify(updatedUserData));
                         // state.user = updatedUserData;
                         toast.success("Profile updated successfully")
+                        //** if update profile function doesn't work uncomment the above code snippet and check */
                 })
                 .addCase(updateProfile.rejected, (state, action) => {
                     state.isLoading = false;

@@ -6,6 +6,7 @@
 
     const ProductCard = (Props) => {
         const { grid, data } = Props;
+        console.log(data);
         const location = useLocation();
         //console.log(data);
         const dispatch = useDispatch();
