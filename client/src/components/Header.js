@@ -120,7 +120,7 @@ const Header = () => {
                   </Link>
                   {
                     (authState?.loggedUser || localStorage.getItem("user")) ? (    //* this change is made because here in this project react persist is not in use so when the page is refreshed the user data is lost except the token and the user which saved in the local storage in the authSlice loggedUse slice
-                    <p className="mb-0 text-white">Welcome {authState.loggedUser?.firstName || JSON.parse(localStorage.getItem("user")).firstName}</p>    //"user" is the key in the local storage to store the user firstName
+                        <p className="mb-0 text-white">Welcome {authState.loggedUser?.firstName || JSON.parse(localStorage.getItem("user")).firstName}</p>  //"user" is the key in the local storage to store the user firstName
                     ) : (
                         <Link to="/signIn" className="mb-0 text-white">Login <br />My Account</Link>
                     )
