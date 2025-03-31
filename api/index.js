@@ -17,6 +17,7 @@ import cors from 'cors';
 import uploadRouter from './routes/uploadRouter.js';
 
 const app = express();
+const port = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -42,7 +43,6 @@ app.use("/api/upload",uploadRouter);
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
