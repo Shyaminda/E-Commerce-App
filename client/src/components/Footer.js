@@ -40,7 +40,7 @@ const Footer = () => {
                         <h5 className='text-white mb-4'>Contact Us</h5>
                         <div>
                             <address className='text-white'>
-                                colombo,<br />Srilanka
+                                New york,<br />USA
                             </address>
                             <a href='tel:0123456789' className='text-white mt-3 d-block mb-2'>tel: 0999999999</a>
                             <a href='mailto:prime@gmail.com' className='text-white mt-3 d-block mb-2'>Email: prime@gmail.com</a>
