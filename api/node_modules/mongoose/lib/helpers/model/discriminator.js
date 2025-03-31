@@ -21,7 +21,7 @@ const CUSTOMIZABLE_DISCRIMINATOR_OPTIONS = {
  * ignore
  */
 
-module.exports = function discriminator(model, name, schema, tiedValue, applyPlugins, mergeHooks) {
+module.exports = function discriminator(model, name, schema, tiedValue, applyPlugins, mergeHooks, overwriteExisting) {
   if (!(schema && schema.instanceOfSchema)) {
     throw new Error('You must pass a valid discriminator Schema');
   }
@@ -115,7 +115,11 @@ module.exports = function discriminator(model, name, schema, tiedValue, applyPlu
       }
     }
 
+    // Shallow clone `obj` so we can add additional properties without modifying original
+    // schema. `Schema.prototype.clone()` copies `obj` by reference, no cloning.
+    schema.obj = { ...schema.obj };
     mergeDiscriminatorSchema(schema, baseSchema);
+    schema._gatherChildSchemas();
 
     // Clean up conflicting paths _after_ merging re: gh-6076
     for (const conflictingPath of conflictingPaths) {
@@ -205,7 +209,7 @@ module.exports = function discriminator(model, name, schema, tiedValue, applyPlu
 
   model.schema.discriminators[name] = schema;
 
-  if (model.discriminators[name] && !schema.options.overwriteModels) {
+  if (model.discriminators[name] && !schema.options.overwriteModels && !overwriteExisting) {
     throw new Error('Discriminator with name "' + name + '" already exists');
   }
 

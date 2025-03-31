@@ -3,6 +3,7 @@
 const CastError = require('../../error/cast');
 const StrictModeError = require('../../error/strict');
 const castNumber = require('../../cast/number');
+const omitUndefined = require('../omitUndefined');
 
 const booleanComparison = new Set(['$and', '$or']);
 const comparisonOperator = new Set(['$cmp', '$eq', '$lt', '$lte', '$gt', '$gte']);
@@ -92,8 +93,12 @@ function _castExpression(val, schema, strictQuery) {
   } else if (val.$ifNull != null) {
     val.$ifNull.map(v => _castExpression(v, schema, strictQuery));
   } else if (val.$switch != null) {
-    val.branches.map(v => _castExpression(v, schema, strictQuery));
-    val.default = _castExpression(val.default, schema, strictQuery);
+    if (Array.isArray(val.$switch.branches)) {
+      val.$switch.branches = val.$switch.branches.map(v => _castExpression(v, schema, strictQuery));
+    }
+    if ('default' in val.$switch) {
+      val.$switch.default = _castExpression(val.$switch.default, schema, strictQuery);
+    }
   }
 
   const keys = Object.keys(val);
@@ -125,16 +130,9 @@ function _castExpression(val, schema, strictQuery) {
     val.$round = $round.map(v => castNumberOperator(v, schema, strictQuery));
   }
 
-  _omitUndefined(val);
+  omitUndefined(val);
 
   return val;
-}
-
-function _omitUndefined(val) {
-  const keys = Object.keys(val);
-  for (let i = 0, len = keys.length; i < len; ++i) {
-    (val[keys[i]] === void 0) && delete val[keys[i]];
-  }
 }
 
 // { $op: <number> }

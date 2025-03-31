@@ -101,8 +101,8 @@ module.exports = function assignVals(o) {
       valueToSet = numDocs(rawIds[i]);
     } else if (Array.isArray(o.match)) {
       valueToSet = Array.isArray(rawIds[i]) ?
-        rawIds[i].filter(sift(o.match[i])) :
-        [rawIds[i]].filter(sift(o.match[i]))[0];
+        rawIds[i].filter(v => v == null || sift(o.match[i])(v)) :
+        [rawIds[i]].filter(v => v == null || sift(o.match[i])(v))[0];
     } else {
       valueToSet = rawIds[i];
     }
@@ -249,7 +249,7 @@ function numDocs(v) {
 
 function valueFilter(val, assignmentOpts, populateOptions, allIds) {
   const userSpecifiedTransform = typeof populateOptions.transform === 'function';
-  const transform = userSpecifiedTransform ? populateOptions.transform : noop;
+  const transform = userSpecifiedTransform ? populateOptions.transform : v => v;
   if (Array.isArray(val)) {
     // find logic
     const ret = [];
@@ -340,8 +340,4 @@ function isPopulatedObject(obj) {
     obj.$isMongooseMap ||
     obj.$__ != null ||
     leanPopulateMap.has(obj);
-}
-
-function noop(v) {
-  return v;
 }

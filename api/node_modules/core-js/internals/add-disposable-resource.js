@@ -1,4 +1,5 @@
 'use strict';
+var getBuiltIn = require('../internals/get-built-in');
 var call = require('../internals/function-call');
 var uncurryThis = require('../internals/function-uncurry-this');
 var bind = require('../internals/function-bind-context');
@@ -20,8 +21,14 @@ var getDisposeMethod = function (V, hint) {
     var method = getMethod(V, ASYNC_DISPOSE);
     if (method !== undefined) return method;
     method = getMethod(V, DISPOSE);
+    if (method === undefined) return method;
     return function () {
-      call(method, this);
+      var O = this;
+      var Promise = getBuiltIn('Promise');
+      return new Promise(function (resolve) {
+        call(method, O);
+        resolve(undefined);
+      });
     };
   } return getMethod(V, DISPOSE);
 };
