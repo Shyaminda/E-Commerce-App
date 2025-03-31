@@ -39,7 +39,7 @@ const Footer = () => {
                     <div className='col-4'>
                         <h5 className='text-white mb-4'>Contact Us</h5>
                         <div>
-                            <address className='text-white'>
+                            <address className='text-wvhite'>
                                 New york,<br />USA
                             </address>
                             <a href='tel:0123456789' className='text-white mt-3 d-block mb-2'>tel: 0999999999</a>
