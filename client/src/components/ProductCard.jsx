@@ -29,7 +29,7 @@
                                 </div>
                                 <div className="product-image">
                                     <img src={item.images.length > 0 && item.images[0].url} alt="product" className='img-fluid' />
-                                    <img src="/images/watch-1.webp" alt="product" className='img-fluid' />
+                                    <img src={item.images[1]} alt="product" className='img-fluid' />
                                 </div>
                                 <div className="product-details">
                                     <h6 className="brand">{item?.brand}</h6>

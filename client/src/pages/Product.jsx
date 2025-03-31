@@ -14,12 +14,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addRating, getAProduct, getProducts } from '../features/products/productSlice';
 import { toast } from 'react-toastify';
 import { addToCart, getCart } from '../features/auth/authSlice';
+import SpecialProduct from '../components/SpecialProduct';
 
 const Product = () => {
     const [color, setColor] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [alreadyAdded, setAlreadyAdded] = useState(false);
     const [popularProducts, setPopularProducts] = useState([]);
+    const [specialProduct, setSpecialProduct] = useState([]);
     const [star, setStar] = useState(null);
     const [comment, setComment] = useState(null);
 
@@ -99,7 +101,19 @@ const Product = () => {
             setPopularProducts(data);
         }
     },[productsState]);
-    //console.log(popularProducts);
+    console.log(popularProducts);
+
+    useEffect(() => {
+        let data = [];
+        for (let i = 0; i < productsState.length; i++) {
+            const element = productsState[i];
+            if(element.tags === "special"){
+                data.push(element);
+            }
+            setSpecialProduct(data);
+        }
+    },[productsState]);
+    console.log(specialProduct);
 
     const addProductRating = () => {
         if(star === null){

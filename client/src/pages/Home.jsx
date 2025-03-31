@@ -198,7 +198,7 @@ function Home() {
 
                                         <div className="product-image">
                                             <img src={item.images.length > 0 && item.images[0].url} alt="product" className='img-fluid' />
-                                            <img src="images/watch-1.webp" alt="product" className='img-fluid' />
+                                            <img src={item.images[1]} alt="product" className='img-fluid' />
                                         </div>
 
                                         <div className="product-details">
@@ -256,7 +256,7 @@ function Home() {
                                     price={item?.price}
                                     brand={item?.brand}
                                     totalRatings={item?.totalRatings.toString()}
-                                    images={item?.images[0].url}
+                                    images={item.images[0].url}
                                     sold={item?.sold}
                                     quantity={item?.quantity}
                                 />
@@ -335,7 +335,7 @@ function Home() {
 
                                         <div className="product-image">
                                             <img src={item.images.length > 0 && item.images[0].url} alt="product" className='img-fluid' />
-                                            <img src="images/watch-1.webp" alt="product" className='img-fluid' />
+                                            <img src={item.images[1]} alt="product" className='img-fluid' />
                                         </div>
 
                                         <div className="product-details">

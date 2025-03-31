@@ -86,12 +86,12 @@ const AddProduct = () => {
         initialValues: {
         title: "",
         description: "",
-        price: "",
+        price: 0,
         brand: "",
         category: "",
         tags: "",
         color: "",
-        quantity: "",
+        quantity: 0,
         images: "",
         },
         validationSchema: schema,
@@ -130,9 +130,9 @@ return (
                 type="text"
                 label="Enter Product Title"
                 name="title"
-                onChange={formik.handleChange("title")}
-                onBlur={formik.handleBlur("title")}
                 value={formik.values.title}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur("title")}
             />
             <div className="error">
                 {formik.touched.title && formik.errors.title}
@@ -154,10 +154,10 @@ return (
             <CustomInput 
                 type="number" 
                 label="Enter Product Price"
-                value={formik.values.price}
                 name="price"
                 onChange={formik.handleChange("price")}
                 onBlur={formik.handleBlur("price")}
+                value={formik.values.price}
             />
             <div className="error">
                 {formik.touched.price && formik.errors.price}
@@ -240,7 +240,7 @@ return (
                 type="number" 
                 label="Enter Product Quantity"
                 name="quantity"
-                onChange={formik.handleChange("quantity")}
+                onChange={formik.handleChange("quantity")} 
                 onBlur={formik.handleBlur("quantity")}
                 value={formik.values.quantity}
             />

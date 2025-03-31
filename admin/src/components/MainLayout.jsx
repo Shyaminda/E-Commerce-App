@@ -28,7 +28,7 @@ const MainLayout = () => {
     const navigate = useNavigate();
     return (
     <div>
-        <Layout /* onContextMenu={(e)=>e.preventDefault()}*/>      {/*This is done to prevent the right click on the page to view the source code*/}
+        <Layout>
             <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className='logo'>
                     <h3 className='text-white text-center py-3 mb-0'>
@@ -44,9 +44,9 @@ const MainLayout = () => {
                         onClick={({key})=>{
                         if(key === "signout"){
                             localStorage.clear();
-                            window.location.reload();  //this is used to reload the page after the user is logged out
+                            window.location.reload();
                         } else {
-                            navigate(key);   // This is how we navigate to different pages with in the dashboard, in link with same address as BlogList, Inquiries, etc.
+                            navigate(key);
                         }
                         }}
                         items={[

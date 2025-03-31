@@ -16,10 +16,10 @@ const profileSchema = yup.object({
 });
 
 const Profile = () => {
-    const getTokenFromLocalStorage = localStorage.getItem("token"); // Retrieve token using the correct key
+    const getTokenFromLocalStorage = localStorage.getItem("token");
     const config2 = {
         headers: {
-            Authorization: `Bearer ${getTokenFromLocalStorage}`, // Include the retrieved token in the Authorization header
+            Authorization: `Bearer ${getTokenFromLocalStorage}`,
             Accept: "application/json",
         },
     };
@@ -28,22 +28,10 @@ const Profile = () => {
     
     const dispatch = useDispatch();
 
-//     const profile = useSelector((state) => state.auth);
-//     const { isError, isSuccess, updatedProfile } = profile;
-
-// useEffect(() => {
-//     if (isSuccess && updatedProfile) {
-//         toast.success("Profile updated Successfully!");
-//     }
-//     if (isError) {
-//         toast.error("Something Went Wrong!");
-//     }
-// }, [isSuccess, isError, updatedProfile]);
-
     const userState = useSelector(state => state.auth.loggedUser);
 
     const formik = useFormik({
-        enableReinitialize: true,    //this is done to show the data in the form field when the form is opened for the second time to edit
+        enableReinitialize: true,   
         initialValues: {
             firstName: userState?.firstName || "",
             lastName: userState?.lastName || "",
@@ -52,7 +40,6 @@ const Profile = () => {
         },
         validationSchema: profileSchema,
         onSubmit: (values) => {
-            // alert(JSON.stringify(values));
             console.log(values);
             dispatch(updateProfile({data: values,config: config2}));
             setEdit(true);
@@ -71,6 +58,12 @@ const Profile = () => {
                             <h4 className='my-3'>Update Profile</h4>
                             <TiEdit className='fs-3' onClick={()=>setEdit(false)} />
                         </div>
+                        <div>
+                            <a href="http://localhost:3002/" target="_blank" rel="noopener noreferrer">
+                                Admin<TiEdit className='fs-3' />
+                            </a>
+                        </div>
+                        
                     </div>
 
                     <div className="col-12">
@@ -80,7 +73,6 @@ const Profile = () => {
                                 <input 
                                     type="text"
                                     name='firstName'
-                                    //placeholder='First Name' 
                                     className="form-control" 
                                     id="" 
                                     disabled={edit}
@@ -98,7 +90,6 @@ const Profile = () => {
                                 <input 
                                     type="text" 
                                     name='lastName'
-                                    //placeholder='Last Name' 
                                     className="form-control" 
                                     id="" 
                                     disabled={edit}
@@ -116,7 +107,6 @@ const Profile = () => {
                                 <input 
                                     type="email" 
                                     name='email'
-                                    //placeholder='Email' 
                                     className="form-control" 
                                     id="" 
                                     disabled={edit}
@@ -129,22 +119,11 @@ const Profile = () => {
                                 </div>
                             </div>
                             
-                            {/* <div class="mb-3">
-                                <label htmlFor="" className="form-label">Password</label>
-                                <input 
-                                    type="password"
-                                    name='password' 
-                                    //placeholder='Password' 
-                                    className="form-control" 
-                                    id="" 
-                                />
-                            </div> */}
                             <div className="mb-3">
                                 <label htmlFor="" className="form-label">Mobile No.</label>
                                 <input 
                                     type="tel" 
                                     name='mobile'
-                                    //placeholder='Password' 
                                     className="form-control" 
                                     id="" 
                                     disabled={edit}
